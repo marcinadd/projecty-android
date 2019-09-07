@@ -1,17 +1,23 @@
 package com.marcinadd.projecty;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.marcinadd.projecty.login.Token;
+import com.marcinadd.projecty.ui.login.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
+    private Button button;
+    private Token token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +34,11 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
