@@ -7,7 +7,7 @@ import java.util.Objects;
 
 import retrofit2.Retrofit;
 
-public class RemoteDataSource {
+public class LoginDataSource {
     public Result<LoggedInUser> login(String username, String password) {
         Retrofit retrofit = NetworkClient.getRetrofitClient();
         AuthClient authClient = retrofit.create(AuthClient.class);

@@ -1,5 +1,6 @@
 package com.marcinadd.projecty.ui.login;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Patterns;
 
@@ -11,14 +12,14 @@ import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.login.LoggedInUser;
 import com.marcinadd.projecty.login.LoginRepository;
 import com.marcinadd.projecty.login.Result;
-import com.marcinadd.projecty.login.Token;
+
+import java.lang.ref.WeakReference;
 
 public class LoginViewModel extends ViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
     private LoginRepository loginRepository;
-    private Token token;
 
     LoginViewModel(LoginRepository loginRepository) {
         this.loginRepository = loginRepository;
@@ -32,9 +33,9 @@ public class LoginViewModel extends ViewModel {
         return loginResult;
     }
 
-    public void login(final String username, final String password) {
+    public void login(final String username, final String password, Context context) {
         // can be launched in a separate asynchronous job
-        new TestAsync().execute(username, password);
+        new LoginTask(context).execute(username, password);
     }
 
     public void loginDataChanged(String username, String password) {
@@ -64,11 +65,16 @@ public class LoginViewModel extends ViewModel {
         return password != null && password.trim().length() > 5;
     }
 
-    class TestAsync extends AsyncTask<String, Void, Result<LoggedInUser>> {
+    class LoginTask extends AsyncTask<String, Void, Result<LoggedInUser>> {
+        private WeakReference<Context> contextRef;
+
+        LoginTask(Context context) {
+            this.contextRef = new WeakReference<>(context);
+        }
 
         @Override
         protected Result<LoggedInUser> doInBackground(String... strings) {
-            return loginRepository.login(strings[0], strings[1]);
+            return loginRepository.login(strings[0], strings[1], contextRef.get());
         }
 
         @Override

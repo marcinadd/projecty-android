@@ -4,8 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.marcinadd.projecty.login.LoginDataSource;
 import com.marcinadd.projecty.login.LoginRepository;
-import com.marcinadd.projecty.login.RemoteDataSource;
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.
@@ -18,7 +18,7 @@ public class LoginViewModelFactory implements ViewModelProvider.Factory {
     @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(LoginViewModel.class)) {
-            return (T) new LoginViewModel(LoginRepository.getInstance(new RemoteDataSource()));
+            return (T) new LoginViewModel(LoginRepository.getInstance(new LoginDataSource()));
         } else {
             throw new IllegalArgumentException("Unknown ViewModel class");
         }
