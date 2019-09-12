@@ -1,9 +1,11 @@
 package com.marcinadd.projecty.project;
 
-import android.util.Log;
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,7 +40,6 @@ public class MyProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyProject
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        Log.e("sample", String.valueOf(position));
         //holder.mIdView.setText(mValues.get(position).id);
         holder.mContentView.setText(mValues.get(position).getProject().getName());
 
@@ -63,18 +64,46 @@ public class MyProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyProject
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
+        public final Button taskList;
+        public final Button manageProject;
+        public final Context mContext;
         public ProjectRole mItem;
+
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
+            mContext = view.getContext();
             mIdView = view.findViewById(R.id.item_number);
             mContentView = view.findViewById(R.id.content);
+            taskList = view.findViewById(R.id.task_list);
+            manageProject = view.findViewById(R.id.manage_project);
+            taskList.setOnClickListener(taskListListener());
+            manageProject.setOnClickListener(manageProjectListener());
         }
 
         @Override
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";
+        }
+
+        View.OnClickListener taskListListener() {
+            return new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                }
+            };
+        }
+
+        View.OnClickListener manageProjectListener() {
+            return new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, ManageProjectActivity.class);
+                    intent.putExtra("projectId", mItem.getProject().getId());
+                    mContext.startActivity(intent);
+                }
+            };
         }
     }
 }

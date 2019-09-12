@@ -13,9 +13,13 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".project.ManageProjectActivity"
+            android:label="@string/title_activity_manage_project"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".project.MyProjectsActivity"
             android:label="@string/title_activity_my_projects"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/title_activity_login" />

@@ -1,9 +1,7 @@
 package com.marcinadd.projecty.project;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
-import com.marcinadd.projecty.client.NetworkClient;
+import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -65,12 +63,9 @@ public class ProjectFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_project_list, container, false);
 
-        Retrofit retrofit = NetworkClient.getRetrofitClient();
-        ProjectClient projectClient = retrofit.create(ProjectClient.class);
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String token = sharedPreferences.getString("access_token", "0");
-        projectClient.getProjects("Bearer" + token).enqueue(new Callback<UserProject>() {
+        Retrofit retrofit = new AuthorizedNetworkClient(getContext()).getRetrofitClient();
+        final ProjectClient projectClient = retrofit.create(ProjectClient.class);
+        projectClient.getProjects().enqueue(new Callback<UserProject>() {
             @Override
             public void onResponse(Call<UserProject> call, Response<UserProject> response) {
                 UserProject userProject = response.body();
