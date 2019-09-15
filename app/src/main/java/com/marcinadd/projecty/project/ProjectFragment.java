@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
+import com.marcinadd.projecty.project.model.ProjectRole;
+import com.marcinadd.projecty.project.model.UserProject;
 
 import retrofit2.Call;
 import retrofit2.Callback;

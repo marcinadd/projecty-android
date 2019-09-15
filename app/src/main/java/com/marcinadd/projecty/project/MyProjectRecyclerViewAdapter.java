@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.project.ProjectFragment.OnListFragmentInteractionListener;
+import com.marcinadd.projecty.project.model.ProjectRole;
 
 import java.util.List;
 
@@ -78,6 +79,10 @@ public class MyProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyProject
             mContentView = view.findViewById(R.id.content);
             taskList = view.findViewById(R.id.task_list);
             manageProject = view.findViewById(R.id.manage_project);
+            setButtons();
+        }
+
+        private void setButtons() {
             taskList.setOnClickListener(taskListListener());
             manageProject.setOnClickListener(manageProjectListener());
         }

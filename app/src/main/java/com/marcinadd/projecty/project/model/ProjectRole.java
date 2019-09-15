@@ -1,4 +1,4 @@
-package com.marcinadd.projecty.project;
+package com.marcinadd.projecty.project.model;
 
 public class ProjectRole {
     private long id;

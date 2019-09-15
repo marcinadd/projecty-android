@@ -13,4 +13,7 @@
     <string name="preference_file_key">com.marcinadd.projecty</string>
     <string name="title_activity_my_projects">MyProjectsActivity</string>
     <string name="title_activity_manage_project">ManageProjectActivity</string>
+    <string name="button_change_name">Change name</string>
+    <string name="edit_text_change_name_hint">Enter New Name</string>
+    <string name="text_view_change_name">Change Name</string>
 </resources>

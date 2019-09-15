@@ -1,9 +1,11 @@
 package com.marcinadd.projecty.project;
 
-import java.util.Map;
+import com.marcinadd.projecty.project.model.ManageProject;
+import com.marcinadd.projecty.project.model.UserProject;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ProjectClient {
@@ -11,5 +13,8 @@ public interface ProjectClient {
     Call<UserProject> getProjects();
 
     @GET("project/manageProject")
-    Call<Map<String, Object>> manageProject(@Query("projectId") long projectId);
+    Call<ManageProject> manageProject(@Query("projectId") long projectId);
+
+    @POST("project/changeName")
+    Call<Void> changeName(@Query("id") long projectId, @Query("name") String newName);
 }

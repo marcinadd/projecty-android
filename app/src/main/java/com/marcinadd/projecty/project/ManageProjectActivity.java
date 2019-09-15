@@ -5,11 +5,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
-
-import java.util.Map;
+import com.marcinadd.projecty.project.model.ManageProject;
+import com.marcinadd.projecty.project.model.Project;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,6 +20,7 @@ import retrofit2.Retrofit;
 public class ManageProjectActivity extends AppCompatActivity {
     private long projectId;
     private TextView projectName;
+    private Project project;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +31,7 @@ public class ManageProjectActivity extends AppCompatActivity {
 
         projectName = findViewById(R.id.projectName);
 
-        Bundle bundle = getIntent().getExtras();
+        final Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             projectId = bundle.getLong("projectId");
         }
@@ -37,22 +39,30 @@ public class ManageProjectActivity extends AppCompatActivity {
         Retrofit retrofit = new AuthorizedNetworkClient(getApplicationContext()).getRetrofitClient();
         ProjectClient projectClient = retrofit.create(ProjectClient.class);
 
-        projectClient.manageProject(projectId).enqueue(new Callback<Map<String, Object>>() {
+        projectClient.manageProject(projectId).enqueue(new Callback<ManageProject>() {
             @Override
-            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+            public void onResponse(Call<ManageProject> call, Response<ManageProject> response) {
                 if (response.code() == 200) {
-                    Project project = (Project) response.body().get("project");
-                    projectName.setText(project.getName());
+                    ManageProject manageProject = response.body();
+                    if (manageProject != null) {
+                        project = manageProject.getProject();
+                        projectName.setText(project.getName());
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putSerializable("project", project);
+                        ChangeProjectNameFragment fragment = new ChangeProjectNameFragment();
+                        fragment.setArguments(bundle1);
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frameLayout2, fragment);
+                        transaction.commit();
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+            public void onFailure(Call<ManageProject> call, Throwable t) {
 
             }
         });
-
-//        projectClient.manageProject();
 
 //        FloatingActionButton fab = findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {

@@ -8,28 +8,17 @@
     tools:context=".project.ManageProjectActivity"
     tools:showIn="@layout/activity_manage_project">
 
-    <fragment
-        android:id="@+id/fragment2"
-        android:name="com.marcinadd.projecty.project.ChangeProjectNameFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/projectName"
-        app:layout_constraintVertical_bias="0.066" />
+    <FrameLayout
+        android:id="@+id/frameLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/projectName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Project name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.085" />
+        <TextView
+            android:id="@+id/projectName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Project name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

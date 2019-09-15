@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.marcinadd.projecty.R;
+import com.marcinadd.projecty.project.model.ProjectRole;
 
 public class MyProjectsActivity extends AppCompatActivity implements ProjectFragment.OnListFragmentInteractionListener {
 
