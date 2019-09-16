@@ -18,7 +18,10 @@ public interface AuthClient {
             @Field("password") String password
     );
 
+    @Deprecated
     @GET("auth")
     Call<LoggedInUser> getLoggedInUser(@Header("Authorization") String authToken);
 
+    @GET("auth")
+    Call<LoggedInUser> getAuthenticatedUser();
 }

@@ -1,9 +1,5 @@
 package com.marcinadd.projecty.client;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -16,13 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.marcinadd.projecty.client.NetworkClient.BASE_URL;
 
-public class AuthorizedNetworkClient {
-    private Context context;
-
-    public AuthorizedNetworkClient(Context context) {
-        this.context = context;
-    }
-
+public abstract class AuthorizedNetworkClient {
     public Retrofit getRetrofitClient() {
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -32,7 +22,7 @@ public class AuthorizedNetworkClient {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
                         Request.Builder ongoing = chain.request().newBuilder();
-                        ongoing.addHeader("Authorization", getToken());
+                        ongoing.addHeader("Authorization", "Bearer " + getToken());
                         return chain.proceed(ongoing.build());
                     }
                 }).build();
@@ -44,8 +34,5 @@ public class AuthorizedNetworkClient {
                 .build();
     }
 
-    private String getToken() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return "Bearer " + sharedPreferences.getString("access_token", "");
-    }
+    protected abstract String getToken();
 }

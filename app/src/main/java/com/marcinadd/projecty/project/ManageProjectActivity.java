@@ -8,7 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.marcinadd.projecty.R;
-import com.marcinadd.projecty.client.AuthorizedNetworkClient;
+import com.marcinadd.projecty.client.AuthorizedNetworkClientImpl;
 import com.marcinadd.projecty.project.model.ManageProject;
 import com.marcinadd.projecty.project.model.Project;
 
@@ -36,7 +36,7 @@ public class ManageProjectActivity extends AppCompatActivity {
             projectId = bundle.getLong("projectId");
         }
 
-        Retrofit retrofit = new AuthorizedNetworkClient(getApplicationContext()).getRetrofitClient();
+        Retrofit retrofit = new AuthorizedNetworkClientImpl(getApplicationContext()).getRetrofitClient();
         ProjectClient projectClient = retrofit.create(ProjectClient.class);
 
         projectClient.manageProject(projectId).enqueue(new Callback<ManageProject>() {
