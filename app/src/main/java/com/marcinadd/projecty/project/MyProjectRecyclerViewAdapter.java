@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.project.ProjectFragment.OnListFragmentInteractionListener;
+import com.marcinadd.projecty.project.manage.ManageProjectActivity;
 import com.marcinadd.projecty.project.model.ProjectRole;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class MyProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyProject
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        //holder.mIdView.setText(mValues.get(position).id);
+        //holder.mRoleNameView.setText(mValues.get(position).id);
         holder.mContentView.setText(mValues.get(position).getProject().getName());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -75,8 +76,8 @@ public class MyProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyProject
             super(view);
             mView = view;
             mContext = view.getContext();
-            mIdView = view.findViewById(R.id.item_number);
-            mContentView = view.findViewById(R.id.content);
+            mIdView = view.findViewById(R.id.role_name);
+            mContentView = view.findViewById(R.id.username);
             taskList = view.findViewById(R.id.task_list);
             manageProject = view.findViewById(R.id.manage_project);
             setButtons();

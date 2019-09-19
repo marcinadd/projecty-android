@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".project.ManageProjectActivity"
+            android:name=".project.manage.ManageProjectActivity"
             android:label="@string/title_activity_manage_project"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity

@@ -1,4 +1,4 @@
-package com.marcinadd.projecty.project;
+package com.marcinadd.projecty.project.manage.fragment;
 
 import androidx.lifecycle.ViewModel;
 

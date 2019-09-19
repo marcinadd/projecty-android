@@ -17,4 +17,7 @@ public interface ProjectClient {
 
     @POST("project/changeName")
     Call<Void> changeName(@Query("id") long projectId, @Query("name") String newName);
+
+    @POST("project/changeRole")
+    Call<Void> changeRole(@Query("projectId") long projectId, @Query("roleId") long roleId, @Query("newRoleName") String newRoleName);
 }

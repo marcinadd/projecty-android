@@ -1,7 +1,6 @@
-package com.marcinadd.projecty.project;
+package com.marcinadd.projecty.project.manage.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,10 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.client.AuthorizedNetworkClientImpl;
+import com.marcinadd.projecty.project.ProjectClient;
 import com.marcinadd.projecty.project.model.Project;
+
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,7 +28,6 @@ public class ChangeProjectNameFragment extends Fragment {
 
     private ChangeProjectNameViewModel mViewModel;
     private Project project;
-    private Button button;
     private EditText editText;
 
     public void setProject(Project project) {
@@ -41,7 +42,7 @@ public class ChangeProjectNameFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.change_project_name_fragment, container, false);
-        button = view.findViewById(R.id.changeName);
+        Button button = view.findViewById(R.id.changeName);
         editText = view.findViewById(R.id.change_name_edit_text);
         if (getArguments() != null) {
             project = (Project) getArguments().getSerializable("project");
@@ -62,7 +63,7 @@ public class ChangeProjectNameFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    public View.OnClickListener onChangeNameClick() {
+    private View.OnClickListener onChangeNameClick() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +73,7 @@ public class ChangeProjectNameFragment extends Fragment {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if (response.code() == 200) {
-                            Log.e("Ok", "OK");
+                            Objects.requireNonNull(getActivity()).recreate();
                         }
                     }
 

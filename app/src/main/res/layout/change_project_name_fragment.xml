@@ -5,7 +5,7 @@
     android:id="@+id/change_project_name"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".project.ChangeProjectNameFragment">
+    tools:context=".project.manage.fragment.ChangeProjectNameFragment">
 
     <TextView
         android:id="@+id/changeNameText"

@@ -16,4 +16,6 @@
     <string name="button_change_name">Change name</string>
     <string name="edit_text_change_name_hint">Enter New Name</string>
     <string name="text_view_change_name">Change Name</string>
+    <string name="project_name">Project name</string>
+    <string name="manage_roles">Manage Roles</string>
 </resources>

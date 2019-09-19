@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Intent intent = new Intent(this, LoginActivity.class);
-        // startActivity(intent);
+        //  startActivity(intent);
         button = findViewById(R.id.button);
         final Context context = this;
         button.setOnClickListener(new View.OnClickListener() {
