@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
-import com.marcinadd.projecty.client.AuthorizedNetworkClientImpl;
+import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.project.model.ProjectRole;
 import com.marcinadd.projecty.project.model.UserProject;
 
@@ -65,7 +65,7 @@ public class ProjectFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_project_list, container, false);
 
-        Retrofit retrofit = new AuthorizedNetworkClientImpl(getContext()).getRetrofitClient();
+        Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(getContext());
         final ProjectClient projectClient = retrofit.create(ProjectClient.class);
         projectClient.getProjects().enqueue(new Callback<UserProject>() {
             @Override

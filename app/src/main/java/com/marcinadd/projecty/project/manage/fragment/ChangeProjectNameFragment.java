@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.marcinadd.projecty.R;
-import com.marcinadd.projecty.client.AuthorizedNetworkClientImpl;
+import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.project.ProjectClient;
 import com.marcinadd.projecty.project.model.Project;
 
@@ -67,7 +67,7 @@ public class ChangeProjectNameFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Retrofit retrofit = new AuthorizedNetworkClientImpl(getContext()).getRetrofitClient();
+                Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(getContext());
                 ProjectClient projectClient = retrofit.create(ProjectClient.class);
                 projectClient.changeName(project.getId(), editText.getText().toString()).enqueue(new Callback<Void>() {
                     @Override

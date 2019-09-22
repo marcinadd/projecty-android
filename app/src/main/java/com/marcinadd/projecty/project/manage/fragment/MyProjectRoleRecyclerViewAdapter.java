@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
-import com.marcinadd.projecty.client.AuthorizedNetworkClientImpl;
+import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.project.ProjectClient;
 import com.marcinadd.projecty.project.manage.fragment.ProjectRoleFragment.OnListFragmentInteractionListener;
 import com.marcinadd.projecty.project.model.ProjectRole;
@@ -83,7 +83,7 @@ public class MyProjectRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyPro
                 public void onClick(View v) {
                     final boolean isChecked = mManagerSwitch.isChecked();
                     Log.e("Switched", String.valueOf(isChecked));
-                    Retrofit retrofit = new AuthorizedNetworkClientImpl(context).getRetrofitClient();
+                    Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(context);
                     ProjectClient projectClient = retrofit.create(ProjectClient.class);
                     final String newRoleName = isChecked ? "ADMIN" : "USER";
                     projectClient.changeRole(mItem.getProject().getId(), mItem.getId(), newRoleName).enqueue(new Callback<Void>() {

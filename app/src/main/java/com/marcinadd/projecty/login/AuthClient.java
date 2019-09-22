@@ -24,4 +24,9 @@ public interface AuthClient {
 
     @GET("auth")
     Call<LoggedInUser> getAuthenticatedUser();
+
+    @Headers("Authorization: Basic Y2xpZW50SWQ6Y2xpZW50U2VjcmV0")
+    @POST("oauth/token")
+    @FormUrlEncoded
+    Call<Token> refresh(@Field("grant_type") String grantType, @Field("refresh_token") String refreshToken);
 }

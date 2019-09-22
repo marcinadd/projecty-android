@@ -44,6 +44,7 @@ public class LoginRepository {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         sharedPreferences.edit().putString("username", user.getDisplayName()).apply();
         sharedPreferences.edit().putString("access_token", user.getToken().getAccessToken()).apply();
+        sharedPreferences.edit().putString("refresh_token", user.getToken().getRefreshToken()).apply();
         // If user credentials will be cached in local storage, it is recommended it be encrypted
         // @see https://developer.android.com/training/articles/keystore
     }

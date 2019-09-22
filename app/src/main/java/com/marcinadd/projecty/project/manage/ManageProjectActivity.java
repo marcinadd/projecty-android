@@ -10,7 +10,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.marcinadd.projecty.R;
-import com.marcinadd.projecty.client.AuthorizedNetworkClientImpl;
+import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.project.ProjectClient;
 import com.marcinadd.projecty.project.manage.fragment.ChangeProjectNameFragment;
 import com.marcinadd.projecty.project.manage.fragment.ProjectRoleFragment;
@@ -54,7 +54,7 @@ public class ManageProjectActivity extends AppCompatActivity implements ProjectR
         changeNameButton = findViewById(R.id.change_name_button);
         changeNameButton.setOnClickListener(new ChangeNameButtonClick());
 
-        Retrofit retrofit = new AuthorizedNetworkClientImpl(getApplicationContext()).getRetrofitClient();
+        Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(getApplicationContext());
         ProjectClient projectClient = retrofit.create(ProjectClient.class);
 
         projectClient.manageProject(projectId).enqueue(new Callback<ManageProject>() {
