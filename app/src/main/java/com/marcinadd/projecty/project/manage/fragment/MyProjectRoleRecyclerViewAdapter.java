@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -28,6 +29,7 @@ public class MyProjectRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyPro
     private final List<ProjectRole> mValues;
     private final OnListFragmentInteractionListener mListener;
     private Context context;
+    private ProjectClient projectClient;
 
     public MyProjectRoleRecyclerViewAdapter(List<ProjectRole> items, OnListFragmentInteractionListener listener) {
         mValues = items;
@@ -39,6 +41,8 @@ public class MyProjectRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyPro
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_projectrole, parent, false);
         context = parent.getContext();
+        Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(context);
+        projectClient = retrofit.create(ProjectClient.class);
         return new ViewHolder(view);
     }
 
@@ -70,6 +74,7 @@ public class MyProjectRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyPro
         public final TextView mRoleNameView;
         public final TextView mUsernameView;
         public final Switch mManagerSwitch;
+        public final Button mDeleteButton;
         public ProjectRole mItem;
 
         public ViewHolder(View view) {
@@ -78,13 +83,12 @@ public class MyProjectRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyPro
             mRoleNameView = view.findViewById(R.id.role_name);
             mUsernameView = view.findViewById(R.id.username);
             mManagerSwitch = view.findViewById(R.id.manager_switch);
+            mDeleteButton = view.findViewById(R.id.delete_role_button);
             mManagerSwitch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     final boolean isChecked = mManagerSwitch.isChecked();
                     Log.e("Switched", String.valueOf(isChecked));
-                    Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(context);
-                    ProjectClient projectClient = retrofit.create(ProjectClient.class);
                     final String newRoleName = isChecked ? "ADMIN" : "USER";
                     projectClient.changeRole(mItem.getProject().getId(), mItem.getId(), newRoleName).enqueue(new Callback<Void>() {
                         @Override
@@ -100,6 +104,26 @@ public class MyProjectRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyPro
                         @Override
                         public void onFailure(Call<Void> call, Throwable t) {
                             mManagerSwitch.setChecked(!isChecked);
+                        }
+                    });
+                }
+            });
+            mDeleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    projectClient.deleteUser(mItem.getProject().getId(), mItem.getUser().getId()).enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                mValues.remove(mItem);
+                                notifyItemRemoved(getAdapterPosition());
+                                notifyItemRangeChanged(getAdapterPosition(), mValues.size());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+
                         }
                     });
                 }

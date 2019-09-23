@@ -20,4 +20,7 @@ public interface ProjectClient {
 
     @POST("project/changeRole")
     Call<Void> changeRole(@Query("projectId") long projectId, @Query("roleId") long roleId, @Query("newRoleName") String newRoleName);
+
+    @POST("project/deleteUser")
+    Call<Void> deleteUser(@Query("projectId") long projectId, @Query("userId") long userId);
 }

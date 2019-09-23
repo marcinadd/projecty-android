@@ -18,4 +18,6 @@
     <string name="text_view_change_name">Change Name</string>
     <string name="project_name">Project name</string>
     <string name="manage_roles">Manage Roles</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
 </resources>
