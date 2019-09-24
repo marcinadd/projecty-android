@@ -3,6 +3,8 @@ package com.marcinadd.projecty.project;
 import com.marcinadd.projecty.project.model.ManageProject;
 import com.marcinadd.projecty.project.model.UserProject;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -23,4 +25,7 @@ public interface ProjectClient {
 
     @POST("project/deleteUser")
     Call<Void> deleteUser(@Query("projectId") long projectId, @Query("userId") long userId);
+
+    @POST("project/addUsers")
+    Call<Void> addUsers(@Query("projectId") long projectId, @Query("usernames") List<String> usernames);
 }

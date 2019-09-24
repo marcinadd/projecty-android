@@ -20,4 +20,10 @@
     <string name="manage_roles">Manage Roles</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
+    <string name="add_role">Add Role</string>
+    <string name="enter_username">Enter username</string>
+    <string name="manager">Manager</string>
+    <string name="delete">Delete</string>
+    <string name="item_number">Item number</string>
+    <string name="content">Content</string>
 </resources>

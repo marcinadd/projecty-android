@@ -14,7 +14,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
-        android:text="Content"
+        android:text="@string/content"
         android:textAppearance="?attr/textAppearanceListItem"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/manager_switch"
@@ -23,31 +23,33 @@
 
     <TextView
         android:id="@+id/role_name"
-        android:layout_width="75dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="270dp"
         android:layout_marginBottom="16dp"
-        android:text="Item number"
+        android:text="@string/item_number"
         android:textAppearance="?attr/textAppearanceListItem"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/username"
+        app:layout_constraintEnd_toStartOf="@+id/delete_role_icon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@android:string/fingerprint_icon_content_description" />
 
-    <Button
-        android:id="@+id/delete_role_button"
+
+    <ImageView
+        android:id="@+id/delete_role_icon"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Button"
+        android:layout_marginEnd="16dp"
+        android:text="@string/delete"
         android:textSize="8sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/manager_switch"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/manager_switch" />
+        app:layout_constraintStart_toEndOf="@+id/role_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_remove" />
 
     <Switch
         android:id="@+id/manager_switch"
@@ -55,9 +57,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Switch"
+        android:text="@string/manager"
         app:layout_constraintBaseline_toBaselineOf="@+id/username"
-        app:layout_constraintEnd_toStartOf="@+id/delete_role_button"
+        app:layout_constraintEnd_toStartOf="@+id/delete_role_icon"
         app:layout_constraintStart_toEndOf="@+id/username" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

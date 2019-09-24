@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,12 +17,15 @@ import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.project.ProjectClient;
 import com.marcinadd.projecty.project.model.Project;
 
+import java.util.Collections;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class ChangeProjectNameDialogFragment extends DialogFragment {
+public class AddProjectRoleDialogFragment extends DialogFragment {
     private Project project;
 
     @NonNull
@@ -33,23 +35,21 @@ public class ChangeProjectNameDialogFragment extends DialogFragment {
             project = (Project) getArguments().getSerializable("project");
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        final View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_dialog_change_name, null);
-        final EditText editText = view.findViewById(R.id.change_name_edit_text);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_dialog_add_projectrole, null);
+        final EditText editText = view.findViewById(R.id.projectrole_username_edit_text);
         final Activity activity = getActivity();
-        builder.setMessage(R.string.text_view_change_name)
+        builder.setMessage(R.string.add_role)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        final String newProjectName = editText.getText().toString();
+                        String username = editText.getText().toString();
+                        List<String> usernames = Collections.singletonList(username);
                         Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(getContext());
                         ProjectClient projectClient = retrofit.create(ProjectClient.class);
-                        projectClient.changeName(project.getId(), newProjectName).enqueue(new Callback<Void>() {
+                        projectClient.addUsers(project.getId(), usernames).enqueue(new Callback<Void>() {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
-                                if (response.code() == 200) {
-                                    TextView textView = activity.findViewById(R.id.projectName);
-                                    textView.setText(newProjectName);
-                                }
+
                             }
 
                             @Override

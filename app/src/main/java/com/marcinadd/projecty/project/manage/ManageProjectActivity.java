@@ -1,8 +1,9 @@
 package com.marcinadd.projecty.project.manage;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +12,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
+import com.marcinadd.projecty.project.MyProjectsActivity;
 import com.marcinadd.projecty.project.ProjectClient;
+import com.marcinadd.projecty.project.manage.fragment.AddProjectRoleDialogFragment;
 import com.marcinadd.projecty.project.manage.fragment.ChangeProjectNameDialogFragment;
 import com.marcinadd.projecty.project.manage.fragment.ProjectRoleFragment;
 import com.marcinadd.projecty.project.model.ManageProject;
@@ -19,7 +22,6 @@ import com.marcinadd.projecty.project.model.Project;
 import com.marcinadd.projecty.project.model.ProjectRole;
 
 import java.io.Serializable;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,7 +32,6 @@ public class ManageProjectActivity extends AppCompatActivity implements ProjectR
     private long projectId;
     private TextView projectName;
     private Project project;
-    private List<ProjectRole> projectRoles;
     private ManageProject manageProject;
 
     @Override
@@ -46,11 +47,12 @@ public class ManageProjectActivity extends AppCompatActivity implements ProjectR
         if (bundle != null) {
             projectId = bundle.getLong("projectId");
         }
-        Button changeRoleButton = findViewById(R.id.change_role_button);
-        changeRoleButton.setOnClickListener(new ProjectRoleButtonClick());
 
-        Button changeNameButton = findViewById(R.id.change_name_button);
+        ImageView changeNameButton = findViewById(R.id.change_name_button);
         changeNameButton.setOnClickListener(new ChangeNameButtonClick());
+
+        ImageView addRoleButton = findViewById(R.id.add_role_button);
+        addRoleButton.setOnClickListener(new AddRoleButtonClick());
 
         Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(getApplicationContext());
         ProjectClient projectClient = retrofit.create(ProjectClient.class);
@@ -84,6 +86,12 @@ public class ManageProjectActivity extends AppCompatActivity implements ProjectR
 //        });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, MyProjectsActivity.class));
+    }
+
     void loadDefaultFragment() {
         Bundle bundle = new Bundle();
         bundle.putSerializable("projectRoles", (Serializable) manageProject.getProjectRoles());
@@ -99,19 +107,23 @@ public class ManageProjectActivity extends AppCompatActivity implements ProjectR
 
     }
 
-    class ProjectRoleButtonClick implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            loadDefaultFragment();
-        }
-    }
-
     class ChangeNameButtonClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             Bundle bundle1 = new Bundle();
             bundle1.putSerializable("project", project);
             ChangeProjectNameDialogFragment fragment = new ChangeProjectNameDialogFragment();
+            fragment.setArguments(bundle1);
+            fragment.show(getSupportFragmentManager(), "TAG");
+        }
+    }
+
+    class AddRoleButtonClick implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Bundle bundle1 = new Bundle();
+            bundle1.putSerializable("project", project);
+            AddProjectRoleDialogFragment fragment = new AddProjectRoleDialogFragment();
             fragment.setArguments(bundle1);
             fragment.show(getSupportFragmentManager(), "TAG");
         }

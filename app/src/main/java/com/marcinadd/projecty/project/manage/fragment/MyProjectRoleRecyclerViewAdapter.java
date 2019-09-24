@@ -5,7 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -74,7 +74,7 @@ public class MyProjectRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyPro
         public final TextView mRoleNameView;
         public final TextView mUsernameView;
         public final Switch mManagerSwitch;
-        public final Button mDeleteButton;
+        public final ImageView mDeleteButtonIcon;
         public ProjectRole mItem;
 
         public ViewHolder(View view) {
@@ -83,7 +83,7 @@ public class MyProjectRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyPro
             mRoleNameView = view.findViewById(R.id.role_name);
             mUsernameView = view.findViewById(R.id.username);
             mManagerSwitch = view.findViewById(R.id.manager_switch);
-            mDeleteButton = view.findViewById(R.id.delete_role_button);
+            mDeleteButtonIcon = view.findViewById(R.id.delete_role_icon);
             mManagerSwitch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -108,7 +108,7 @@ public class MyProjectRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyPro
                     });
                 }
             });
-            mDeleteButton.setOnClickListener(new View.OnClickListener() {
+            mDeleteButtonIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     projectClient.deleteUser(mItem.getProject().getId(), mItem.getUser().getId()).enqueue(new Callback<Void>() {
