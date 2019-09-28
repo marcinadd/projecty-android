@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.project.model.ProjectRole;
 
@@ -21,17 +20,19 @@ public class MyProjectsActivity extends AppCompatActivity implements ProjectFrag
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        fab.setOnClickListener(new OnFloatingAcctionButtonClick());
     }
-
     @Override
     public void onListFragmentInteraction(ProjectRole item) {
 
+    }
+
+    class OnFloatingAcctionButtonClick implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            AddProjectDialogFragment fragment = new AddProjectDialogFragment();
+            fragment.show(getSupportFragmentManager(), "TAG");
+        }
     }
 }

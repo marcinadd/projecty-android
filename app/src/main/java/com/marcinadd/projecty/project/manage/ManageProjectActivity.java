@@ -16,6 +16,7 @@ import com.marcinadd.projecty.project.MyProjectsActivity;
 import com.marcinadd.projecty.project.ProjectClient;
 import com.marcinadd.projecty.project.manage.fragment.AddProjectRoleDialogFragment;
 import com.marcinadd.projecty.project.manage.fragment.ChangeProjectNameDialogFragment;
+import com.marcinadd.projecty.project.manage.fragment.DeleteProjectDialogFragment;
 import com.marcinadd.projecty.project.manage.fragment.ProjectRoleFragment;
 import com.marcinadd.projecty.project.model.ManageProject;
 import com.marcinadd.projecty.project.model.Project;
@@ -54,6 +55,9 @@ public class ManageProjectActivity extends AppCompatActivity implements ProjectR
         ImageView addRoleButton = findViewById(R.id.add_role_button);
         addRoleButton.setOnClickListener(new AddRoleButtonClick());
 
+        ImageView deleteProjectImageView = findViewById(R.id.delete_project_image_view);
+        deleteProjectImageView.setOnClickListener(new DeleteProjectButtonClick());
+
         Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(getApplicationContext());
         ProjectClient projectClient = retrofit.create(ProjectClient.class);
 
@@ -89,7 +93,7 @@ public class ManageProjectActivity extends AppCompatActivity implements ProjectR
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(this, MyProjectsActivity.class));
+        startActivity(new Intent(this, MyProjectsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 
     void loadDefaultFragment() {
@@ -126,6 +130,19 @@ public class ManageProjectActivity extends AppCompatActivity implements ProjectR
             AddProjectRoleDialogFragment fragment = new AddProjectRoleDialogFragment();
             fragment.setArguments(bundle1);
             fragment.show(getSupportFragmentManager(), "TAG");
+        }
+    }
+
+    class DeleteProjectButtonClick implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            Bundle bundle1 = new Bundle();
+            bundle1.putSerializable("project", project);
+            DeleteProjectDialogFragment fragment = new DeleteProjectDialogFragment();
+            fragment.setArguments(bundle1);
+            fragment.show(getSupportFragmentManager(), "TAG");
+
         }
     }
 }

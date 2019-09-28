@@ -26,4 +26,6 @@
     <string name="delete">Delete</string>
     <string name="item_number">Item number</string>
     <string name="content">Content</string>
+    <string name="add_project">Add project</string>
+    <string name="delete_project_confirm">Do you really want to delete project %1$s?</string>
 </resources>

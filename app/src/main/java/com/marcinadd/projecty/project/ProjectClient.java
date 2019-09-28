@@ -28,4 +28,10 @@ public interface ProjectClient {
 
     @POST("project/addUsers")
     Call<Void> addUsers(@Query("projectId") long projectId, @Query("usernames") List<String> usernames);
+
+    @POST("project/deleteProject")
+    Call<Void> deleteProject(@Query("projectId") long projectId);
+
+    @POST("project/addProject")
+    Call<Void> addProject(@Query("name") String name, @Query("usernames") List<String> usernames);
 }
