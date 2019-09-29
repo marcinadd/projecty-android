@@ -28,4 +28,8 @@
     <string name="content">Content</string>
     <string name="add_project">Add project</string>
     <string name="delete_project_confirm">Do you really want to delete project %1$s?</string>
+    <string name="title_activity_task_list">TaskListActivity</string>
+    <string name="tab_to_do">To do</string>
+    <string name="tab_in_progress">In progress</string>
+    <string name="tab_done">Done</string>
 </resources>

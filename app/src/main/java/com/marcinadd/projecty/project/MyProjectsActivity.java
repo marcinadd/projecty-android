@@ -20,14 +20,14 @@ public class MyProjectsActivity extends AppCompatActivity implements ProjectFrag
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new OnFloatingAcctionButtonClick());
+        fab.setOnClickListener(new OnFloatingActionButtonClick());
     }
     @Override
     public void onListFragmentInteraction(ProjectRole item) {
 
     }
 
-    class OnFloatingAcctionButtonClick implements View.OnClickListener {
+    class OnFloatingActionButtonClick implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
