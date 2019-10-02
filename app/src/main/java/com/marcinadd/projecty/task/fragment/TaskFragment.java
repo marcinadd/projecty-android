@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
-import com.marcinadd.projecty.task.TaskType;
 import com.marcinadd.projecty.task.model.Task;
 
 import java.io.Serializable;
@@ -22,7 +21,6 @@ public class TaskFragment extends Fragment {
 
     private OnListFragmentInteractionListener mListener;
     private List<Task> tasks;
-    private TaskType taskType;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -32,11 +30,10 @@ public class TaskFragment extends Fragment {
     }
 
 
-    public static TaskFragment newInstance(List<Task> tasks, TaskType taskType) {
+    public static TaskFragment newInstance(List<Task> tasks) {
         TaskFragment fragment = new TaskFragment();
         Bundle args = new Bundle();
         args.putSerializable("tasks", (Serializable) tasks);
-        args.putSerializable("taskType", taskType);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,7 +43,6 @@ public class TaskFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             tasks = (List<Task>) getArguments().getSerializable("tasks");
-            taskType = (TaskType) getArguments().getSerializable("taskType");
         }
     }
 

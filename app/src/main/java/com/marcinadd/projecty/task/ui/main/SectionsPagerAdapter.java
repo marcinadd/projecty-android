@@ -9,7 +9,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.marcinadd.projecty.R;
-import com.marcinadd.projecty.task.TaskType;
 import com.marcinadd.projecty.task.fragment.TaskFragment;
 import com.marcinadd.projecty.task.model.Task;
 
@@ -41,12 +40,12 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return TaskFragment.newInstance(toDoTasks, TaskType.TO_DO);
+                return TaskFragment.newInstance(toDoTasks);
             case 1:
-                return TaskFragment.newInstance(inProgressTasks, TaskType.IN_PROGRESS);
+                return TaskFragment.newInstance(inProgressTasks);
             case 2:
             default:
-                return TaskFragment.newInstance(doneTasks, TaskType.DONE);
+                return TaskFragment.newInstance(doneTasks);
         }
     }
 

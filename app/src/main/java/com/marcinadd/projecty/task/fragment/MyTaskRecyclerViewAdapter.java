@@ -14,7 +14,6 @@ import com.marcinadd.projecty.task.model.Task;
 import java.util.List;
 
 public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecyclerViewAdapter.ViewHolder> {
-
     private final List<Task> mValues;
     private final OnListFragmentInteractionListener mListener;
 
@@ -32,9 +31,7 @@ public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mContentView.setText(mValues.get(position).getName());
-
+        TaskRecyclerViewHelper.adjustRecyclerViewItemToTaskStatus(holder, mValues.get(position));
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,20 +49,20 @@ public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecycl
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
+        public final TextView date;
+        public final TextView taskName;
         public Task mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = view.findViewById(R.id.item_number);
-            mContentView = view.findViewById(R.id.content);
+            date = view.findViewById(R.id.date);
+            taskName = view.findViewById(R.id.task_name);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + taskName.getText() + "'";
         }
     }
 }

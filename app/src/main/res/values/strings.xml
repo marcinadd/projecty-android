@@ -32,4 +32,6 @@
     <string name="tab_to_do">To do</string>
     <string name="tab_in_progress">In progress</string>
     <string name="tab_done">Done</string>
+    <string name="starts_on">Starts on %1$s</string>
+    <string name="ends_on">Ends on %1$s</string>
 </resources>

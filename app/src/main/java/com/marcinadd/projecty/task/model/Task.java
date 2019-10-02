@@ -1,5 +1,7 @@
 package com.marcinadd.projecty.task.model;
 
+import com.marcinadd.projecty.task.TaskStatus;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -12,6 +14,8 @@ public class Task implements Serializable {
     private Date startDate;
 
     private Date endDate;
+
+    private TaskStatus status;
 
     public long getId() {
         return id;
@@ -43,5 +47,13 @@ public class Task implements Serializable {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
     }
 }

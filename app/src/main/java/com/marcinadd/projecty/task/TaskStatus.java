@@ -1,5 +1,5 @@
 package com.marcinadd.projecty.task;
 
-public enum TaskType {
+public enum TaskStatus {
     TO_DO, IN_PROGRESS, DONE
 }
