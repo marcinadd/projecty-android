@@ -34,4 +34,5 @@
     <string name="tab_done">Done</string>
     <string name="starts_on">Starts on %1$s</string>
     <string name="ends_on">Ends on %1$s</string>
+    <string name="title_activity_manage_task">ManageTaskActivity</string>
 </resources>
