@@ -35,4 +35,7 @@
     <string name="starts_on">Starts on %1$s</string>
     <string name="ends_on">Ends on %1$s</string>
     <string name="title_activity_manage_task">ManageTaskActivity</string>
+    <string name="title_edit_task_name_dialog_fragment">Task name</string>
+    <string name="message_edit_task_name_dialog_fragment">Enter new task name</string>
+    <string name="button_positive_edit_task_name_dialog_fragment">Edit</string>
 </resources>

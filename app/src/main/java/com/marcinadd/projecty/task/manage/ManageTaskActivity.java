@@ -14,7 +14,9 @@ import com.google.android.material.snackbar.Snackbar;
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.helper.DateHelper;
-import com.marcinadd.projecty.task.TaskService;
+import com.marcinadd.projecty.task.ApiTask;
+import com.marcinadd.projecty.task.manage.fragment.TaskDatePickerDialogFragment;
+import com.marcinadd.projecty.task.manage.fragment.TaskNameDialogFragment;
 import com.marcinadd.projecty.task.model.ManageTaskResponseModel;
 import com.marcinadd.projecty.task.model.Task;
 
@@ -61,8 +63,8 @@ public class ManageTaskActivity extends AppCompatActivity {
         model.getTask().observe(this, taskObserver);
 
         Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(getApplicationContext());
-        TaskService taskService = retrofit.create(TaskService.class);
-        taskService.manageTask(taskId).enqueue(new ManageTaskCallback());
+        ApiTask apiTask = retrofit.create(ApiTask.class);
+        apiTask.manageTask(taskId).enqueue(new ManageTaskCallback());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -82,16 +84,24 @@ public class ManageTaskActivity extends AppCompatActivity {
         taskStartDateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogDatePicker dialogDatePicker = new DialogDatePicker(model, DateType.START_DATE);
-                dialogDatePicker.show(getSupportFragmentManager(), "TAG");
+                TaskDatePickerDialogFragment taskDatePickerDialogFragment = new TaskDatePickerDialogFragment(model, DateType.START_DATE);
+                taskDatePickerDialogFragment.show(getSupportFragmentManager(), "TAG");
             }
         });
 
         taskEndDateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogDatePicker dialogDatePicker = new DialogDatePicker(model, DateType.END_DATE);
-                dialogDatePicker.show(getSupportFragmentManager(), "TAG");
+                TaskDatePickerDialogFragment taskDatePickerDialogFragment = new TaskDatePickerDialogFragment(model, DateType.END_DATE);
+                taskDatePickerDialogFragment.show(getSupportFragmentManager(), "TAG");
+            }
+        });
+
+        taskNameEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TaskNameDialogFragment taskNameDialogFragment = new TaskNameDialogFragment(model);
+                taskNameDialogFragment.show(getSupportFragmentManager(), "TAG");
             }
         });
 

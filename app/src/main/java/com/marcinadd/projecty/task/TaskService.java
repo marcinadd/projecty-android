@@ -1,26 +1,47 @@
 package com.marcinadd.projecty.task;
 
-import com.marcinadd.projecty.task.model.ManageTaskResponseModel;
-import com.marcinadd.projecty.task.model.TaskListResponseModel;
+import android.content.Context;
+
+import com.marcinadd.projecty.client.AuthorizedNetworkClient;
+import com.marcinadd.projecty.listener.RetrofitListener;
 
 import java.util.Map;
 
 import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Query;
-import retrofit2.http.QueryMap;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
-public interface TaskService {
-    @GET("project/task/taskList")
-    Call<TaskListResponseModel> taskList(@Query("projectId") long projectId);
+public class TaskService extends AuthorizedNetworkClient {
+    private static TaskService taskService;
+    private ApiTask apiTask;
 
-    @POST("project/task/changeStatus")
-    Call<Void> changeStatus(@Query("taskId") long taskId, @Query("status") TaskStatus taskStatus);
+    private TaskService(Context context) {
+        Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(context);
+        apiTask = retrofit.create(ApiTask.class);
+    }
 
-    @GET("project/task/manageTask")
-    Call<ManageTaskResponseModel> manageTask(@Query("taskId") long taskId);
+    public static TaskService getInstance(Context context) {
+        if (taskService == null) {
+            taskService = new TaskService(context);
+        }
+        return taskService;
+    }
 
-    @POST("project/task/editTaskDetails")
-    Call<Void> editTaskDetails(@QueryMap Map<String, String> fields);
+    public void editTaskDetails(Map<String, String> fields, final RetrofitListener retrofitListener) {
+        apiTask.editTaskDetails(fields).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    retrofitListener.onResponseSuccess();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                retrofitListener.onResponseFailed();
+            }
+        });
+    }
+
 }

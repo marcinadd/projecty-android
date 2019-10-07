@@ -7,7 +7,7 @@ import android.widget.ImageView;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
-import com.marcinadd.projecty.task.TaskService;
+import com.marcinadd.projecty.task.ApiTask;
 import com.marcinadd.projecty.task.TaskStatus;
 import com.marcinadd.projecty.task.manage.ManageTaskActivity;
 import com.marcinadd.projecty.task.model.Task;
@@ -66,8 +66,8 @@ public class TaskRecyclerViewHelper {
         @Override
         public void onClick(View v) {
             Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(context);
-            TaskService taskService = retrofit.create(TaskService.class);
-            taskService.changeStatus(taskId, newTaskStatus).enqueue(new Callback<Void>() {
+            ApiTask apiTask = retrofit.create(ApiTask.class);
+            apiTask.changeStatus(taskId, newTaskStatus).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {

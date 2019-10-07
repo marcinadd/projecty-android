@@ -32,8 +32,8 @@ public class TaskListActivity extends AppCompatActivity implements TaskFragment.
         if (bundle != null) {
             long projectId = bundle.getLong("projectId");
             Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(getApplicationContext());
-            TaskService taskService = retrofit.create(TaskService.class);
-            taskService.taskList(projectId).enqueue(new TaskListDataCallback(getApplicationContext()));
+            ApiTask apiTask = retrofit.create(ApiTask.class);
+            apiTask.taskList(projectId).enqueue(new TaskListDataCallback(getApplicationContext()));
         }
 
 

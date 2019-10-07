@@ -1,4 +1,4 @@
-package com.marcinadd.projecty.task.manage;
+package com.marcinadd.projecty.task.manage.fragment;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -8,9 +8,11 @@ import android.widget.DatePicker;
 
 import androidx.fragment.app.DialogFragment;
 
-import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.helper.DateHelper;
+import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.task.TaskService;
+import com.marcinadd.projecty.task.manage.DateType;
+import com.marcinadd.projecty.task.manage.ManageTaskViewModel;
 import com.marcinadd.projecty.task.model.Task;
 
 import java.util.Calendar;
@@ -18,17 +20,13 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-
-public class DialogDatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+public class TaskDatePickerDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener, RetrofitListener {
     private Date initDate;
     private DateType dateType;
     private ManageTaskViewModel model;
+    private Task task;
 
-    public DialogDatePicker(ManageTaskViewModel model, DateType dateType) {
+    public TaskDatePickerDialogFragment(ManageTaskViewModel model, DateType dateType) {
         this.model = model;
         this.dateType = dateType;
         if (dateType == DateType.START_DATE) {
@@ -54,8 +52,7 @@ public class DialogDatePicker extends DialogFragment implements DatePickerDialog
         c.set(year, month, dayOfMonth);
         Date date = c.getTime();
         Map<String, String> fields = new ArrayMap<>();
-
-        final Task task = model.getTask().getValue();
+        task = model.getTask().getValue();
         fields.put("id", String.valueOf(task.getId()));
         if (dateType == DateType.START_DATE) {
             fields.put("startDate", DateHelper.formatDate(date));
@@ -65,21 +62,16 @@ public class DialogDatePicker extends DialogFragment implements DatePickerDialog
             task.setEndDate(date);
         }
 
-        Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(getContext());
-        TaskService taskService = retrofit.create(TaskService.class);
+        TaskService.getInstance(getContext()).editTaskDetails(fields, this);
+    }
 
-        taskService.editTaskDetails(fields).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    model.getTask().setValue(task);
-                }
-            }
+    @Override
+    public void onResponseSuccess() {
+        model.getTask().setValue(task);
+    }
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+    @Override
+    public void onResponseFailed() {
 
-            }
-        });
     }
 }
