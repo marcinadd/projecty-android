@@ -1,5 +1,6 @@
 package com.marcinadd.projecty.task.manage;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -15,8 +16,10 @@ import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.helper.DateHelper;
 import com.marcinadd.projecty.task.ApiTask;
+import com.marcinadd.projecty.task.TaskListActivity;
 import com.marcinadd.projecty.task.manage.fragment.TaskDatePickerDialogFragment;
 import com.marcinadd.projecty.task.manage.fragment.TaskNameDialogFragment;
+import com.marcinadd.projecty.task.manage.fragment.TaskStatusDialogFragment;
 import com.marcinadd.projecty.task.model.ManageTaskResponseModel;
 import com.marcinadd.projecty.task.model.Task;
 
@@ -27,6 +30,7 @@ import retrofit2.Retrofit;
 
 public class ManageTaskActivity extends AppCompatActivity {
     private long taskId;
+    private long projectId;
     private TextView taskNameTextView;
     private TextView taskStartDateTextView;
     private TextView taskEndDateTextView;
@@ -41,10 +45,10 @@ public class ManageTaskActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             taskId = bundle.getLong("taskId");
+            projectId = bundle.getLong("projectId");
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_task);
@@ -57,6 +61,7 @@ public class ManageTaskActivity extends AppCompatActivity {
         taskNameEditText = findViewById(R.id.manage_task_name_edit_text);
         taskStartDateEditText = findViewById(R.id.manage_task_start_date_edit_text);
         taskEndDateEditText = findViewById(R.id.manage_task_end_date_edit_text);
+        taskStatusEditText = findViewById(R.id.manage_task_status_edit_text);
 
         model = ViewModelProviders.of(this).get(ManageTaskViewModel.class);
         final Observer<Task> taskObserver = new TaskObserver();
@@ -97,7 +102,7 @@ public class ManageTaskActivity extends AppCompatActivity {
             }
         });
 
-        taskNameEditText.setOnClickListener(new View.OnClickListener() {
+        taskStatusEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TaskNameDialogFragment taskNameDialogFragment = new TaskNameDialogFragment(model);
@@ -105,6 +110,21 @@ public class ManageTaskActivity extends AppCompatActivity {
             }
         });
 
+        taskStatusEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TaskStatusDialogFragment taskStatusDialogFragment = new TaskStatusDialogFragment(model);
+                taskStatusDialogFragment.show(getSupportFragmentManager(), "TAG");
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, TaskListActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("projectId", projectId);
+        startActivity(intent);
     }
 
     class ManageTaskCallback implements Callback<ManageTaskResponseModel> {
@@ -132,6 +152,7 @@ public class ManageTaskActivity extends AppCompatActivity {
             taskNameEditText.setText(task.getName());
             taskStartDateEditText.setText(DateHelper.formatDate(task.getStartDate()));
             taskEndDateEditText.setText(DateHelper.formatDate(task.getEndDate()));
+            taskStatusEditText.setText(String.valueOf(task.getStatus()));
         }
     }
 }

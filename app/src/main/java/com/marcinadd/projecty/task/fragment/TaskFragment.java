@@ -21,6 +21,7 @@ public class TaskFragment extends Fragment {
 
     private OnListFragmentInteractionListener mListener;
     private List<Task> tasks;
+    private long projectId;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -30,10 +31,11 @@ public class TaskFragment extends Fragment {
     }
 
 
-    public static TaskFragment newInstance(List<Task> tasks) {
+    public static TaskFragment newInstance(List<Task> tasks, long projectId) {
         TaskFragment fragment = new TaskFragment();
         Bundle args = new Bundle();
         args.putSerializable("tasks", (Serializable) tasks);
+        args.putSerializable("projectId", projectId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -43,6 +45,7 @@ public class TaskFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             tasks = (List<Task>) getArguments().getSerializable("tasks");
+            projectId = getArguments().getLong("projectId");
         }
     }
 
@@ -55,7 +58,7 @@ public class TaskFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyTaskRecyclerViewAdapter(tasks, mListener));
+            recyclerView.setAdapter(new MyTaskRecyclerViewAdapter(tasks, projectId, mListener));
         }
         return view;
     }

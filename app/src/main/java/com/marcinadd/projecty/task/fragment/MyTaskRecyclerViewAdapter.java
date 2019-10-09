@@ -15,10 +15,12 @@ import java.util.List;
 
 public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecyclerViewAdapter.ViewHolder> {
     private final List<Task> mValues;
+    private final long projectId;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyTaskRecyclerViewAdapter(List<Task> tasks, OnListFragmentInteractionListener listener) {
+    public MyTaskRecyclerViewAdapter(List<Task> tasks, long projectId, OnListFragmentInteractionListener listener) {
         mValues = tasks;
+        this.projectId = projectId;
         mListener = listener;
     }
 
@@ -31,7 +33,7 @@ public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        TaskRecyclerViewHelper.adjustRecyclerViewItemToTaskStatus(holder, mValues.get(position));
+        TaskRecyclerViewHelper.adjustRecyclerViewItemToTaskStatus(holder, mValues.get(position), projectId);
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

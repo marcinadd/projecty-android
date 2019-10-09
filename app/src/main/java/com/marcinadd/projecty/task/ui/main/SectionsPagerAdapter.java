@@ -16,36 +16,38 @@ import java.util.List;
 
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
     @StringRes
     private static final int[] TAB_TITLES = new int[]{R.string.tab_to_do, R.string.tab_in_progress, R.string.tab_done};
     private final Context mContext;
     private List<Task> toDoTasks;
     private List<Task> inProgressTasks;
     private List<Task> doneTasks;
+    private long projectId;
 
     public SectionsPagerAdapter(Context context, FragmentManager fm,
                                 List<Task> toDoTasks,
                                 List<Task> inProgressTasks,
-                                List<Task> doneTasks
+                                List<Task> doneTasks,
+                                long projectId
     ) {
         super(fm);
         mContext = context;
         this.toDoTasks = toDoTasks;
         this.inProgressTasks = inProgressTasks;
         this.doneTasks = doneTasks;
+        this.projectId = projectId;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return TaskFragment.newInstance(toDoTasks);
+                return TaskFragment.newInstance(toDoTasks, projectId);
             case 1:
-                return TaskFragment.newInstance(inProgressTasks);
+                return TaskFragment.newInstance(inProgressTasks, projectId);
             case 2:
             default:
-                return TaskFragment.newInstance(doneTasks);
+                return TaskFragment.newInstance(doneTasks, projectId);
         }
     }
 

@@ -26,7 +26,10 @@ import static com.marcinadd.projecty.task.TaskStatus.IN_PROGRESS;
 import static com.marcinadd.projecty.task.TaskStatus.TO_DO;
 
 public class TaskRecyclerViewHelper {
-    static void adjustRecyclerViewItemToTaskStatus(final MyTaskRecyclerViewAdapter.ViewHolder holder, Task task) {
+    private static long projectId;
+
+    static void adjustRecyclerViewItemToTaskStatus(final MyTaskRecyclerViewAdapter.ViewHolder holder, Task task, long projectId) {
+        TaskRecyclerViewHelper.projectId = projectId;
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         ImageView arrowLeftIcon = holder.mView.findViewById(R.id.icon_task_move_left);
         ImageView arrowRightIcon = holder.mView.findViewById(R.id.icon_task_move_right);
@@ -97,6 +100,7 @@ public class TaskRecyclerViewHelper {
         public void onClick(View v) {
             Intent intent = new Intent(context, ManageTaskActivity.class);
             intent.putExtra("taskId", taskId);
+            intent.putExtra("projectId", projectId);
             context.startActivity(intent);
         }
     }

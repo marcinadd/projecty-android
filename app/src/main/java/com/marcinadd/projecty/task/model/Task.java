@@ -1,5 +1,6 @@
 package com.marcinadd.projecty.task.model;
 
+import com.marcinadd.projecty.project.model.Project;
 import com.marcinadd.projecty.project.model.User;
 import com.marcinadd.projecty.task.TaskStatus;
 
@@ -20,6 +21,8 @@ public class Task implements Serializable {
     private TaskStatus status;
 
     private List<User> assignedUsers;
+
+    private Project project;
 
     public long getId() {
         return id;
@@ -59,5 +62,13 @@ public class Task implements Serializable {
 
     public void setStatus(TaskStatus status) {
         this.status = status;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }
