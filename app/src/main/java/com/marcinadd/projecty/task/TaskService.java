@@ -35,6 +35,25 @@ public class TaskService extends AuthorizedNetworkClient {
                 if (response.isSuccessful()) {
                     retrofitListener.onResponseSuccess();
                 }
+                retrofitListener.onResponseFailed();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                retrofitListener.onResponseFailed();
+            }
+        });
+    }
+
+    public void addTask(long projectId, String name, String startDate, String endDate,
+                        final RetrofitListener retrofitListener) {
+        apiTask.addTask(projectId, name, startDate, endDate).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    retrofitListener.onResponseSuccess();
+                }
+                retrofitListener.onResponseFailed();
             }
 
             @Override

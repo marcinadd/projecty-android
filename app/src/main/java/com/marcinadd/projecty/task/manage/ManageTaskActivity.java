@@ -102,7 +102,7 @@ public class ManageTaskActivity extends AppCompatActivity {
             }
         });
 
-        taskStatusEditText.setOnClickListener(new View.OnClickListener() {
+        taskNameEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TaskNameDialogFragment taskNameDialogFragment = new TaskNameDialogFragment(model);

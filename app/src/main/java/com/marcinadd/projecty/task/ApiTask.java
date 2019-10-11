@@ -23,4 +23,10 @@ public interface ApiTask {
 
     @POST("project/task/editTaskDetails")
     Call<Void> editTaskDetails(@QueryMap Map<String, String> fields);
+
+    @POST("project/task/addTask")
+    Call<Void> addTask(@Query("projectId") long projectId,
+                       @Query("name") String name,
+                       @Query("startDate") String startDate,
+                       @Query("endDate") String endDate);
 }
