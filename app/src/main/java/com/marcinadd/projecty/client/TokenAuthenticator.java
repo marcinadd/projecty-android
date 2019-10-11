@@ -1,12 +1,10 @@
-package com.marcinadd.projecty.login;
+package com.marcinadd.projecty.client;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import androidx.annotation.Nullable;
 
-import com.marcinadd.projecty.client.NetworkClient;
+import com.marcinadd.projecty.login.AuthClient;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -19,22 +17,22 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 
 public class TokenAuthenticator implements Authenticator {
-    private SharedPreferences sharedPreferences;
+    private Context mContext;
 
-    public TokenAuthenticator(Context context) {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+    TokenAuthenticator(Context context) {
+        mContext = context;
     }
 
     @Nullable
     @Override
     public Request authenticate(@Nullable Route route, Response response) throws IOException {
-        String refreshToken = sharedPreferences.getString("refresh_token", null);
+        String refreshToken = TokenHelper.getRefreshToken(mContext);
         Retrofit retrofit = NetworkClient.getRetrofitClient();
         AuthClient authClient = retrofit.create(AuthClient.class);
         if (response.code() == 401) {
             Call<Token> refreshCall = authClient.refresh("refresh_token", refreshToken);
             Token token = refreshCall.execute().body();
-            sharedPreferences.edit().putString("refresh_token", Objects.requireNonNull(token).getRefreshToken()).apply();
+            TokenHelper.saveToken(Objects.requireNonNull(token), mContext);
             return response.request().newBuilder()
                     .header("Authorization", "Bearer " + token.getAccessToken())
                     .build();

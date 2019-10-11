@@ -6,9 +6,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.marcinadd.projecty.client.NetworkClient;
+import com.marcinadd.projecty.client.Token;
 import com.marcinadd.projecty.login.AuthClient;
 import com.marcinadd.projecty.login.LoggedInUser;
-import com.marcinadd.projecty.login.Token;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

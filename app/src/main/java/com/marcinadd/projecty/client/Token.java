@@ -1,4 +1,4 @@
-package com.marcinadd.projecty.login;
+package com.marcinadd.projecty.client;
 
 import com.google.gson.annotations.SerializedName;
 

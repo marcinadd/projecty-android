@@ -1,6 +1,7 @@
 package com.marcinadd.projecty.login;
 
 import com.google.gson.annotations.SerializedName;
+import com.marcinadd.projecty.client.Token;
 
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository

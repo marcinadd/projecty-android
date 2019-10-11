@@ -13,7 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.marcinadd.projecty.login.Token;
+import com.marcinadd.projecty.client.Token;
 import com.marcinadd.projecty.project.MyProjectsActivity;
 import com.marcinadd.projecty.ui.login.LoginActivity;
 

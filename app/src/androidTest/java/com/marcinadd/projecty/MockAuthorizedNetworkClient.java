@@ -1,6 +1,6 @@
 package com.marcinadd.projecty;
 
-import com.marcinadd.projecty.login.Token;
+import com.marcinadd.projecty.client.Token;
 
 import java.io.IOException;
 

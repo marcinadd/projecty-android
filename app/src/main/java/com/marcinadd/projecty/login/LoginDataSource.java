@@ -1,6 +1,7 @@
 package com.marcinadd.projecty.login;
 
 import com.marcinadd.projecty.client.NetworkClient;
+import com.marcinadd.projecty.client.Token;
 
 import java.io.IOException;
 import java.util.Objects;

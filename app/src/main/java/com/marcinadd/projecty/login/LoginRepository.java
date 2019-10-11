@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.marcinadd.projecty.client.TokenHelper;
+
 /**
  * Class that requests authentication and user information from the remote data source and
  * maintains an in-memory cache of login status and user credentials information.
@@ -43,8 +45,7 @@ public class LoginRepository {
         this.user = user;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         sharedPreferences.edit().putString("username", user.getDisplayName()).apply();
-        sharedPreferences.edit().putString("access_token", user.getToken().getAccessToken()).apply();
-        sharedPreferences.edit().putString("refresh_token", user.getToken().getRefreshToken()).apply();
+        TokenHelper.saveToken(user.getToken(), mContext);
         // If user credentials will be cached in local storage, it is recommended it be encrypted
         // @see https://developer.android.com/training/articles/keystore
     }
