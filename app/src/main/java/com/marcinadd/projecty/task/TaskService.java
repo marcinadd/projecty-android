@@ -3,7 +3,9 @@ package com.marcinadd.projecty.task;
 import android.content.Context;
 
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
+import com.marcinadd.projecty.listener.AddTaskListener;
 import com.marcinadd.projecty.listener.RetrofitListener;
+import com.marcinadd.projecty.task.model.Task;
 
 import java.util.Map;
 
@@ -46,19 +48,19 @@ public class TaskService extends AuthorizedNetworkClient {
     }
 
     public void addTask(long projectId, String name, String startDate, String endDate,
-                        final RetrofitListener retrofitListener) {
-        apiTask.addTask(projectId, name, startDate, endDate).enqueue(new Callback<Void>() {
+                        final AddTaskListener addTaskListener) {
+        apiTask.addTask(projectId, name, startDate, endDate).enqueue(new Callback<Task>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<Task> call, Response<Task> response) {
                 if (response.isSuccessful()) {
-                    retrofitListener.onResponseSuccess();
+                    addTaskListener.onTaskAdded(response.body());
                 }
-                retrofitListener.onResponseFailed();
+                addTaskListener.onAddFailed();
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                retrofitListener.onResponseFailed();
+            public void onFailure(Call<Task> call, Throwable t) {
+                addTaskListener.onAddFailed();
             }
         });
     }

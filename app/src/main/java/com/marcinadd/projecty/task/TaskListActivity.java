@@ -11,6 +11,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
+import com.marcinadd.projecty.listener.AddTaskListener;
 import com.marcinadd.projecty.task.fragment.AddTaskDialogFragment;
 import com.marcinadd.projecty.task.fragment.TaskFragment;
 import com.marcinadd.projecty.task.model.Task;
@@ -22,8 +23,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class TaskListActivity extends AppCompatActivity implements TaskFragment.OnListFragmentInteractionListener {
+public class TaskListActivity extends AppCompatActivity implements TaskFragment.OnListFragmentInteractionListener, AddTaskListener {
     private long projectId;
+    private SectionsPagerAdapter sectionsPagerAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,13 +39,12 @@ public class TaskListActivity extends AppCompatActivity implements TaskFragment.
             apiTask.taskList(projectId).enqueue(new TaskListDataCallback(getApplicationContext()));
         }
 
-
         FloatingActionButton fab = findViewById(R.id.fab);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddTaskDialogFragment addTaskDialogFragment = new AddTaskDialogFragment(projectId);
+                AddTaskDialogFragment addTaskDialogFragment = new AddTaskDialogFragment(projectId, TaskListActivity.this);
                 addTaskDialogFragment.show(getSupportFragmentManager(), "TAG");
             }
         });
@@ -50,6 +52,16 @@ public class TaskListActivity extends AppCompatActivity implements TaskFragment.
 
     @Override
     public void onListFragmentInteraction(Task item) {
+
+    }
+
+    @Override
+    public void onTaskAdded(Task newTask) {
+        sectionsPagerAdapter.addTaskToDo(newTask);
+    }
+
+    @Override
+    public void onAddFailed() {
 
     }
 
@@ -64,7 +76,6 @@ public class TaskListActivity extends AppCompatActivity implements TaskFragment.
         public void onResponse(Call<TaskListResponseModel> call, Response<TaskListResponseModel> response) {
             if (response.isSuccessful()) {
                 TaskListResponseModel model = response.body();
-                SectionsPagerAdapter sectionsPagerAdapter;
                 if (model != null) {
                     sectionsPagerAdapter = new SectionsPagerAdapter(
                             context, getSupportFragmentManager(),

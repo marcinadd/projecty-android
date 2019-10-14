@@ -24,6 +24,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     private List<Task> doneTasks;
     private long projectId;
 
+    private TaskFragment toDoTaskFragment;
+
     public SectionsPagerAdapter(Context context, FragmentManager fm,
                                 List<Task> toDoTasks,
                                 List<Task> inProgressTasks,
@@ -42,13 +44,18 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return TaskFragment.newInstance(toDoTasks, projectId);
+                toDoTaskFragment = TaskFragment.newInstance(toDoTasks, projectId);
+                return toDoTaskFragment;
             case 1:
                 return TaskFragment.newInstance(inProgressTasks, projectId);
             case 2:
             default:
                 return TaskFragment.newInstance(doneTasks, projectId);
         }
+    }
+
+    public void addTaskToDo(Task task) {
+        toDoTaskFragment.addTaskToRecyclerViewAdapter(task);
     }
 
     @Nullable

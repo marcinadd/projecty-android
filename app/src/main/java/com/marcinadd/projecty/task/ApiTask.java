@@ -1,6 +1,7 @@
 package com.marcinadd.projecty.task;
 
 import com.marcinadd.projecty.task.model.ManageTaskResponseModel;
+import com.marcinadd.projecty.task.model.Task;
 import com.marcinadd.projecty.task.model.TaskListResponseModel;
 
 import java.util.Map;
@@ -25,7 +26,7 @@ public interface ApiTask {
     Call<Void> editTaskDetails(@QueryMap Map<String, String> fields);
 
     @POST("project/task/addTask")
-    Call<Void> addTask(@Query("projectId") long projectId,
+    Call<Task> addTask(@Query("projectId") long projectId,
                        @Query("name") String name,
                        @Query("startDate") String startDate,
                        @Query("endDate") String endDate);

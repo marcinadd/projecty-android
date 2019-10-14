@@ -44,6 +44,11 @@ public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecycl
         });
     }
 
+    public void addItem(Task task) {
+        mValues.add(task);
+        notifyItemInserted(mValues.size() - 1);
+    }
+
     @Override
     public int getItemCount() {
         return mValues.size();

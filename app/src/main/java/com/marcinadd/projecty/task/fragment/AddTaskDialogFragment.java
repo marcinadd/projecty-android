@@ -15,20 +15,23 @@ import androidx.fragment.app.DialogFragment;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.helper.DateHelper;
-import com.marcinadd.projecty.listener.RetrofitListener;
+import com.marcinadd.projecty.listener.AddTaskListener;
 import com.marcinadd.projecty.task.TaskService;
 import com.marcinadd.projecty.task.manage.DateType;
 
 import java.util.Calendar;
 
-public class AddTaskDialogFragment extends DialogFragment implements RetrofitListener {
+public class AddTaskDialogFragment extends DialogFragment {
+
     private final long projectId;
     private EditText editTextName;
     private EditText editTextStartDate;
     private EditText editTextEndDate;
+    private AddTaskListener addTaskListener;
 
-    public AddTaskDialogFragment(long projectId) {
+    public AddTaskDialogFragment(long projectId, AddTaskListener addTaskListener) {
         this.projectId = projectId;
+        this.addTaskListener = addTaskListener;
     }
 
     @NonNull
@@ -51,16 +54,6 @@ public class AddTaskDialogFragment extends DialogFragment implements RetrofitLis
                     }
                 });
         return builder.create();
-    }
-
-    @Override
-    public void onResponseSuccess() {
-
-    }
-
-    @Override
-    public void onResponseFailed() {
-
     }
 
     class OnDateClick implements View.OnClickListener {
@@ -113,7 +106,7 @@ public class AddTaskDialogFragment extends DialogFragment implements RetrofitLis
             String endDate = editTextEndDate.getText().toString();
             TaskService.getInstance(getContext())
                     .addTask(projectId,
-                            name, startDate, endDate, AddTaskDialogFragment.this);
+                            name, startDate, endDate, addTaskListener);
         }
     }
 }

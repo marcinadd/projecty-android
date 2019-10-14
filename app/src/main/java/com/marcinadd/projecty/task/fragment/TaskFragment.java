@@ -22,6 +22,7 @@ public class TaskFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     private List<Task> tasks;
     private long projectId;
+    private MyTaskRecyclerViewAdapter myTaskRecyclerViewAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -29,7 +30,6 @@ public class TaskFragment extends Fragment {
      */
     public TaskFragment() {
     }
-
 
     public static TaskFragment newInstance(List<Task> tasks, long projectId) {
         TaskFragment fragment = new TaskFragment();
@@ -58,7 +58,8 @@ public class TaskFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyTaskRecyclerViewAdapter(tasks, projectId, mListener));
+            myTaskRecyclerViewAdapter = new MyTaskRecyclerViewAdapter(tasks, projectId, mListener);
+            recyclerView.setAdapter(myTaskRecyclerViewAdapter);
         }
         return view;
     }
@@ -73,6 +74,10 @@ public class TaskFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
         }
+    }
+
+    public void addTaskToRecyclerViewAdapter(Task task) {
+        myTaskRecyclerViewAdapter.addItem(task);
     }
 
     @Override
