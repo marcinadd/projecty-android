@@ -9,13 +9,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.marcinadd.projecty.R;
+import com.marcinadd.projecty.listener.TaskStatusChangedListener;
+import com.marcinadd.projecty.task.TaskStatus;
 import com.marcinadd.projecty.task.fragment.TaskFragment;
 import com.marcinadd.projecty.task.model.Task;
 
 import java.util.List;
 
 
-public class SectionsPagerAdapter extends FragmentPagerAdapter {
+public class SectionsPagerAdapter extends FragmentPagerAdapter implements TaskStatusChangedListener {
     @StringRes
     private static final int[] TAB_TITLES = new int[]{R.string.tab_to_do, R.string.tab_in_progress, R.string.tab_done};
     private final Context mContext;
@@ -25,6 +27,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     private long projectId;
 
     private TaskFragment toDoTaskFragment;
+    private TaskFragment inProgressTaskFragment;
+    private TaskFragment doneTaskFragment;
 
     public SectionsPagerAdapter(Context context, FragmentManager fm,
                                 List<Task> toDoTasks,
@@ -44,15 +48,48 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                toDoTaskFragment = TaskFragment.newInstance(toDoTasks, projectId);
+                toDoTaskFragment = new TaskFragment(toDoTasks, projectId, this);
                 return toDoTaskFragment;
             case 1:
-                return TaskFragment.newInstance(inProgressTasks, projectId);
+                inProgressTaskFragment = new TaskFragment(inProgressTasks, projectId, this);
+                return inProgressTaskFragment;
             case 2:
             default:
-                return TaskFragment.newInstance(doneTasks, projectId);
+                doneTaskFragment = new TaskFragment(doneTasks, projectId, this);
+                return doneTaskFragment;
         }
     }
+
+    @Override
+    public void onTaskStatusChanged(Task task, TaskStatus newTaskStatus) {
+        TaskFragment oldTaskFragment = getTaskFragment(task.getStatus());
+        TaskFragment newTaskFragment = getTaskFragment(newTaskStatus);
+        task.setStatus(newTaskStatus);
+        removeTaskFromTaskFragment(task, oldTaskFragment);
+        addTaskToTaskFragment(task, newTaskFragment);
+    }
+
+
+    public TaskFragment getTaskFragment(TaskStatus taskStatus) {
+        switch (taskStatus) {
+            case TO_DO:
+                return toDoTaskFragment;
+            case IN_PROGRESS:
+                return inProgressTaskFragment;
+            case DONE:
+            default:
+                return doneTaskFragment;
+        }
+    }
+
+    public void addTaskToTaskFragment(Task task, TaskFragment taskFragment) {
+        taskFragment.addTaskToRecyclerViewAdapter(task);
+    }
+
+    public void removeTaskFromTaskFragment(Task task, TaskFragment taskFragment) {
+        taskFragment.removeTaskFromRecyclerViewAdapter(task);
+    }
+
 
     public void addTaskToDo(Task task) {
         toDoTaskFragment.addTaskToRecyclerViewAdapter(task);
@@ -68,4 +105,5 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return 3;
     }
+
 }

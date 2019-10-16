@@ -5,6 +5,7 @@ import android.content.Context;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.listener.AddTaskListener;
 import com.marcinadd.projecty.listener.RetrofitListener;
+import com.marcinadd.projecty.listener.TaskStatusChangedListener;
 import com.marcinadd.projecty.task.model.Task;
 
 import java.util.Map;
@@ -61,6 +62,22 @@ public class TaskService extends AuthorizedNetworkClient {
             @Override
             public void onFailure(Call<Task> call, Throwable t) {
                 addTaskListener.onAddFailed();
+            }
+        });
+    }
+
+    public void changeStatus(final Task task, final TaskStatus newTaskStatus, final TaskStatusChangedListener listener) {
+        apiTask.changeStatus(task.getId(), newTaskStatus).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    listener.onTaskStatusChanged(task, newTaskStatus);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
             }
         });
     }

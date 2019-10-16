@@ -11,15 +11,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
+import com.marcinadd.projecty.listener.TaskStatusChangedListener;
 import com.marcinadd.projecty.task.model.Task;
 
-import java.io.Serializable;
 import java.util.List;
 
 
 public class TaskFragment extends Fragment {
 
     private OnListFragmentInteractionListener mListener;
+    private TaskStatusChangedListener taskStatusChangedListener;
     private List<Task> tasks;
     private long projectId;
     private MyTaskRecyclerViewAdapter myTaskRecyclerViewAdapter;
@@ -31,22 +32,15 @@ public class TaskFragment extends Fragment {
     public TaskFragment() {
     }
 
-    public static TaskFragment newInstance(List<Task> tasks, long projectId) {
-        TaskFragment fragment = new TaskFragment();
-        Bundle args = new Bundle();
-        args.putSerializable("tasks", (Serializable) tasks);
-        args.putSerializable("projectId", projectId);
-        fragment.setArguments(args);
-        return fragment;
+    public TaskFragment(List<Task> tasks, long projectId, TaskStatusChangedListener taskStatusChangedListener) {
+        this.tasks = tasks;
+        this.projectId = projectId;
+        this.taskStatusChangedListener = taskStatusChangedListener;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            tasks = (List<Task>) getArguments().getSerializable("tasks");
-            projectId = getArguments().getLong("projectId");
-        }
     }
 
     @Override
@@ -58,12 +52,11 @@ public class TaskFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            myTaskRecyclerViewAdapter = new MyTaskRecyclerViewAdapter(tasks, projectId, mListener);
+            myTaskRecyclerViewAdapter = new MyTaskRecyclerViewAdapter(tasks, projectId, mListener, taskStatusChangedListener);
             recyclerView.setAdapter(myTaskRecyclerViewAdapter);
         }
         return view;
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -78,6 +71,10 @@ public class TaskFragment extends Fragment {
 
     public void addTaskToRecyclerViewAdapter(Task task) {
         myTaskRecyclerViewAdapter.addItem(task);
+    }
+
+    public void removeTaskFromRecyclerViewAdapter(Task task) {
+        myTaskRecyclerViewAdapter.removeItem(task);
     }
 
     @Override

@@ -26,11 +26,11 @@ import retrofit2.Retrofit;
 public class TaskListActivity extends AppCompatActivity implements TaskFragment.OnListFragmentInteractionListener, AddTaskListener {
     private long projectId;
     private SectionsPagerAdapter sectionsPagerAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_list);
+
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             projectId = bundle.getLong("projectId");
@@ -75,11 +75,11 @@ public class TaskListActivity extends AppCompatActivity implements TaskFragment.
         @Override
         public void onResponse(Call<TaskListResponseModel> call, Response<TaskListResponseModel> response) {
             if (response.isSuccessful()) {
-                TaskListResponseModel model = response.body();
-                if (model != null) {
+                TaskListResponseModel responseModel = response.body();
+                if (responseModel != null) {
                     sectionsPagerAdapter = new SectionsPagerAdapter(
                             context, getSupportFragmentManager(),
-                            model.getToDoTasks(), model.getInProgressTasks(), model.getDoneTasks(), projectId
+                            responseModel.getToDoTasks(), responseModel.getInProgressTasks(), responseModel.getDoneTasks(), projectId
                     );
                     ViewPager viewPager = findViewById(R.id.view_pager);
                     viewPager.setAdapter(sectionsPagerAdapter);

@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
+import com.marcinadd.projecty.listener.TaskStatusChangedListener;
 import com.marcinadd.projecty.task.fragment.TaskFragment.OnListFragmentInteractionListener;
 import com.marcinadd.projecty.task.model.Task;
 
@@ -17,11 +18,13 @@ public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecycl
     private final List<Task> mValues;
     private final long projectId;
     private final OnListFragmentInteractionListener mListener;
+    private TaskStatusChangedListener taskStatusChangedListener;
 
-    public MyTaskRecyclerViewAdapter(List<Task> tasks, long projectId, OnListFragmentInteractionListener listener) {
+    public MyTaskRecyclerViewAdapter(List<Task> tasks, long projectId, OnListFragmentInteractionListener listener, TaskStatusChangedListener taskStatusChangedListener) {
         mValues = tasks;
         this.projectId = projectId;
         mListener = listener;
+        this.taskStatusChangedListener = taskStatusChangedListener;
     }
 
     @Override
@@ -33,7 +36,8 @@ public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        TaskRecyclerViewHelper.adjustRecyclerViewItemToTaskStatus(holder, mValues.get(position), projectId);
+        /// addd here listener
+        TaskRecyclerViewHelper.adjustRecyclerViewItemToTaskStatus(holder, mValues.get(position), projectId, taskStatusChangedListener);
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,6 +51,13 @@ public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecycl
     public void addItem(Task task) {
         mValues.add(task);
         notifyItemInserted(mValues.size() - 1);
+    }
+
+    public void removeItem(Task task) {
+        int positon = mValues.indexOf(task);
+        mValues.remove(task);
+        notifyItemRemoved(positon);
+        notifyItemRangeChanged(positon, mValues.size());
     }
 
     @Override
