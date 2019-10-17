@@ -5,8 +5,10 @@ import android.content.Context;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.listener.AddTaskListener;
 import com.marcinadd.projecty.listener.RetrofitListener;
+import com.marcinadd.projecty.listener.TaskListResponseListener;
 import com.marcinadd.projecty.listener.TaskStatusChangedListener;
 import com.marcinadd.projecty.task.model.Task;
+import com.marcinadd.projecty.task.model.TaskListResponseModel;
 
 import java.util.Map;
 
@@ -82,4 +84,19 @@ public class TaskService extends AuthorizedNetworkClient {
         });
     }
 
+    public void getTaskList(final long projectId, final TaskListResponseListener listener) {
+        apiTask.taskList(projectId).enqueue(new Callback<TaskListResponseModel>() {
+            @Override
+            public void onResponse(Call<TaskListResponseModel> call, Response<TaskListResponseModel> response) {
+                if (response.isSuccessful()) {
+                    listener.onTaskListResponse(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TaskListResponseModel> call, Throwable t) {
+
+            }
+        });
+    }
 }

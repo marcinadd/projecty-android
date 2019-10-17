@@ -10,33 +10,29 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.marcinadd.projecty.R;
-import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.listener.AddTaskListener;
+import com.marcinadd.projecty.listener.TaskListResponseListener;
 import com.marcinadd.projecty.task.fragment.AddTaskDialogFragment;
 import com.marcinadd.projecty.task.fragment.TaskFragment;
 import com.marcinadd.projecty.task.model.Task;
 import com.marcinadd.projecty.task.model.TaskListResponseModel;
 import com.marcinadd.projecty.task.ui.main.SectionsPagerAdapter;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-
-public class TaskListActivity extends AppCompatActivity implements TaskFragment.OnListFragmentInteractionListener, AddTaskListener {
+public class TaskListActivity extends AppCompatActivity implements TaskFragment.OnListFragmentInteractionListener, AddTaskListener, TaskListResponseListener {
     private long projectId;
+    private Context context;
     private SectionsPagerAdapter sectionsPagerAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_list);
+        context = getApplicationContext();
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             projectId = bundle.getLong("projectId");
-            Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(getApplicationContext());
-            ApiTask apiTask = retrofit.create(ApiTask.class);
-            apiTask.taskList(projectId).enqueue(new TaskListDataCallback(getApplicationContext()));
+            TaskService.getInstance(context).getTaskList(projectId, this);
         }
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -65,33 +61,17 @@ public class TaskListActivity extends AppCompatActivity implements TaskFragment.
 
     }
 
-    class TaskListDataCallback implements Callback<TaskListResponseModel> {
-        private Context context;
-
-        public TaskListDataCallback(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        public void onResponse(Call<TaskListResponseModel> call, Response<TaskListResponseModel> response) {
-            if (response.isSuccessful()) {
-                TaskListResponseModel responseModel = response.body();
-                if (responseModel != null) {
-                    sectionsPagerAdapter = new SectionsPagerAdapter(
-                            context, getSupportFragmentManager(),
-                            responseModel.getToDoTasks(), responseModel.getInProgressTasks(), responseModel.getDoneTasks(), projectId
-                    );
-                    ViewPager viewPager = findViewById(R.id.view_pager);
-                    viewPager.setAdapter(sectionsPagerAdapter);
-                    TabLayout tabs = findViewById(R.id.tabs);
-                    tabs.setupWithViewPager(viewPager);
-                }
-            }
-        }
-
-        @Override
-        public void onFailure(Call<TaskListResponseModel> call, Throwable t) {
-
+    @Override
+    public void onTaskListResponse(TaskListResponseModel model) {
+        if (model != null) {
+            sectionsPagerAdapter = new SectionsPagerAdapter(
+                    context, getSupportFragmentManager(),
+                    model.getToDoTasks(), model.getInProgressTasks(), model.getDoneTasks(), projectId
+            );
+            ViewPager viewPager = findViewById(R.id.view_pager);
+            viewPager.setAdapter(sectionsPagerAdapter);
+            TabLayout tabs = findViewById(R.id.tabs);
+            tabs.setupWithViewPager(viewPager);
         }
     }
 }
