@@ -80,8 +80,8 @@ public class AddProjectDialogFragment extends DialogFragment {
             List<String> usernames = getUsernamesToList();
             String name = projectName.getText().toString();
             Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(getContext());
-            ProjectClient projectClient = retrofit.create(ProjectClient.class);
-            projectClient.addProject(name, usernames).enqueue(new Callback<Void>() {
+            ApiProject apiProject = retrofit.create(ApiProject.class);
+            apiProject.addProject(name, usernames).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     activity.recreate();

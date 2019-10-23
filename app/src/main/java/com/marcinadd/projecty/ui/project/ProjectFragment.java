@@ -1,4 +1,4 @@
-package com.marcinadd.projecty.project;
+package com.marcinadd.projecty.ui.project;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,14 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
-import com.marcinadd.projecty.client.AuthorizedNetworkClient;
+import com.marcinadd.projecty.listener.ProjectListResponseListener;
+import com.marcinadd.projecty.project.MyProjectRecyclerViewAdapter;
+import com.marcinadd.projecty.project.ProjectService;
 import com.marcinadd.projecty.project.model.ProjectRole;
 import com.marcinadd.projecty.project.model.UserProject;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * A fragment representing a list of Items.
@@ -27,13 +24,16 @@ import retrofit2.Retrofit;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class ProjectFragment extends Fragment {
+public class ProjectFragment extends Fragment implements ProjectListResponseListener {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private View view;
+
+    private ProjectViewModel projectViewModel;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -63,33 +63,8 @@ public class ProjectFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_project_list, container, false);
-
-        Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(getContext());
-        final ProjectClient projectClient = retrofit.create(ProjectClient.class);
-        projectClient.getProjects().enqueue(new Callback<UserProject>() {
-            @Override
-            public void onResponse(Call<UserProject> call, Response<UserProject> response) {
-                UserProject userProject = response.body();
-                if (response.code() == 200) {
-                    if (view instanceof RecyclerView) {
-                        Context context = view.getContext();
-                        RecyclerView recyclerView = (RecyclerView) view;
-                        if (mColumnCount <= 1) {
-                            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                        } else {
-                            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-                        }
-                        recyclerView.setAdapter(new MyProjectRecyclerViewAdapter(userProject.getProjectRoles(), mListener));
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserProject> call, Throwable t) {
-
-            }
-        });
+        view = inflater.inflate(R.layout.fragment_project_list, container, false);
+        ProjectService.getInstance(getContext()).getProjects(this);
         return view;
     }
 
@@ -108,6 +83,23 @@ public class ProjectFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onProjectListResponse(UserProject response) {
+        //projectViewModel = ViewModelProviders.of(this).get(ProjectViewModel.class);
+
+        if (view instanceof RecyclerView) {
+            Context context = view.getContext();
+            RecyclerView recyclerView = (RecyclerView) view;
+            if (mColumnCount <= 1) {
+                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            } else {
+                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+            }
+            recyclerView.setAdapter(new MyProjectRecyclerViewAdapter(response.getProjectRoles(), mListener));
+        }
+
     }
 
     /**

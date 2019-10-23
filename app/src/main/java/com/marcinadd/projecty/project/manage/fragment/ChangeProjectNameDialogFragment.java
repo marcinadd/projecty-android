@@ -15,7 +15,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
-import com.marcinadd.projecty.project.ProjectClient;
+import com.marcinadd.projecty.project.ApiProject;
 import com.marcinadd.projecty.project.model.Project;
 
 import retrofit2.Call;
@@ -42,8 +42,8 @@ public class ChangeProjectNameDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         final String newProjectName = editText.getText().toString();
                         Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(getContext());
-                        ProjectClient projectClient = retrofit.create(ProjectClient.class);
-                        projectClient.changeName(project.getId(), newProjectName).enqueue(new Callback<Void>() {
+                        ApiProject apiProject = retrofit.create(ApiProject.class);
+                        apiProject.changeName(project.getId(), newProjectName).enqueue(new Callback<Void>() {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
                                 if (response.code() == 200) {

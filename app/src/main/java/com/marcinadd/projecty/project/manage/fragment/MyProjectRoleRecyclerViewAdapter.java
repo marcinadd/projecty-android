@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
-import com.marcinadd.projecty.project.ProjectClient;
+import com.marcinadd.projecty.project.ApiProject;
 import com.marcinadd.projecty.project.manage.fragment.ProjectRoleFragment.OnListFragmentInteractionListener;
 import com.marcinadd.projecty.project.model.ProjectRole;
 
@@ -29,7 +29,7 @@ public class MyProjectRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyPro
     private final List<ProjectRole> mValues;
     private final OnListFragmentInteractionListener mListener;
     private Context context;
-    private ProjectClient projectClient;
+    private ApiProject apiProject;
 
     public MyProjectRoleRecyclerViewAdapter(List<ProjectRole> items, OnListFragmentInteractionListener listener) {
         mValues = items;
@@ -42,7 +42,7 @@ public class MyProjectRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyPro
                 .inflate(R.layout.fragment_projectrole, parent, false);
         context = parent.getContext();
         Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(context);
-        projectClient = retrofit.create(ProjectClient.class);
+        apiProject = retrofit.create(ApiProject.class);
         return new ViewHolder(view);
     }
 
@@ -90,7 +90,7 @@ public class MyProjectRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyPro
                     final boolean isChecked = mManagerSwitch.isChecked();
                     Log.e("Switched", String.valueOf(isChecked));
                     final String newRoleName = isChecked ? "ADMIN" : "USER";
-                    projectClient.changeRole(mItem.getProject().getId(), mItem.getId(), newRoleName).enqueue(new Callback<Void>() {
+                    apiProject.changeRole(mItem.getProject().getId(), mItem.getId(), newRoleName).enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             if (response.code() == 200) {
@@ -111,7 +111,7 @@ public class MyProjectRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyPro
             mDeleteButtonIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    projectClient.deleteUser(mItem.getProject().getId(), mItem.getUser().getId()).enqueue(new Callback<Void>() {
+                    apiProject.deleteUser(mItem.getProject().getId(), mItem.getUser().getId()).enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             if (response.isSuccessful()) {

@@ -14,7 +14,6 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.marcinadd.projecty.client.Token;
-import com.marcinadd.projecty.project.MyProjectsActivity;
 import com.marcinadd.projecty.ui.login.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,15 +38,16 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, LoginActivity.class);
         //  startActivity(intent);
+        startActivity(new Intent(this, Main2Activity.class));
         button = findViewById(R.id.button);
         final Context context = this;
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(context, MyProjectsActivity.class);
-                startActivity(intent1);
-            }
-        });
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //Intent intent1 = new Intent(context, MyProjectsActivity.class);
+//                startActivity(intent1);
+//            }
+//        });
 
     }
 

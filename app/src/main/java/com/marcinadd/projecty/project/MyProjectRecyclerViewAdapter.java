@@ -8,13 +8,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
-import com.marcinadd.projecty.project.ProjectFragment.OnListFragmentInteractionListener;
-import com.marcinadd.projecty.project.manage.ManageProjectActivity;
 import com.marcinadd.projecty.project.model.ProjectRole;
 import com.marcinadd.projecty.task.TaskListActivity;
+import com.marcinadd.projecty.ui.project.ProjectFragment.OnListFragmentInteractionListener;
+import com.marcinadd.projecty.ui.project.ProjectFragmentDirections;
 
 import java.util.List;
 
@@ -109,9 +110,9 @@ public class MyProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyProject
             return new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, ManageProjectActivity.class);
-                    intent.putExtra("projectId", mItem.getProject().getId());
-                    mContext.startActivity(intent);
+                    ProjectFragmentDirections.ActionNavProjectToManageProjectFragment action = ProjectFragmentDirections.actionNavProjectToManageProjectFragment();
+                    action.setProjectId(mItem.getProject().getId());
+                    Navigation.findNavController(mView).navigate(action);
                 }
             };
         }

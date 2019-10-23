@@ -10,7 +10,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        android:name="com.marcinadd.projecty.project.ProjectFragment"
+        android:name="com.marcinadd.projecty.ui.project.ProjectFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <!--        android:layout_marginEnd="136dp" />-->

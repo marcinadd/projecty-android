@@ -4,10 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".project.manage.ManageProjectActivity"
-    tools:layout_editor_absoluteY="56dp"
-    tools:showIn="@layout/activity_manage_project">
+    tools:context=".ui.project.manage.ManageProjectFragment">
 
     <TextView
         android:id="@+id/projectName"

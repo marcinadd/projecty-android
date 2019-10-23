@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,8 +13,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
-import com.marcinadd.projecty.project.MyProjectsActivity;
-import com.marcinadd.projecty.project.ProjectClient;
+import com.marcinadd.projecty.project.ApiProject;
 import com.marcinadd.projecty.project.model.Project;
 
 import retrofit2.Call;
@@ -52,11 +50,11 @@ public class DeleteProjectDialogFragment extends DialogFragment {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(getContext());
-            ProjectClient projectClient = retrofit.create(ProjectClient.class);
-            projectClient.deleteProject(project.getId()).enqueue(new Callback<Void>() {
+            ApiProject apiProject = retrofit.create(ApiProject.class);
+            apiProject.deleteProject(project.getId()).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
-                    activity.startActivity(new Intent(context, MyProjectsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    //activity.startActivity(new Intent(context, MyProjectsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                     activity.finish();
                 }
 
