@@ -17,6 +17,13 @@
                 android:name="projectId"
                 android:defaultValue="1L" />
         </action>
+        <action
+            android:id="@+id/action_nav_project_to_taskListActivity"
+            app:destination="@id/taskListActivity">
+            <argument
+                android:name="projectId"
+                android:defaultValue="1L" />
+        </action>
     </fragment>
 
     <fragment
@@ -29,7 +36,17 @@
         android:id="@+id/manageProjectFragment"
         android:name="com.marcinadd.projecty.ui.project.manage.ManageProjectFragment"
         android:label="@string/menu_manage_project"
-        tools:layout="@layout/content_manage_project">
+        tools:layout="@layout/fragment_manage_project">
+        <argument
+            android:name="projectId"
+            android:defaultValue="1L"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskListActivity"
+        android:name="com.marcinadd.projecty.ui.task.TaskListFragment"
+        android:label="@string/menu_task_list"
+        tools:layout="@layout/activity_task_list">
         <argument
             android:name="projectId"
             android:defaultValue="1L"

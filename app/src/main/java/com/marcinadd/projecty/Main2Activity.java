@@ -2,7 +2,6 @@ package com.marcinadd.projecty;
 
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -12,14 +11,16 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.marcinadd.projecty.project.manage.fragment.ProjectRoleFragment;
 import com.marcinadd.projecty.project.model.ProjectRole;
+import com.marcinadd.projecty.task.fragment.TaskFragment;
+import com.marcinadd.projecty.task.model.Task;
 import com.marcinadd.projecty.ui.project.ProjectFragment;
 
-public class Main2Activity extends AppCompatActivity implements ProjectFragment.OnListFragmentInteractionListener, ProjectRoleFragment.OnListFragmentInteractionListener {
+public class Main2Activity extends AppCompatActivity implements ProjectFragment.OnListFragmentInteractionListener,
+        ProjectRoleFragment.OnListFragmentInteractionListener,
+        TaskFragment.OnListFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -29,14 +30,14 @@ public class Main2Activity extends AppCompatActivity implements ProjectFragment.
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -69,4 +70,8 @@ public class Main2Activity extends AppCompatActivity implements ProjectFragment.
 
     }
 
+    @Override
+    public void onListFragmentInteraction(Task item) {
+
+    }
 }

@@ -1,7 +1,6 @@
 package com.marcinadd.projecty.project;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.project.model.ProjectRole;
-import com.marcinadd.projecty.task.TaskListActivity;
 import com.marcinadd.projecty.ui.project.ProjectFragment.OnListFragmentInteractionListener;
 import com.marcinadd.projecty.ui.project.ProjectFragmentDirections;
 
@@ -99,9 +97,9 @@ public class MyProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyProject
             return new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, TaskListActivity.class);
-                    intent.putExtra("projectId", mItem.getProject().getId());
-                    mContext.startActivity(intent);
+                    ProjectFragmentDirections.ActionNavProjectToTaskListActivity action = ProjectFragmentDirections.actionNavProjectToTaskListActivity();
+                    action.setProjectId(mItem.getProject().getId());
+                    Navigation.findNavController(mView).navigate(action);
                 }
             };
         }

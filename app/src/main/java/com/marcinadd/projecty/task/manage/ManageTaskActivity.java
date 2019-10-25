@@ -1,6 +1,5 @@
 package com.marcinadd.projecty.task.manage;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -16,7 +15,6 @@ import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.helper.DateHelper;
 import com.marcinadd.projecty.task.ApiTask;
-import com.marcinadd.projecty.task.TaskListActivity;
 import com.marcinadd.projecty.task.manage.fragment.TaskDatePickerDialogFragment;
 import com.marcinadd.projecty.task.manage.fragment.TaskNameDialogFragment;
 import com.marcinadd.projecty.task.manage.fragment.TaskStatusDialogFragment;
@@ -122,9 +120,9 @@ public class ManageTaskActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, TaskListActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("projectId", projectId);
-        startActivity(intent);
+//        Intent intent = new Intent(this, TaskListFragment.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        intent.putExtra("projectId", projectId);
+//        startActivity(intent);
     }
 
     class ManageTaskCallback implements Callback<ManageTaskResponseModel> {

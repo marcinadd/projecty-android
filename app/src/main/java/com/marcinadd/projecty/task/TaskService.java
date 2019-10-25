@@ -58,7 +58,6 @@ public class TaskService extends AuthorizedNetworkClient {
                 if (response.isSuccessful()) {
                     addTaskListener.onTaskAdded(response.body());
                 }
-                addTaskListener.onAddFailed();
             }
 
             @Override
