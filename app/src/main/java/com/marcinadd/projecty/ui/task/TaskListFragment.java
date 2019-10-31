@@ -20,11 +20,11 @@ import com.marcinadd.projecty.task.fragment.AddTaskDialogFragment;
 import com.marcinadd.projecty.task.fragment.TaskFragment;
 import com.marcinadd.projecty.task.model.Task;
 import com.marcinadd.projecty.task.model.TaskListResponseModel;
-import com.marcinadd.projecty.task.ui.main.SectionsPagerAdapter;
+import com.marcinadd.projecty.task.ui.main.SectionsStatePagerAdapter;
 
 public class TaskListFragment extends Fragment implements TaskFragment.OnListFragmentInteractionListener, AddTaskListener, TaskListResponseListener {
     private long projectId;
-    private SectionsPagerAdapter sectionsPagerAdapter;
+    private SectionsStatePagerAdapter sectionsStatePagerAdapter;
     private ViewPager viewPager;
     private TabLayout tabs;
 
@@ -53,7 +53,7 @@ public class TaskListFragment extends Fragment implements TaskFragment.OnListFra
 
     @Override
     public void onTaskAdded(Task newTask) {
-        sectionsPagerAdapter.addTaskToDo(newTask);
+        sectionsStatePagerAdapter.addTaskToDo(newTask);
     }
 
     @Override
@@ -63,14 +63,18 @@ public class TaskListFragment extends Fragment implements TaskFragment.OnListFra
 
     @Override
     public void onTaskListResponse(TaskListResponseModel model) {
-        if (model != null) {
-            sectionsPagerAdapter = new SectionsPagerAdapter(
+        if (sectionsStatePagerAdapter == null) {
+            sectionsStatePagerAdapter = new SectionsStatePagerAdapter(
                     getContext(), getChildFragmentManager(),
-                    model.getToDoTasks(), model.getInProgressTasks(), model.getDoneTasks(), projectId
-            );
-
-            viewPager.setAdapter(sectionsPagerAdapter);
+                    model.getToDoTasks(), model.getInProgressTasks(), model.getDoneTasks(), projectId);
+            viewPager.setAdapter(sectionsStatePagerAdapter);
             tabs.setupWithViewPager(viewPager);
+        } else {
+            sectionsStatePagerAdapter.setToDoTasks(model.getToDoTasks());
+            sectionsStatePagerAdapter.setInProgressTasks(model.getInProgressTasks());
+            sectionsStatePagerAdapter.setDoneTasks(model.getDoneTasks());
+            sectionsStatePagerAdapter.notifyDataSetChanged();
         }
+
     }
 }

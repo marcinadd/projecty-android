@@ -15,11 +15,10 @@ import androidx.fragment.app.DialogFragment;
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.task.TaskService;
-import com.marcinadd.projecty.task.manage.ManageTaskViewModel;
 import com.marcinadd.projecty.task.model.Task;
+import com.marcinadd.projecty.ui.task.manage.ManageTaskViewModel;
 
 import java.util.Map;
-import java.util.Objects;
 
 public class TaskNameDialogFragment extends DialogFragment implements RetrofitListener {
     private ManageTaskViewModel model;
@@ -34,7 +33,6 @@ public class TaskNameDialogFragment extends DialogFragment implements RetrofitLi
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         final View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_dialog_change_name, null);
         final Map<String, String> fields = new ArrayMap<>();
-        fields.put("id", String.valueOf(Objects.requireNonNull(model.getTask().getValue()).getId()));
         final EditText editText = view.findViewById(R.id.change_name_edit_text);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.title_edit_task_name_dialog_fragment)
@@ -46,7 +44,7 @@ public class TaskNameDialogFragment extends DialogFragment implements RetrofitLi
                         fields.put("name", newName);
                         task = model.getTask().getValue();
                         task.setName(newName);
-                        TaskService.getInstance(getContext()).editTaskDetails(fields, TaskNameDialogFragment.this);
+                        TaskService.getInstance(getContext()).editTaskDetails(task.getId(), fields, TaskNameDialogFragment.this);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".task.manage.ManageTaskActivity"
-    tools:showIn="@layout/activity_manage_task">
+    tools:context=".ui.task.manage.ManageTaskFragment">
 
     <TextView
         android:id="@+id/manage_task_name_text_view"

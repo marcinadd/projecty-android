@@ -12,8 +12,8 @@ import com.marcinadd.projecty.helper.DateHelper;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.task.TaskService;
 import com.marcinadd.projecty.task.manage.DateType;
-import com.marcinadd.projecty.task.manage.ManageTaskViewModel;
 import com.marcinadd.projecty.task.model.Task;
+import com.marcinadd.projecty.ui.task.manage.ManageTaskViewModel;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -53,7 +53,6 @@ public class TaskDatePickerDialogFragment extends DialogFragment implements Date
         Date date = c.getTime();
         Map<String, String> fields = new ArrayMap<>();
         task = model.getTask().getValue();
-        fields.put("id", String.valueOf(task.getId()));
         if (dateType == DateType.START_DATE) {
             fields.put("startDate", DateHelper.formatDate(date));
             task.setStartDate(date);
@@ -62,7 +61,7 @@ public class TaskDatePickerDialogFragment extends DialogFragment implements Date
             task.setEndDate(date);
         }
 
-        TaskService.getInstance(getContext()).editTaskDetails(fields, this);
+        TaskService.getInstance(getContext()).editTaskDetails(task.getId(), fields, this);
     }
 
     @Override

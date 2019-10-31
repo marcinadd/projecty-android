@@ -2,6 +2,7 @@ package com.marcinadd.projecty.task.ui.main;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
@@ -17,7 +18,7 @@ import com.marcinadd.projecty.task.model.Task;
 import java.util.List;
 
 
-public class SectionsPagerAdapter extends FragmentPagerAdapter implements TaskStatusChangedListener {
+public class SectionsStatePagerAdapter extends FragmentPagerAdapter implements TaskStatusChangedListener {
     @StringRes
     private static final int[] TAB_TITLES = new int[]{R.string.tab_to_do, R.string.tab_in_progress, R.string.tab_done};
     private final Context mContext;
@@ -30,11 +31,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter implements TaskSt
     private TaskFragment inProgressTaskFragment;
     private TaskFragment doneTaskFragment;
 
-    public SectionsPagerAdapter(Context context, FragmentManager fm,
-                                List<Task> toDoTasks,
-                                List<Task> inProgressTasks,
-                                List<Task> doneTasks,
-                                long projectId
+    public SectionsStatePagerAdapter(Context context, FragmentManager fm,
+                                     List<Task> toDoTasks,
+                                     List<Task> inProgressTasks,
+                                     List<Task> doneTasks,
+                                     long projectId
     ) {
         super(fm);
         mContext = context;
@@ -43,6 +44,18 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter implements TaskSt
         this.doneTasks = doneTasks;
         this.projectId = projectId;
     }
+
+
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
+
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        return POSITION_NONE;
+    }
+
 
     @Override
     public Fragment getItem(int position) {
@@ -106,4 +119,15 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter implements TaskSt
         return 3;
     }
 
+    public void setToDoTasks(List<Task> toDoTasks) {
+        this.toDoTasks = toDoTasks;
+    }
+
+    public void setInProgressTasks(List<Task> inProgressTasks) {
+        this.inProgressTasks = inProgressTasks;
+    }
+
+    public void setDoneTasks(List<Task> doneTasks) {
+        this.doneTasks = doneTasks;
+    }
 }

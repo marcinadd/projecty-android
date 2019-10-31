@@ -51,5 +51,29 @@
             android:name="projectId"
             android:defaultValue="1L"
             app:argType="long" />
+        <action
+            android:id="@+id/action_taskListActivity_to_manageTaskFragment"
+            app:destination="@id/manageTaskFragment">
+            <argument
+                android:name="projectId"
+                android:defaultValue="0L" />
+            <argument
+                android:name="taskId"
+                android:defaultValue="0L" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/manageTaskFragment"
+        android:name="com.marcinadd.projecty.ui.task.manage.ManageTaskFragment"
+        android:label="fragment_manage_task"
+        tools:layout="@layout/fragment_manage_task">
+        <argument
+            android:name="projectId"
+            android:defaultValue="0L"
+            app:argType="long" />
+        <argument
+            android:name="taskId"
+            android:defaultValue="0L"
+            app:argType="long" />
     </fragment>
 </navigation>

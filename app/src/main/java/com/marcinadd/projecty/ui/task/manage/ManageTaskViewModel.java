@@ -1,4 +1,4 @@
-package com.marcinadd.projecty.task.manage;
+package com.marcinadd.projecty.ui.task.manage;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -11,7 +11,7 @@ public class ManageTaskViewModel extends ViewModel {
 
     public MutableLiveData<Task> getTask() {
         if (task == null) {
-            task = new MutableLiveData<Task>();
+            task = new MutableLiveData<>();
         }
         return task;
     }

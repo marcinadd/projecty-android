@@ -8,14 +8,15 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiProject {
-    @GET("project/myProjects")
+    @GET("projects")
     Call<UserProject> getProjects();
 
-    @GET("project/manageProject")
-    Call<ManageProject> manageProject(@Query("projectId") long projectId);
+    @GET("projects/{projectId}")
+    Call<ManageProject> manageProject(@Path("projectId") long projectId);
 
     @POST("project/changeName")
     Call<Void> changeName(@Query("id") long projectId, @Query("name") String newName);

@@ -4,9 +4,12 @@ import android.content.Context;
 
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.listener.AddTaskListener;
+import com.marcinadd.projecty.listener.ManageTaskResponseListener;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.listener.TaskListResponseListener;
 import com.marcinadd.projecty.listener.TaskStatusChangedListener;
+import com.marcinadd.projecty.request.ChangeTaskStatusRequest;
+import com.marcinadd.projecty.task.model.ManageTaskResponseModel;
 import com.marcinadd.projecty.task.model.Task;
 import com.marcinadd.projecty.task.model.TaskListResponseModel;
 
@@ -33,8 +36,8 @@ public class TaskService extends AuthorizedNetworkClient {
         return taskService;
     }
 
-    public void editTaskDetails(Map<String, String> fields, final RetrofitListener retrofitListener) {
-        apiTask.editTaskDetails(fields).enqueue(new Callback<Void>() {
+    public void editTaskDetails(long taskId, Map<String, String> fields, final RetrofitListener retrofitListener) {
+        apiTask.editTaskDetails(taskId, fields).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
@@ -52,7 +55,11 @@ public class TaskService extends AuthorizedNetworkClient {
 
     public void addTask(long projectId, String name, String startDate, String endDate,
                         final AddTaskListener addTaskListener) {
-        apiTask.addTask(projectId, name, startDate, endDate).enqueue(new Callback<Task>() {
+        Task task = new Task();
+        task.setName(name);
+//        task.setStartDate(startDate);
+//        task.setEndDate(endDate);
+        apiTask.addTask(projectId, task).enqueue(new Callback<Task>() {
             @Override
             public void onResponse(Call<Task> call, Response<Task> response) {
                 if (response.isSuccessful()) {
@@ -68,7 +75,8 @@ public class TaskService extends AuthorizedNetworkClient {
     }
 
     public void changeStatus(final Task task, final TaskStatus newTaskStatus, final TaskStatusChangedListener listener) {
-        apiTask.changeStatus(task.getId(), newTaskStatus).enqueue(new Callback<Void>() {
+        ChangeTaskStatusRequest changeTaskStatusRequest = new ChangeTaskStatusRequest(newTaskStatus);
+        apiTask.changeStatus(task.getId(), changeTaskStatusRequest).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
@@ -94,6 +102,22 @@ public class TaskService extends AuthorizedNetworkClient {
 
             @Override
             public void onFailure(Call<TaskListResponseModel> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void manageTask(final long taskId, final ManageTaskResponseListener listener) {
+        apiTask.manageTask(taskId).enqueue(new Callback<ManageTaskResponseModel>() {
+            @Override
+            public void onResponse(Call<ManageTaskResponseModel> call, Response<ManageTaskResponseModel> response) {
+                if (response.isSuccessful()) {
+                    listener.onManageTaskResponse(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ManageTaskResponseModel> call, Throwable t) {
 
             }
         });

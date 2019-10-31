@@ -17,7 +17,7 @@
             android:label="@string/title_activity_main2"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".task.manage.ManageTaskActivity"
+            android:name=".ui.task.manage.ManageTaskFragment"
             android:label="@string/title_activity_manage_task"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
