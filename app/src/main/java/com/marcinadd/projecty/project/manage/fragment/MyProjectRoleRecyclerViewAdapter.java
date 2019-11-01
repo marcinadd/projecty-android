@@ -17,7 +17,9 @@ import com.marcinadd.projecty.project.ApiProject;
 import com.marcinadd.projecty.project.manage.fragment.ProjectRoleFragment.OnListFragmentInteractionListener;
 import com.marcinadd.projecty.project.model.ProjectRole;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -90,7 +92,9 @@ public class MyProjectRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyPro
                     final boolean isChecked = mManagerSwitch.isChecked();
                     Log.e("Switched", String.valueOf(isChecked));
                     final String newRoleName = isChecked ? "ADMIN" : "USER";
-                    apiProject.changeRole(mItem.getProject().getId(), mItem.getId(), newRoleName).enqueue(new Callback<Void>() {
+                    Map<String, String> fields = new LinkedHashMap<>();
+                    fields.put("name", newRoleName);
+                    apiProject.changeRole(mItem.getId(), fields).enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             if (response.code() == 200) {
@@ -111,7 +115,7 @@ public class MyProjectRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyPro
             mDeleteButtonIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    apiProject.deleteUser(mItem.getProject().getId(), mItem.getUser().getId()).enqueue(new Callback<Void>() {
+                    apiProject.deleteUser(mItem.getId()).enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             if (response.isSuccessful()) {

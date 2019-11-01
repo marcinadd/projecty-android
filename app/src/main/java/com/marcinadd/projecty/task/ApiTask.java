@@ -18,6 +18,7 @@ public interface ApiTask {
     @GET("tasks/project/{projectId}")
     Call<TaskListResponseModel> taskList(@Path("projectId") long projectId);
 
+    //TODO Remove this obsolete call
     @PATCH("tasks/{taskId}")
     Call<Void> changeStatus(@Path("taskId") long taskId, @Body ChangeTaskStatusRequest status);
 

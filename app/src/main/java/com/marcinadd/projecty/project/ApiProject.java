@@ -1,38 +1,42 @@
 package com.marcinadd.projecty.project;
 
 import com.marcinadd.projecty.project.model.ManageProject;
+import com.marcinadd.projecty.project.model.Project;
 import com.marcinadd.projecty.project.model.UserProject;
 
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface ApiProject {
     @GET("projects")
     Call<UserProject> getProjects();
 
-    @GET("projects/{projectId}")
+    @GET("projects/{projectId}?roles=true")
     Call<ManageProject> manageProject(@Path("projectId") long projectId);
 
-    @POST("project/changeName")
-    Call<Void> changeName(@Query("id") long projectId, @Query("name") String newName);
+    @PATCH("projects/{projectId}")
+    Call<Void> updateProject(@Path("projectId") long projectId, @Body Map<String, String> fields);
 
-    @POST("project/changeRole")
-    Call<Void> changeRole(@Query("projectId") long projectId, @Query("roleId") long roleId, @Query("newRoleName") String newRoleName);
+    @PATCH("projectRoles/{projectRoleId}")
+    Call<Void> changeRole(@Path("projectRoleId") long projectRoleId, @Body Map<String, String> fields);
 
-    @POST("project/deleteUser")
-    Call<Void> deleteUser(@Query("projectId") long projectId, @Query("userId") long userId);
+    @DELETE("projectRoles/{projectRoleId}")
+    Call<Void> deleteUser(@Path("projectRoleId") long projectRoleId);
 
-    @POST("project/addUsers")
-    Call<Void> addUsers(@Query("projectId") long projectId, @Query("usernames") List<String> usernames);
+    @POST("projects/{projectId}/roles")
+    Call<Void> addUsers(@Path("projectId") long projectId, @Body List<String> usernames);
 
-    @POST("project/deleteProject")
-    Call<Void> deleteProject(@Query("projectId") long projectId);
+    @DELETE("projects/{projectId}")
+    Call<Void> deleteProject(@Path("projectId") long projectId);
 
-    @POST("project/addProject")
-    Call<Void> addProject(@Query("name") String name, @Query("usernames") List<String> usernames);
+    @POST("projects")
+    Call<Void> addProject(@Body Project project);
 }

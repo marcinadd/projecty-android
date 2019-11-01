@@ -53,12 +53,8 @@ public class TaskService extends AuthorizedNetworkClient {
         });
     }
 
-    public void addTask(long projectId, String name, String startDate, String endDate,
+    public void addTask(long projectId, Task task,
                         final AddTaskListener addTaskListener) {
-        Task task = new Task();
-        task.setName(name);
-//        task.setStartDate(startDate);
-//        task.setEndDate(endDate);
         apiTask.addTask(projectId, task).enqueue(new Callback<Task>() {
             @Override
             public void onResponse(Call<Task> call, Response<Task> response) {

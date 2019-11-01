@@ -13,10 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.gson.internal.LinkedTreeMap;
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.project.ApiProject;
 import com.marcinadd.projecty.project.model.Project;
+
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,7 +46,9 @@ public class ChangeProjectNameDialogFragment extends DialogFragment {
                         final String newProjectName = editText.getText().toString();
                         Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(getContext());
                         ApiProject apiProject = retrofit.create(ApiProject.class);
-                        apiProject.changeName(project.getId(), newProjectName).enqueue(new Callback<Void>() {
+                        Map<String, String> fields = new LinkedTreeMap<>();
+                        fields.put("name", newProjectName);
+                        apiProject.updateProject(project.getId(), fields).enqueue(new Callback<Void>() {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
                                 if (response.code() == 200) {

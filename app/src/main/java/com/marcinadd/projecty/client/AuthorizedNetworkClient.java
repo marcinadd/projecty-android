@@ -2,6 +2,9 @@ package com.marcinadd.projecty.client;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -32,10 +35,12 @@ public class AuthorizedNetworkClient {
                     })
                     .authenticator(new TokenAuthenticator(context))
                     .build();
-
+            Gson gson = new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd")
+                    .create();
             INSTANCE = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .client(httpClient)
                     .build();
         }

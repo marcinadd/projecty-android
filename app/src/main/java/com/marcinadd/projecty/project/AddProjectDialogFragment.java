@@ -16,6 +16,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
+import com.marcinadd.projecty.project.model.Project;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +82,9 @@ public class AddProjectDialogFragment extends DialogFragment {
             String name = projectName.getText().toString();
             Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(getContext());
             ApiProject apiProject = retrofit.create(ApiProject.class);
-            apiProject.addProject(name, usernames).enqueue(new Callback<Void>() {
+            Project project = new Project(name);
+            project.setUsernames(usernames);
+            apiProject.addProject(project).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     activity.recreate();

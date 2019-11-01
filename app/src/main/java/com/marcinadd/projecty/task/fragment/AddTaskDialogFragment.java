@@ -18,8 +18,11 @@ import com.marcinadd.projecty.helper.DateHelper;
 import com.marcinadd.projecty.listener.AddTaskListener;
 import com.marcinadd.projecty.task.TaskService;
 import com.marcinadd.projecty.task.manage.DateType;
+import com.marcinadd.projecty.task.model.Task;
 
+import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Date;
 
 public class AddTaskDialogFragment extends DialogFragment {
 
@@ -102,11 +105,17 @@ public class AddTaskDialogFragment extends DialogFragment {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             String name = editTextName.getText().toString();
-            String startDate = editTextStartDate.getText().toString();
-            String endDate = editTextEndDate.getText().toString();
+            Date startDate = null;
+            Date endDate = null;
+            try {
+                startDate = DateHelper.parseDate(editTextStartDate.getText().toString());
+                endDate = DateHelper.parseDate(editTextEndDate.getText().toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Task task = new Task(name, startDate, endDate);
             TaskService.getInstance(getContext())
-                    .addTask(projectId,
-                            name, startDate, endDate, addTaskListener);
+                    .addTask(projectId, task, addTaskListener);
         }
     }
 }
