@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.listener.TaskStatusChangedListener;
@@ -18,7 +18,7 @@ import com.marcinadd.projecty.task.model.Task;
 import java.util.List;
 
 
-public class SectionsStatePagerAdapter extends FragmentPagerAdapter implements TaskStatusChangedListener {
+public class SectionsStatePagerAdapter extends FragmentStatePagerAdapter implements TaskStatusChangedListener {
     @StringRes
     private static final int[] TAB_TITLES = new int[]{R.string.tab_to_do, R.string.tab_in_progress, R.string.tab_done};
     private final Context mContext;
@@ -46,10 +46,10 @@ public class SectionsStatePagerAdapter extends FragmentPagerAdapter implements T
     }
 
 
-    @Override
-    public long getItemId(int position) {
-        return super.getItemId(position);
-    }
+//    @Override
+//    public long getItemId(int position) {
+//        return super.getItemId(position);
+//    }
 
     @Override
     public int getItemPosition(@NonNull Object object) {

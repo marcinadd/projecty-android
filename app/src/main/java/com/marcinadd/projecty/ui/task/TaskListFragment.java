@@ -63,18 +63,11 @@ public class TaskListFragment extends Fragment implements TaskFragment.OnListFra
 
     @Override
     public void onTaskListResponse(TaskListResponseModel model) {
-        if (sectionsStatePagerAdapter == null) {
-            sectionsStatePagerAdapter = new SectionsStatePagerAdapter(
-                    getContext(), getChildFragmentManager(),
-                    model.getToDoTasks(), model.getInProgressTasks(), model.getDoneTasks(), projectId);
-            viewPager.setAdapter(sectionsStatePagerAdapter);
-            tabs.setupWithViewPager(viewPager);
-        } else {
-            sectionsStatePagerAdapter.setToDoTasks(model.getToDoTasks());
-            sectionsStatePagerAdapter.setInProgressTasks(model.getInProgressTasks());
-            sectionsStatePagerAdapter.setDoneTasks(model.getDoneTasks());
-            sectionsStatePagerAdapter.notifyDataSetChanged();
-        }
-
+        sectionsStatePagerAdapter = new SectionsStatePagerAdapter(
+                getContext(), getChildFragmentManager(),
+                model.getToDoTasks(), model.getInProgressTasks(), model.getDoneTasks(), projectId);
+        viewPager.setAdapter(sectionsStatePagerAdapter);
+        tabs.setupWithViewPager(viewPager);
+        sectionsStatePagerAdapter.notifyDataSetChanged();
     }
 }

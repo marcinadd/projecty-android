@@ -2,6 +2,7 @@ package com.marcinadd.projecty.ui.login;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.marcinadd.projecty.Main2Activity;
 import com.marcinadd.projecty.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -118,6 +120,7 @@ public class LoginActivity extends AppCompatActivity {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+        startActivity(new Intent(this, Main2Activity.class));
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {

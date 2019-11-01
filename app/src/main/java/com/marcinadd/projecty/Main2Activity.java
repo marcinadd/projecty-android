@@ -1,6 +1,9 @@
 package com.marcinadd.projecty;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,15 +15,19 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.marcinadd.projecty.listener.UserNotLoggedListener;
+import com.marcinadd.projecty.login.LoginService;
 import com.marcinadd.projecty.project.manage.fragment.ProjectRoleFragment;
 import com.marcinadd.projecty.project.model.ProjectRole;
 import com.marcinadd.projecty.task.fragment.TaskFragment;
 import com.marcinadd.projecty.task.model.Task;
+import com.marcinadd.projecty.ui.login.LoginActivity;
 import com.marcinadd.projecty.ui.project.ProjectFragment;
 
 public class Main2Activity extends AppCompatActivity implements ProjectFragment.OnListFragmentInteractionListener,
         ProjectRoleFragment.OnListFragmentInteractionListener,
-        TaskFragment.OnListFragmentInteractionListener {
+        TaskFragment.OnListFragmentInteractionListener,
+        UserNotLoggedListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -30,6 +37,8 @@ public class Main2Activity extends AppCompatActivity implements ProjectFragment.
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        checkIfUserCredintialsAreValid();
+
 //        FloatingActionButton fab = findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -49,6 +58,24 @@ public class Main2Activity extends AppCompatActivity implements ProjectFragment.
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+    }
+
+    public void checkIfUserCredintialsAreValid() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String username = sharedPreferences.getString("username", "");
+        if (username.isEmpty()) {
+            this.onUserNotLogged();
+        } else {
+            LoginService.getInstance(getApplicationContext()).checkIfUserIsLogged(this);
+        }
+    }
+
+
+    @Override
+    public void onUserNotLogged() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        finish();
+        startActivity(intent);
     }
 
     @Override
