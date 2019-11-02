@@ -28,7 +28,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/nav_header_avatar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_person_add" />

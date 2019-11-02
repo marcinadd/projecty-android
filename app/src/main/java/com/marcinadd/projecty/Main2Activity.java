@@ -23,6 +23,7 @@ import com.marcinadd.projecty.task.fragment.TaskFragment;
 import com.marcinadd.projecty.task.model.Task;
 import com.marcinadd.projecty.ui.login.LoginActivity;
 import com.marcinadd.projecty.ui.project.ProjectFragment;
+import com.marcinadd.projecty.user.UserService;
 
 public class Main2Activity extends AppCompatActivity implements ProjectFragment.OnListFragmentInteractionListener,
         ProjectRoleFragment.OnListFragmentInteractionListener,
@@ -49,6 +50,7 @@ public class Main2Activity extends AppCompatActivity implements ProjectFragment.
 //        });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        UserService.setSidebarData(navigationView.getHeaderView(0), getApplicationContext());
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -69,7 +71,6 @@ public class Main2Activity extends AppCompatActivity implements ProjectFragment.
             LoginService.getInstance(getApplicationContext()).checkIfUserIsLogged(this);
         }
     }
-
 
     @Override
     public void onUserNotLogged() {

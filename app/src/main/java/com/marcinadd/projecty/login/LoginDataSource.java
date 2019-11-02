@@ -17,6 +17,7 @@ public class LoginDataSource {
             Token token = authClient.getToken("password", username, password).execute().body();
             if (token != null) {
                 LoggedInUser user = authClient.getLoggedInUser("Bearer" + token.getAccessToken()).execute().body();
+                //TODO Get avatar here
                 Objects.requireNonNull(user).setToken(token);
                 return new Result.Success<>(user);
             } else {

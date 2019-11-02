@@ -41,7 +41,7 @@ public class AddProjectDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.ok, new OnPositiveButtonClick())
                 .setNegativeButton(R.string.cancel, new OnNegativeButtonClick())
                 .setView(view);
-        ImageView imageView = view.findViewById(R.id.imageView);
+        ImageView imageView = view.findViewById(R.id.nav_header_avatar);
         activity = getActivity();
         linearLayout = view.findViewById(R.id.layout_add_project_dialog);
         projectName = view.findViewById(R.id.add_project_edit_text);

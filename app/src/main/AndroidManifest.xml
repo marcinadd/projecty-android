@@ -23,12 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.task.manage.ManageTaskFragment"
-            android:label="@string/title_activity_manage_task"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/title_activity_login" />
     </application>
-
 </manifest>
