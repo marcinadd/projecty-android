@@ -32,7 +32,7 @@ public class UserService {
         ImageView imageView = headerView.findViewById(R.id.nav_header_avatar);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         title.setText(sharedPreferences.getString("username", ""));
-        Bitmap avatar = getAvatarFromCache(context);
+        Bitmap avatar = Bitmap.createScaledBitmap(getAvatarFromCache(context), 200, 200, true);
         if (avatar != null) {
             RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), avatar);
             roundedBitmapDrawable.setCircular(true);

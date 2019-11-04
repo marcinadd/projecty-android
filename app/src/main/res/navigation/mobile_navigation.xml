@@ -76,4 +76,10 @@
             android:defaultValue="0L"
             app:argType="long" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_message"
+        android:name="com.marcinadd.projecty.ui.message.MessageListFragment"
+        android:label="@string/menu_message"
+        tools:layout="@layout/fragment_message" />
 </navigation>

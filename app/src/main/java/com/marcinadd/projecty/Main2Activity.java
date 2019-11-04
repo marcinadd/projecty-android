@@ -17,17 +17,20 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import com.marcinadd.projecty.listener.UserNotLoggedListener;
 import com.marcinadd.projecty.login.LoginService;
+import com.marcinadd.projecty.message.model.Message;
 import com.marcinadd.projecty.project.manage.fragment.ProjectRoleFragment;
 import com.marcinadd.projecty.project.model.ProjectRole;
 import com.marcinadd.projecty.task.fragment.TaskFragment;
 import com.marcinadd.projecty.task.model.Task;
 import com.marcinadd.projecty.ui.login.LoginActivity;
+import com.marcinadd.projecty.ui.message.MessageListFragment;
 import com.marcinadd.projecty.ui.project.ProjectFragment;
 import com.marcinadd.projecty.user.UserService;
 
 public class Main2Activity extends AppCompatActivity implements ProjectFragment.OnListFragmentInteractionListener,
         ProjectRoleFragment.OnListFragmentInteractionListener,
         TaskFragment.OnListFragmentInteractionListener,
+        MessageListFragment.OnListFragmentInteractionListener,
         UserNotLoggedListener {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -54,7 +57,7 @@ public class Main2Activity extends AppCompatActivity implements ProjectFragment.
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_project)
+                R.id.nav_home, R.id.nav_project, R.id.nav_message)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -100,6 +103,11 @@ public class Main2Activity extends AppCompatActivity implements ProjectFragment.
 
     @Override
     public void onListFragmentInteraction(Task item) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(Message message) {
 
     }
 }
