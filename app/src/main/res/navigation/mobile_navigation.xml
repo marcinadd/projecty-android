@@ -81,5 +81,23 @@
         android:id="@+id/nav_message"
         android:name="com.marcinadd.projecty.ui.message.MessageListFragment"
         android:label="@string/menu_message"
-        tools:layout="@layout/fragment_message" />
+        tools:layout="@layout/fragment_message">
+        <action
+            android:id="@+id/action_nav_message_to_viewMessage"
+            app:destination="@id/viewMessage">
+            <argument
+                android:name="messageId"
+                android:defaultValue="0L" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/viewMessage"
+        android:name="com.marcinadd.projecty.ui.message.view.ViewMessageFragment"
+        android:label="fragment_view_message"
+        tools:layout="@layout/fragment_view_message">
+        <argument
+            android:name="messageId"
+            android:defaultValue="0L"
+            app:argType="long" />
+    </fragment>
 </navigation>

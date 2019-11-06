@@ -1,13 +1,11 @@
 package com.marcinadd.projecty.ui.message;
 
-import android.graphics.Color;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
@@ -17,7 +15,9 @@ import com.marcinadd.projecty.ui.message.MessageListFragment.OnListFragmentInter
 
 import java.util.List;
 
-public class MyMessageRecyclerViewAdapter extends RecyclerView.Adapter<MyMessageRecyclerViewAdapter.ViewHolder> {
+import static com.marcinadd.projecty.message.helper.AvatarHelper.setAvatar;
+
+public class MyMessageRecyclerViewAdapter extends RecyclerView.Adapter<MyMessageRecyclerViewAdapter.ViewHolder> implements View.OnClickListener {
 
     private final List<Message> mValues;
     private final OnListFragmentInteractionListener mListener;
@@ -31,6 +31,7 @@ public class MyMessageRecyclerViewAdapter extends RecyclerView.Adapter<MyMessage
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_message, parent, false);
+        view.setOnClickListener(this);
         return new ViewHolder(view);
     }
 
@@ -42,14 +43,14 @@ public class MyMessageRecyclerViewAdapter extends RecyclerView.Adapter<MyMessage
         holder.mSubjectView.setText(String.valueOf(mValues.get(position).getTitle()));
         holder.mContentView.setText(mValues.get(position).getText());
         setAvatar(holder.mAvatarView, mValues.get(position).getSender().getUsername());
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
-            }
-        });
+//        holder.mView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (null != mListener) {
+//                    mListener.onListFragmentInteraction(holder.mItem);
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -57,13 +58,10 @@ public class MyMessageRecyclerViewAdapter extends RecyclerView.Adapter<MyMessage
         return mValues.size();
     }
 
-    //TODO Replace this with Avatar
-    public void setAvatar(TextView textView, String username) {
-        String letter = username.substring(0, 1).toUpperCase();
-        textView.setText(letter);
-        ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
-        drawable.getPaint().setColor(Color.GRAY);
-        textView.setBackground(drawable);
+
+    @Override
+    public void onClick(View v) {
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -84,6 +82,18 @@ public class MyMessageRecyclerViewAdapter extends RecyclerView.Adapter<MyMessage
             mSubjectView = view.findViewById(R.id.msglist_subject);
             mContentView = view.findViewById(R.id.msglist_content);
             mAvatarView = view.findViewById(R.id.msglist_avatar);
+            mView.setOnClickListener(itemClickListener());
+        }
+
+        View.OnClickListener itemClickListener() {
+            return new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MessageListFragmentDirections.ActionNavMessageToViewMessage action = MessageListFragmentDirections.actionNavMessageToViewMessage();
+                    action.setMessageId(mItem.getId());
+                    Navigation.findNavController(mView).navigate(action);
+                }
+            };
         }
 
         @Override

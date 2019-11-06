@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.message.listener.MessageListListener;
+import com.marcinadd.projecty.message.listener.MessageListener;
 import com.marcinadd.projecty.message.model.Message;
 
 import java.util.List;
@@ -39,6 +40,22 @@ public class MessageService {
 
             @Override
             public void onFailure(Call<List<Message>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getMessage(final long messageId, final MessageListener listener) {
+        apiMessage.getMessage(messageId).enqueue(new Callback<Message>() {
+            @Override
+            public void onResponse(Call<Message> call, Response<Message> response) {
+                if (response.isSuccessful()) {
+                    listener.onMessageGetResponse(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Message> call, Throwable t) {
 
             }
         });

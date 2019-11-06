@@ -60,4 +60,10 @@
         app:layout_constraintBaseline_toBaselineOf="@id/msglist_sender"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/msglist_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="msglist_sender,msglist_subject,msglist_content,msglist_date" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
