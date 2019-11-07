@@ -45,6 +45,21 @@ public class MessageService {
         });
     }
 
+    public void getSentMessages(final MessageListListener listener) {
+        apiMessage.getSentMessages().enqueue(new Callback<List<Message>>() {
+            @Override
+            public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
+                if (response.isSuccessful())
+                    listener.onMessageListResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Message>> call, Throwable t) {
+
+            }
+        });
+    }
+
     public void getMessage(final long messageId, final MessageListener listener) {
         apiMessage.getMessage(messageId).enqueue(new Callback<Message>() {
             @Override
@@ -60,5 +75,4 @@ public class MessageService {
             }
         });
     }
-
 }

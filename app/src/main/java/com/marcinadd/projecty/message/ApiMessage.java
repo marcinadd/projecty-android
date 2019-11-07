@@ -13,6 +13,9 @@ public interface ApiMessage {
     @GET("messages/receivedMessages")
     Call<List<Message>> getReceivedMessages();
 
+    @GET("messages/sentMessages")
+    Call<List<Message>> getSentMessages();
+
     @GET("messages/{messageId}")
     Call<Message> getMessage(@Path("messageId") long messageId);
 }

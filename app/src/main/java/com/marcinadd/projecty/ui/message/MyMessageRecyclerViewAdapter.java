@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.helper.DateHelper;
+import com.marcinadd.projecty.message.MessageTypes;
 import com.marcinadd.projecty.message.model.Message;
 import com.marcinadd.projecty.ui.message.MessageListFragment.OnListFragmentInteractionListener;
 
@@ -20,10 +21,12 @@ import static com.marcinadd.projecty.message.helper.AvatarHelper.setAvatar;
 public class MyMessageRecyclerViewAdapter extends RecyclerView.Adapter<MyMessageRecyclerViewAdapter.ViewHolder> implements View.OnClickListener {
 
     private final List<Message> mValues;
+    private final MessageTypes mTypes;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyMessageRecyclerViewAdapter(List<Message> items, OnListFragmentInteractionListener listener) {
+    public MyMessageRecyclerViewAdapter(List<Message> items, MessageTypes types, OnListFragmentInteractionListener listener) {
         mValues = items;
+        mTypes = types;
         mListener = listener;
     }
 
@@ -38,11 +41,19 @@ public class MyMessageRecyclerViewAdapter extends RecyclerView.Adapter<MyMessage
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mSenderView.setText(mValues.get(position).getSender().getUsername());
         holder.mDateView.setText(DateHelper.formatDate(mValues.get(position).getSendDate()));
         holder.mSubjectView.setText(String.valueOf(mValues.get(position).getTitle()));
         holder.mContentView.setText(mValues.get(position).getText());
-        setAvatar(holder.mAvatarView, mValues.get(position).getSender().getUsername());
+
+        String username;
+        if (mTypes == MessageTypes.RECEIVED) {
+            username = mValues.get(position).getSender().getUsername();
+        } else {
+            username = mValues.get(position).getRecipient().getUsername();
+        }
+        holder.mUser.setText(username);
+        setAvatar(holder.mAvatarView, username);
+
 //        holder.mView.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -66,7 +77,7 @@ public class MyMessageRecyclerViewAdapter extends RecyclerView.Adapter<MyMessage
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mSenderView;
+        public final TextView mUser;
         public final TextView mDateView;
         public final TextView mSubjectView;
         public final TextView mContentView;
@@ -77,7 +88,7 @@ public class MyMessageRecyclerViewAdapter extends RecyclerView.Adapter<MyMessage
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mSenderView = view.findViewById(R.id.msglist_sender);
+            mUser = view.findViewById(R.id.msglist_sender);
             mDateView = view.findViewById(R.id.msglist_date);
             mSubjectView = view.findViewById(R.id.msglist_subject);
             mContentView = view.findViewById(R.id.msglist_content);

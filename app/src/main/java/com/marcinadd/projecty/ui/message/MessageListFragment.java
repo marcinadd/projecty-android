@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.message.MessageService;
+import com.marcinadd.projecty.message.MessageTypes;
 import com.marcinadd.projecty.message.listener.MessageListListener;
 import com.marcinadd.projecty.message.model.Message;
 
@@ -20,6 +21,7 @@ import java.util.List;
 public class MessageListFragment extends Fragment implements MessageListListener {
     private OnListFragmentInteractionListener mListener;
     private RecyclerView recyclerView;
+    private MessageTypes types;
 
     public MessageListFragment() {
     }
@@ -33,7 +35,12 @@ public class MessageListFragment extends Fragment implements MessageListListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_message_list, container, false);
-        MessageService.getInstance(getContext()).getReceivedMessages(this);
+        types = MessageListFragmentArgs.fromBundle(getArguments()).getType();
+        if (types == MessageTypes.RECEIVED) {
+            MessageService.getInstance(getContext()).getReceivedMessages(this);
+        } else {
+            MessageService.getInstance(getContext()).getSentMessages(this);
+        }
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             recyclerView = (RecyclerView) view;
@@ -61,7 +68,7 @@ public class MessageListFragment extends Fragment implements MessageListListener
 
     @Override
     public void onMessageListResponse(List<Message> messages) {
-        recyclerView.setAdapter(new MyMessageRecyclerViewAdapter(messages, mListener));
+        recyclerView.setAdapter(new MyMessageRecyclerViewAdapter(messages, types, mListener));
     }
 
     public interface OnListFragmentInteractionListener {

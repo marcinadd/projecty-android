@@ -58,4 +58,6 @@
     <string name="menu_manage_project">Manage Project</string>
     <string name="menu_task_list">Task list</string>
     <string name="menu_message">Messages</string>
+    <string name="menu_message_sent">Sent messages</string>
+    <string name="menu_message_received">Received messages</string>
 </resources>

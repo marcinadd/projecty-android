@@ -15,6 +15,11 @@
         <item
             android:id="@+id/nav_message"
             android:icon="@drawable/ic_mail"
-            android:title="@string/menu_message" />
+            android:title="@string/menu_message_received" />
+
+        <item
+            android:id="@+id/nav_message_sent"
+            android:icon="@drawable/ic_mail"
+            android:title="@string/menu_message_sent" />
     </group>
 </menu>
