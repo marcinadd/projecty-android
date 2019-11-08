@@ -13,7 +13,7 @@
             android:icon="@drawable/ic_menu_list"
             android:title="@string/menu_project" />
         <item
-            android:id="@+id/nav_message"
+            android:id="@+id/nav_message_received"
             android:icon="@drawable/ic_mail"
             android:title="@string/menu_message_received" />
 

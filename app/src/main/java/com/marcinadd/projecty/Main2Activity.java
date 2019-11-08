@@ -57,7 +57,7 @@ public class Main2Activity extends AppCompatActivity implements ProjectFragment.
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_project, R.id.nav_message)
+                R.id.nav_home, R.id.nav_project, R.id.nav_message_received)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

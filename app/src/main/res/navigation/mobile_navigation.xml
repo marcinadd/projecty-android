@@ -78,7 +78,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_message"
+        android:id="@+id/nav_message_received"
         android:name="com.marcinadd.projecty.ui.message.MessageListFragment"
         android:label="@string/menu_message_received"
         tools:layout="@layout/fragment_message">
@@ -122,5 +122,9 @@
             android:name="messageId"
             android:defaultValue="0L"
             app:argType="long" />
+        <argument
+            android:name="type"
+            android:defaultValue="RECEIVED"
+            app:argType="com.marcinadd.projecty.message.MessageTypes" />
     </fragment>
 </navigation>

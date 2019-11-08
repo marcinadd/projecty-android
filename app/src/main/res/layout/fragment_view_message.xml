@@ -33,7 +33,7 @@
         app:layout_constraintTop_toTopOf="@id/msgview_subject" />
 
     <TextView
-        android:id="@+id/msgview_sender"
+        android:id="@+id/msgview_user_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
@@ -45,13 +45,24 @@
         tools:text="@tools:sample/full_names" />
 
     <TextView
+        android:id="@+id/msgview_user_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="TextView"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/msgview_user_1"
+        app:layout_constraintStart_toEndOf="@+id/msgview_direction"
+        tools:text="@tools:sample/full_names" />
+
+    <TextView
         android:id="@+id/msgview_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/msgview_sender"
-        app:layout_constraintTop_toBottomOf="@+id/msgview_sender"
+        app:layout_constraintStart_toStartOf="@+id/msgview_user_1"
+        app:layout_constraintTop_toBottomOf="@+id/msgview_user_1"
         tools:text="@tools:sample/date/ddmmyy" />
 
     <TextView
@@ -67,6 +78,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/msgview_avatar"
         tools:text="@tools:sample/lorem/random" />
+
+    <ImageView
+        android:id="@+id/msgview_direction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/ic_arrow_forward"
+        app:layout_constraintBottom_toBottomOf="@+id/msgview_user_1"
+        app:layout_constraintStart_toEndOf="@+id/msgview_user_1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

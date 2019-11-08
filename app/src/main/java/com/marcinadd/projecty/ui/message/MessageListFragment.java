@@ -21,7 +21,7 @@ import java.util.List;
 public class MessageListFragment extends Fragment implements MessageListListener {
     private OnListFragmentInteractionListener mListener;
     private RecyclerView recyclerView;
-    private MessageTypes types;
+    private MessageTypes type;
 
     public MessageListFragment() {
     }
@@ -35,8 +35,8 @@ public class MessageListFragment extends Fragment implements MessageListListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_message_list, container, false);
-        types = MessageListFragmentArgs.fromBundle(getArguments()).getType();
-        if (types == MessageTypes.RECEIVED) {
+        type = MessageListFragmentArgs.fromBundle(getArguments()).getType();
+        if (type == MessageTypes.RECEIVED) {
             MessageService.getInstance(getContext()).getReceivedMessages(this);
         } else {
             MessageService.getInstance(getContext()).getSentMessages(this);
@@ -68,7 +68,7 @@ public class MessageListFragment extends Fragment implements MessageListListener
 
     @Override
     public void onMessageListResponse(List<Message> messages) {
-        recyclerView.setAdapter(new MyMessageRecyclerViewAdapter(messages, types, mListener));
+        recyclerView.setAdapter(new MyMessageRecyclerViewAdapter(messages, type, mListener));
     }
 
     public interface OnListFragmentInteractionListener {

@@ -21,12 +21,12 @@ import static com.marcinadd.projecty.message.helper.AvatarHelper.setAvatar;
 public class MyMessageRecyclerViewAdapter extends RecyclerView.Adapter<MyMessageRecyclerViewAdapter.ViewHolder> implements View.OnClickListener {
 
     private final List<Message> mValues;
-    private final MessageTypes mTypes;
+    private final MessageTypes mType;
     private final OnListFragmentInteractionListener mListener;
 
     public MyMessageRecyclerViewAdapter(List<Message> items, MessageTypes types, OnListFragmentInteractionListener listener) {
         mValues = items;
-        mTypes = types;
+        mType = types;
         mListener = listener;
     }
 
@@ -46,7 +46,7 @@ public class MyMessageRecyclerViewAdapter extends RecyclerView.Adapter<MyMessage
         holder.mContentView.setText(mValues.get(position).getText());
 
         String username;
-        if (mTypes == MessageTypes.RECEIVED) {
+        if (mType == MessageTypes.RECEIVED) {
             username = mValues.get(position).getSender().getUsername();
         } else {
             username = mValues.get(position).getRecipient().getUsername();
@@ -101,7 +101,9 @@ public class MyMessageRecyclerViewAdapter extends RecyclerView.Adapter<MyMessage
                 @Override
                 public void onClick(View v) {
                     MessageListFragmentDirections.ActionNavMessageToViewMessage action = MessageListFragmentDirections.actionNavMessageToViewMessage();
+//                    MessageListFragmentDirections.ActionNavMessageSentToViewMessage action = MessageListFragmentDirections.actionNavMessageSentToViewMessage();
                     action.setMessageId(mItem.getId());
+                    action.setType(mType);
                     Navigation.findNavController(mView).navigate(action);
                 }
             };
