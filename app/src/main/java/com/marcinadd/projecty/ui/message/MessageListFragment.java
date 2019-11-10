@@ -7,9 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.message.MessageService;
 import com.marcinadd.projecty.message.MessageTypes;
@@ -19,9 +22,12 @@ import com.marcinadd.projecty.message.model.Message;
 import java.util.List;
 
 public class MessageListFragment extends Fragment implements MessageListListener {
+
     private OnListFragmentInteractionListener mListener;
-    private RecyclerView recyclerView;
     private MessageTypes type;
+
+    private RecyclerView recyclerView;
+    private View mView;
 
     public MessageListFragment() {
     }
@@ -34,19 +40,19 @@ public class MessageListFragment extends Fragment implements MessageListListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_message_list, container, false);
+        mView = inflater.inflate(R.layout.fragment_message_list, container, false);
         type = MessageListFragmentArgs.fromBundle(getArguments()).getType();
         if (type == MessageTypes.RECEIVED) {
             MessageService.getInstance(getContext()).getReceivedMessages(this);
         } else {
             MessageService.getInstance(getContext()).getSentMessages(this);
         }
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        }
-        return view;
+        Context context = mView.getContext();
+        recyclerView = mView.findViewById(R.id.list_messages);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        FloatingActionButton fab = mView.findViewById(R.id.fab);
+        fab.setOnClickListener(new OnFabClicked());
+        return mView;
     }
 
     @Override
@@ -73,5 +79,14 @@ public class MessageListFragment extends Fragment implements MessageListListener
 
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(Message message);
+    }
+
+    class OnFabClicked implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            NavDirections directions = MessageListFragmentDirections.actionNavMessageListToSendMessageFragment();
+            Navigation.findNavController(mView).navigate(directions);
+        }
     }
 }

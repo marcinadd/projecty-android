@@ -60,4 +60,10 @@
     <string name="menu_message">Messages</string>
     <string name="menu_message_sent">Sent messages</string>
     <string name="menu_message_received">Received messages</string>
+    <string name="recipient">Recipient</string>
+    <string name="subject">Subject</string>
+    <string name="message">Message</string>
+    <string name="send">Send</string>
+    <string name="message_send">Message send</string>
+    <string name="sending_failed">Sending Failed</string>
 </resources>

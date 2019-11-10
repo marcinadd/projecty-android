@@ -93,6 +93,9 @@
             android:name="type"
             android:defaultValue="RECEIVED"
             app:argType="com.marcinadd.projecty.message.MessageTypes" />
+        <action
+            android:id="@+id/action_nav_message_list_to_sendMessageFragment"
+            app:destination="@id/sendMessageFragment" />
     </fragment>
 
     <fragment
@@ -111,6 +114,9 @@
             android:name="type"
             android:defaultValue="SENT"
             app:argType="com.marcinadd.projecty.message.MessageTypes" />
+        <action
+            android:id="@+id/action_nav_message_list_to_sendMessageFragment"
+            app:destination="@id/sendMessageFragment" />
     </fragment>
     
     <fragment
@@ -126,5 +132,14 @@
             android:name="type"
             android:defaultValue="RECEIVED"
             app:argType="com.marcinadd.projecty.message.MessageTypes" />
+    </fragment>
+    <fragment
+        android:id="@+id/sendMessageFragment"
+        android:name="com.marcinadd.projecty.ui.message.send.SendMessageFragment"
+        android:label="fragment_send_message"
+        tools:layout="@layout/fragment_send_message">
+        <action
+            android:id="@+id/action_sendMessageFragment_to_nav_message_sent"
+            app:destination="@id/nav_message_sent" />
     </fragment>
 </navigation>

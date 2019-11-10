@@ -20,6 +20,8 @@ public class Message {
 
     private String text;
 
+    private String recipientUsername;
+
     public Long getId() {
         return id;
     }
@@ -46,5 +48,17 @@ public class Message {
 
     public String getText() {
         return text;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setRecipientUsername(String recipientUsername) {
+        this.recipientUsername = recipientUsername;
     }
 }
