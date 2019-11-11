@@ -2,9 +2,11 @@ package com.marcinadd.projecty.ui.project.manage;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,24 +38,40 @@ public class ManageProjectFragment extends Fragment implements ManageProjectResp
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_manage_project, container, false);
         projectName = view.findViewById(R.id.projectName);
-        long projectId = ManageProjectFragmentArgs.fromBundle(getArguments()).getProjectId();
+        long projectId = ManageProjectFragmentArgs.fromBundle(Objects.requireNonNull(getArguments())).getProjectId();
 
         model = ViewModelProviders.of(this).get(ManageProjectViewModel.class);
         model.getProject().observe(this, projectObserver());
         ProjectService.getInstance(getContext()).manageProject(projectId, this);
 
-        ImageView changeNameButton = view.findViewById(R.id.change_name_button);
-        changeNameButton.setOnClickListener(new ChangeNameButtonClick());
-
-        ImageView addRoleButton = view.findViewById(R.id.add_role_button);
-        addRoleButton.setOnClickListener(new AddRoleButtonClick());
-
-        ImageView deleteProjectImageView = view.findViewById(R.id.delete_project_image_view);
-        deleteProjectImageView.setOnClickListener(new DeleteProjectButtonClick());
+        setHasOptionsMenu(true);
 
         return view;
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_manage_project, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.name:
+                changeName();
+                break;
+            case R.id.role_add:
+                addRole();
+                break;
+            case R.id.delete:
+                delete();
+                break;
+            default:
+        }
+        return true;
+    }
+    
     @Override
     public void onManageProjectResponse(ManageProject manageProject) {
         model.setProject(manageProject.getProject());
@@ -70,7 +88,7 @@ public class ManageProjectFragment extends Fragment implements ManageProjectResp
         };
     }
 
-    void loadProjectRoleManageFragment() {
+    private void loadProjectRoleManageFragment() {
         Bundle bundle = new Bundle();
         bundle.putSerializable("projectRoles", (Serializable) model.getProjectRoles().getValue());
         ProjectRoleFragment projectRoleFragment = new ProjectRoleFragment();
@@ -80,38 +98,28 @@ public class ManageProjectFragment extends Fragment implements ManageProjectResp
         transaction.commit();
     }
 
-    class ChangeNameButtonClick implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            Bundle bundle1 = new Bundle();
-            bundle1.putSerializable("project", model.getProject().getValue());
-            ChangeProjectNameDialogFragment fragment = new ChangeProjectNameDialogFragment();
-            fragment.setArguments(bundle1);
-            fragment.show(Objects.requireNonNull(getFragmentManager()), "TAG");
-        }
+    private void changeName() {
+        Bundle bundle1 = new Bundle();
+        bundle1.putSerializable("project", model.getProject().getValue());
+        ChangeProjectNameDialogFragment fragment = new ChangeProjectNameDialogFragment();
+        fragment.setArguments(bundle1);
+        fragment.show(Objects.requireNonNull(getFragmentManager()), "TAG");
     }
 
-    class AddRoleButtonClick implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
+
+    private void addRole() {
             Bundle bundle1 = new Bundle();
             bundle1.putSerializable("project", model.getProject().getValue());
             AddProjectRoleDialogFragment fragment = new AddProjectRoleDialogFragment();
             fragment.setArguments(bundle1);
             fragment.show(Objects.requireNonNull(getFragmentManager()), "TAG");
-        }
     }
 
-    class DeleteProjectButtonClick implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
+    private void delete() {
             Bundle bundle1 = new Bundle();
             bundle1.putSerializable("project", model.getProject().getValue());
-            DeleteProjectDialogFragment fragment = new DeleteProjectDialogFragment();
+        DeleteProjectDialogFragment fragment = new DeleteProjectDialogFragment(getView());
             fragment.setArguments(bundle1);
             fragment.show(Objects.requireNonNull(getFragmentManager()), "TAG");
-
-        }
     }
 }

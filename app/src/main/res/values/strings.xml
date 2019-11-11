@@ -66,4 +66,6 @@
     <string name="send">Send</string>
     <string name="message_send">Message send</string>
     <string name="sending_failed">Sending Failed</string>
+    <string name="send_message">Send new message</string>
+    <string name="delete_project">Delete project</string>
 </resources>
