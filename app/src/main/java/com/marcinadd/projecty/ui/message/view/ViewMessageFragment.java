@@ -2,6 +2,9 @@ package com.marcinadd.projecty.ui.message.view;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,9 +15,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.helper.DateHelper;
+import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.message.MessageService;
 import com.marcinadd.projecty.message.MessageTypes;
 import com.marcinadd.projecty.message.listener.MessageListener;
@@ -22,7 +27,7 @@ import com.marcinadd.projecty.message.model.Message;
 
 import static com.marcinadd.projecty.message.helper.AvatarHelper.setAvatar;
 
-public class ViewMessageFragment extends Fragment implements MessageListener {
+public class ViewMessageFragment extends Fragment implements MessageListener, RetrofitListener {
 
     private ViewMessageFragmentViewModel mViewModel;
 
@@ -57,7 +62,22 @@ public class ViewMessageFragment extends Fragment implements MessageListener {
         textViewContent = root.findViewById(R.id.msgview_content);
         imageViewDirection = root.findViewById(R.id.msgview_direction);
         MessageService.getInstance(getContext()).getMessage(messageId, this);
+        setHasOptionsMenu(true);
         return root;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_message_view, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.delete) {
+            MessageService.getInstance(getContext()).deleteMessage(messageId, this);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -71,6 +91,17 @@ public class ViewMessageFragment extends Fragment implements MessageListener {
     @Override
     public void onMessageGetResponse(Message message) {
         mViewModel.getMessage().setValue(message);
+    }
+
+    @Override
+    public void onResponseSuccess() {
+        // Deleting success
+        Navigation.findNavController(getView()).navigateUp();
+    }
+
+    @Override
+    public void onResponseFailed() {
+        // Deleting failed
     }
 
 

@@ -2,6 +2,7 @@ package com.marcinadd.projecty.message;
 
 import android.content.Context;
 
+import com.marcinadd.projecty.callback.VoidCallbackWithRetrofitListener;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.message.listener.MessageListListener;
@@ -78,20 +79,10 @@ public class MessageService {
     }
 
     public void sendMessage(final Message message, final RetrofitListener listener) {
-        apiMessage.sendMessage(message).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    listener.onResponseSuccess();
-                } else {
-                    listener.onResponseFailed();
-                }
-            }
+        apiMessage.sendMessage(message).enqueue(new VoidCallbackWithRetrofitListener(listener));
+    }
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                listener.onResponseFailed();
-            }
-        });
+    public void deleteMessage(final long messageId, final RetrofitListener listener) {
+        apiMessage.deleteMessage(messageId).enqueue(new VoidCallbackWithRetrofitListener(listener));
     }
 }

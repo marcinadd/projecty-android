@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.marcinadd.projecty.Main2Activity">
     <item
-        android:id="@+id/send"
-        android:icon="@drawable/ic_send_white_24dp"
+        android:id="@+id/delete"
+        android:icon="@drawable/ic_delete_white_24dp"
         android:orderInCategory="10"
-        android:title="@string/send"
+        android:title="@string/delete"
         app:showAsAction="always" />
 </menu>

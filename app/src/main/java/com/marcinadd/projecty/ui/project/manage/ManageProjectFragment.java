@@ -51,7 +51,7 @@ public class ManageProjectFragment extends Fragment implements ManageProjectResp
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_manage_project, menu);
+        inflater.inflate(R.menu.menu_project_manage, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -69,9 +69,9 @@ public class ManageProjectFragment extends Fragment implements ManageProjectResp
                 break;
             default:
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
-    
+
     @Override
     public void onManageProjectResponse(ManageProject manageProject) {
         model.setProject(manageProject.getProject());

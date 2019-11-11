@@ -56,7 +56,7 @@ public class SendMessageFragment extends Fragment implements RetrofitListener {
         if (item.getItemId() == R.id.send) {
             sendMessage();
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     private void sendMessage() {
