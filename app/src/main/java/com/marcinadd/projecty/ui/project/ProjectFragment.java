@@ -6,13 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
-import com.marcinadd.projecty.listener.ProjectListResponseListener;
+import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.project.MyProjectRecyclerViewAdapter;
 import com.marcinadd.projecty.project.ProjectService;
 import com.marcinadd.projecty.project.model.ProjectRole;
@@ -24,7 +25,7 @@ import com.marcinadd.projecty.project.model.UserProject;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class ProjectFragment extends Fragment implements ProjectListResponseListener {
+public class ProjectFragment extends Fragment implements RetrofitListener<UserProject> {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -86,9 +87,8 @@ public class ProjectFragment extends Fragment implements ProjectListResponseList
     }
 
     @Override
-    public void onProjectListResponse(UserProject response) {
+    public void onResponseSuccess(UserProject response, @Nullable String TAG) {
         //projectViewModel = ViewModelProviders.of(this).get(ProjectViewModel.class);
-
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
@@ -99,6 +99,10 @@ public class ProjectFragment extends Fragment implements ProjectListResponseList
             }
             recyclerView.setAdapter(new MyProjectRecyclerViewAdapter(response.getProjectRoles(), mListener));
         }
+    }
+
+    @Override
+    public void onResponseFailed(@Nullable String TAG) {
 
     }
 

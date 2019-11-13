@@ -17,7 +17,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.marcinadd.projecty.R;
-import com.marcinadd.projecty.listener.ManageProjectResponseListener;
+import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.project.ProjectService;
 import com.marcinadd.projecty.project.manage.fragment.AddProjectRoleDialogFragment;
 import com.marcinadd.projecty.project.manage.fragment.ChangeProjectNameDialogFragment;
@@ -29,7 +29,7 @@ import com.marcinadd.projecty.project.model.Project;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class ManageProjectFragment extends Fragment implements ManageProjectResponseListener {
+public class ManageProjectFragment extends Fragment implements RetrofitListener<ManageProject> {
     private TextView projectName;
     private ManageProjectViewModel model;
 
@@ -73,10 +73,15 @@ public class ManageProjectFragment extends Fragment implements ManageProjectResp
     }
 
     @Override
-    public void onManageProjectResponse(ManageProject manageProject) {
-        model.setProject(manageProject.getProject());
-        model.setProjectRoles(manageProject.getProjectRoles());
+    public void onResponseSuccess(ManageProject response, @Nullable String TAG) {
+        model.setProject(response.getProject());
+        model.setProjectRoles(response.getProjectRoles());
         loadProjectRoleManageFragment();
+    }
+
+    @Override
+    public void onResponseFailed(@Nullable String TAG) {
+
     }
 
     private Observer<Project> projectObserver() {

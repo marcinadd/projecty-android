@@ -2,15 +2,12 @@ package com.marcinadd.projecty.project;
 
 import android.content.Context;
 
+import com.marcinadd.projecty.callback.RetrofitCallback;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
-import com.marcinadd.projecty.listener.ManageProjectResponseListener;
-import com.marcinadd.projecty.listener.ProjectListResponseListener;
+import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.project.model.ManageProject;
 import com.marcinadd.projecty.project.model.UserProject;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class ProjectService {
@@ -29,36 +26,11 @@ public class ProjectService {
         return projectService;
     }
 
-    public void getProjects(final ProjectListResponseListener listener) {
-        apiProject.getProjects().enqueue(new Callback<UserProject>() {
-            @Override
-            public void onResponse(Call<UserProject> call, Response<UserProject> response) {
-                if (response.isSuccessful()) {
-                    listener.onProjectListResponse(response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserProject> call, Throwable t) {
-
-            }
-        });
+    public void getProjects(final RetrofitListener<UserProject> listener) {
+        apiProject.getProjects().enqueue(new RetrofitCallback<>(listener));
     }
 
-    public void manageProject(final long projectId, final ManageProjectResponseListener listener) {
-        apiProject.manageProject(projectId).enqueue(new Callback<ManageProject>() {
-            @Override
-            public void onResponse(Call<ManageProject> call, Response<ManageProject> response) {
-                if (response.isSuccessful()) {
-                    listener.onManageProjectResponse(response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ManageProject> call, Throwable t) {
-
-            }
-        });
+    public void manageProject(final long projectId, final RetrofitListener<ManageProject> listener) {
+        apiProject.manageProject(projectId).enqueue(new RetrofitCallback<>(listener));
     }
-
 }
