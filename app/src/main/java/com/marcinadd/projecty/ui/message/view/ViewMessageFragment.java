@@ -22,12 +22,11 @@ import com.marcinadd.projecty.helper.DateHelper;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.message.MessageService;
 import com.marcinadd.projecty.message.MessageTypes;
-import com.marcinadd.projecty.message.listener.MessageListener;
 import com.marcinadd.projecty.message.model.Message;
 
 import static com.marcinadd.projecty.message.helper.AvatarHelper.setAvatar;
 
-public class ViewMessageFragment extends Fragment implements MessageListener, RetrofitListener {
+public class ViewMessageFragment extends Fragment {
 
     private ViewMessageFragmentViewModel mViewModel;
 
@@ -61,7 +60,7 @@ public class ViewMessageFragment extends Fragment implements MessageListener, Re
         textViewSendDate = root.findViewById(R.id.msgview_date);
         textViewContent = root.findViewById(R.id.msgview_content);
         imageViewDirection = root.findViewById(R.id.msgview_direction);
-        MessageService.getInstance(getContext()).getMessage(messageId, this);
+        MessageService.getInstance(getContext()).getMessage(messageId, messageListener());
         setHasOptionsMenu(true);
         return root;
     }
@@ -75,7 +74,7 @@ public class ViewMessageFragment extends Fragment implements MessageListener, Re
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.delete) {
-            MessageService.getInstance(getContext()).deleteMessage(messageId, this);
+            MessageService.getInstance(getContext()).deleteMessage(messageId, deleteListener());
         }
         return super.onOptionsItemSelected(item);
     }
@@ -88,20 +87,32 @@ public class ViewMessageFragment extends Fragment implements MessageListener, Re
         mViewModel.getMessage().observe(this, messageObserver);
     }
 
-    @Override
-    public void onMessageGetResponse(Message message) {
-        mViewModel.getMessage().setValue(message);
+    public RetrofitListener<Message> messageListener() {
+        return new RetrofitListener<Message>() {
+            @Override
+            public void onResponseSuccess(Message response, @Nullable String TAG) {
+                mViewModel.getMessage().setValue(response);
+            }
+
+            @Override
+            public void onResponseFailed(@Nullable String TAG) {
+
+            }
+        };
     }
 
-    @Override
-    public void onResponseSuccess() {
-        // Deleting success
-        Navigation.findNavController(getView()).navigateUp();
-    }
+    public RetrofitListener<Void> deleteListener() {
+        return new RetrofitListener<Void>() {
+            @Override
+            public void onResponseSuccess(Void response, @Nullable String TAG) {
+                Navigation.findNavController(getView()).navigateUp();
+            }
 
-    @Override
-    public void onResponseFailed() {
-        // Deleting failed
+            @Override
+            public void onResponseFailed(@Nullable String TAG) {
+
+            }
+        };
     }
 
 

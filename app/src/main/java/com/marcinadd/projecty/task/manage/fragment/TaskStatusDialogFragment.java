@@ -19,7 +19,7 @@ import com.marcinadd.projecty.ui.task.manage.ManageTaskViewModel;
 
 import java.util.Map;
 
-public class TaskStatusDialogFragment extends DialogFragment implements RetrofitListener {
+public class TaskStatusDialogFragment extends DialogFragment implements RetrofitListener<Void> {
     private ManageTaskViewModel model;
     private Task task;
 
@@ -71,12 +71,12 @@ public class TaskStatusDialogFragment extends DialogFragment implements Retrofit
     }
 
     @Override
-    public void onResponseSuccess() {
+    public void onResponseSuccess(Void response, @Nullable String TAG) {
         model.getTask().setValue(task);
     }
 
     @Override
-    public void onResponseFailed() {
+    public void onResponseFailed(@Nullable String TAG) {
 
     }
 }

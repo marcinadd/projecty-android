@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.ArrayMap;
 import android.widget.DatePicker;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.marcinadd.projecty.helper.DateHelper;
@@ -20,7 +21,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
-public class TaskDatePickerDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener, RetrofitListener {
+public class TaskDatePickerDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener, RetrofitListener<Void> {
     private Date initDate;
     private DateType dateType;
     private ManageTaskViewModel model;
@@ -65,12 +66,12 @@ public class TaskDatePickerDialogFragment extends DialogFragment implements Date
     }
 
     @Override
-    public void onResponseSuccess() {
+    public void onResponseSuccess(Void response, @Nullable String TAG) {
         model.getTask().setValue(task);
     }
 
     @Override
-    public void onResponseFailed() {
+    public void onResponseFailed(@Nullable String TAG) {
 
     }
 }

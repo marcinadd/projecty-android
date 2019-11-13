@@ -2,18 +2,13 @@ package com.marcinadd.projecty.message;
 
 import android.content.Context;
 
-import com.marcinadd.projecty.callback.VoidCallbackWithRetrofitListener;
+import com.marcinadd.projecty.callback.RetrofitCallback;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.listener.RetrofitListener;
-import com.marcinadd.projecty.message.listener.MessageListListener;
-import com.marcinadd.projecty.message.listener.MessageListener;
 import com.marcinadd.projecty.message.model.Message;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class MessageService {
@@ -32,57 +27,23 @@ public class MessageService {
         return messageService;
     }
 
-    public void getReceivedMessages(final MessageListListener listener) {
-        apiMessage.getReceivedMessages().enqueue(new Callback<List<Message>>() {
-            @Override
-            public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
-                if (response.isSuccessful())
-                    listener.onMessageListResponse(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<List<Message>> call, Throwable t) {
-
-            }
-        });
+    public void getReceivedMessages(final RetrofitListener<List<Message>> listener) {
+        apiMessage.getReceivedMessages().enqueue(new RetrofitCallback<>(listener));
     }
 
-    public void getSentMessages(final MessageListListener listener) {
-        apiMessage.getSentMessages().enqueue(new Callback<List<Message>>() {
-            @Override
-            public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
-                if (response.isSuccessful())
-                    listener.onMessageListResponse(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<List<Message>> call, Throwable t) {
-
-            }
-        });
+    public void getSentMessages(final RetrofitListener<List<Message>> listener) {
+        apiMessage.getSentMessages().enqueue(new RetrofitCallback<>(listener));
     }
 
-    public void getMessage(final long messageId, final MessageListener listener) {
-        apiMessage.getMessage(messageId).enqueue(new Callback<Message>() {
-            @Override
-            public void onResponse(Call<Message> call, Response<Message> response) {
-                if (response.isSuccessful()) {
-                    listener.onMessageGetResponse(response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Message> call, Throwable t) {
-
-            }
-        });
+    public void getMessage(final long messageId, final RetrofitListener<Message> listener) {
+        apiMessage.getMessage(messageId).enqueue(new RetrofitCallback<>(listener));
     }
 
-    public void sendMessage(final Message message, final RetrofitListener listener) {
-        apiMessage.sendMessage(message).enqueue(new VoidCallbackWithRetrofitListener(listener));
+    public void sendMessage(final Message message, final RetrofitListener<Void> listener) {
+        apiMessage.sendMessage(message).enqueue(new RetrofitCallback<>(listener));
     }
 
-    public void deleteMessage(final long messageId, final RetrofitListener listener) {
-        apiMessage.deleteMessage(messageId).enqueue(new VoidCallbackWithRetrofitListener(listener));
+    public void deleteMessage(final long messageId, final RetrofitListener<Void> listener) {
+        apiMessage.deleteMessage(messageId).enqueue(new RetrofitCallback<>(listener));
     }
 }

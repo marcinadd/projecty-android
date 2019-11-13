@@ -15,7 +15,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.helper.DateHelper;
-import com.marcinadd.projecty.listener.AddTaskListener;
+import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.task.TaskService;
 import com.marcinadd.projecty.task.manage.DateType;
 import com.marcinadd.projecty.task.model.Task;
@@ -30,9 +30,9 @@ public class AddTaskDialogFragment extends DialogFragment {
     private EditText editTextName;
     private EditText editTextStartDate;
     private EditText editTextEndDate;
-    private AddTaskListener addTaskListener;
+    private RetrofitListener<Task> addTaskListener;
 
-    public AddTaskDialogFragment(long projectId, AddTaskListener addTaskListener) {
+    public AddTaskDialogFragment(long projectId, RetrofitListener<Task> addTaskListener) {
         this.projectId = projectId;
         this.addTaskListener = addTaskListener;
     }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
@@ -14,14 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.marcinadd.projecty.R;
+import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.message.MessageService;
 import com.marcinadd.projecty.message.MessageTypes;
-import com.marcinadd.projecty.message.listener.MessageListListener;
 import com.marcinadd.projecty.message.model.Message;
 
 import java.util.List;
 
-public class MessageListFragment extends Fragment implements MessageListListener {
+public class MessageListFragment extends Fragment implements RetrofitListener<List<Message>> {
 
     private OnListFragmentInteractionListener mListener;
     private MessageTypes type;
@@ -73,8 +74,13 @@ public class MessageListFragment extends Fragment implements MessageListListener
     }
 
     @Override
-    public void onMessageListResponse(List<Message> messages) {
-        recyclerView.setAdapter(new MyMessageRecyclerViewAdapter(messages, type, mListener));
+    public void onResponseSuccess(List<Message> response, @Nullable String TAG) {
+        recyclerView.setAdapter(new MyMessageRecyclerViewAdapter(response, type, mListener));
+    }
+
+    @Override
+    public void onResponseFailed(@Nullable String TAG) {
+
     }
 
     public interface OnListFragmentInteractionListener {

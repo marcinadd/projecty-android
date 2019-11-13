@@ -13,8 +13,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.marcinadd.projecty.R;
-import com.marcinadd.projecty.listener.AddTaskListener;
-import com.marcinadd.projecty.listener.TaskListResponseListener;
+import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.task.TaskService;
 import com.marcinadd.projecty.task.fragment.AddTaskDialogFragment;
 import com.marcinadd.projecty.task.fragment.TaskFragment;
@@ -22,7 +21,7 @@ import com.marcinadd.projecty.task.model.Task;
 import com.marcinadd.projecty.task.model.TaskListResponseModel;
 import com.marcinadd.projecty.task.ui.main.SectionsStatePagerAdapter;
 
-public class TaskListFragment extends Fragment implements TaskFragment.OnListFragmentInteractionListener, AddTaskListener, TaskListResponseListener {
+public class TaskListFragment extends Fragment implements TaskFragment.OnListFragmentInteractionListener {
     private long projectId;
     private SectionsStatePagerAdapter sectionsStatePagerAdapter;
     private ViewPager viewPager;
@@ -35,12 +34,12 @@ public class TaskListFragment extends Fragment implements TaskFragment.OnListFra
         viewPager = root.findViewById(R.id.view_pager);
         tabs = root.findViewById(R.id.tabs);
         projectId = TaskListFragmentArgs.fromBundle(getArguments()).getProjectId();
-        TaskService.getInstance(getContext()).getTaskList(projectId, this);
+        TaskService.getInstance(getContext()).getTaskList(projectId, taskListResponseModelRetrofitListener());
         FloatingActionButton fab = root.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddTaskDialogFragment addTaskDialogFragment = new AddTaskDialogFragment(projectId, TaskListFragment.this);
+                AddTaskDialogFragment addTaskDialogFragment = new AddTaskDialogFragment(projectId, taskRetrofitListener());
                 addTaskDialogFragment.show(getChildFragmentManager(), "TAG");
             }
         });
@@ -51,23 +50,37 @@ public class TaskListFragment extends Fragment implements TaskFragment.OnListFra
     public void onListFragmentInteraction(Task item) {
     }
 
-    @Override
-    public void onTaskAdded(Task newTask) {
-        sectionsStatePagerAdapter.addTaskToDo(newTask);
+
+    public RetrofitListener<TaskListResponseModel> taskListResponseModelRetrofitListener() {
+        return new RetrofitListener<TaskListResponseModel>() {
+            @Override
+            public void onResponseSuccess(TaskListResponseModel response, @Nullable String TAG) {
+                sectionsStatePagerAdapter = new SectionsStatePagerAdapter(
+                        getContext(), getChildFragmentManager(),
+                        response.getToDoTasks(), response.getInProgressTasks(), response.getDoneTasks(), projectId);
+                viewPager.setAdapter(sectionsStatePagerAdapter);
+                tabs.setupWithViewPager(viewPager);
+                sectionsStatePagerAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onResponseFailed(@Nullable String TAG) {
+
+            }
+        };
     }
 
-    @Override
-    public void onAddFailed() {
-    }
+    public RetrofitListener<Task> taskRetrofitListener() {
+        return new RetrofitListener<Task>() {
+            @Override
+            public void onResponseSuccess(Task response, @Nullable String TAG) {
+                sectionsStatePagerAdapter.addTaskToDo(response);
+            }
 
+            @Override
+            public void onResponseFailed(@Nullable String TAG) {
 
-    @Override
-    public void onTaskListResponse(TaskListResponseModel model) {
-        sectionsStatePagerAdapter = new SectionsStatePagerAdapter(
-                getContext(), getChildFragmentManager(),
-                model.getToDoTasks(), model.getInProgressTasks(), model.getDoneTasks(), projectId);
-        viewPager.setAdapter(sectionsStatePagerAdapter);
-        tabs.setupWithViewPager(viewPager);
-        sectionsStatePagerAdapter.notifyDataSetChanged();
+            }
+        };
     }
 }

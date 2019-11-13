@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.helper.DateHelper;
-import com.marcinadd.projecty.listener.ManageTaskResponseListener;
+import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.task.TaskService;
 import com.marcinadd.projecty.task.manage.DateType;
 import com.marcinadd.projecty.task.manage.fragment.TaskDatePickerDialogFragment;
@@ -23,7 +23,7 @@ import com.marcinadd.projecty.task.manage.fragment.TaskStatusDialogFragment;
 import com.marcinadd.projecty.task.model.ManageTaskResponseModel;
 import com.marcinadd.projecty.task.model.Task;
 
-public class ManageTaskFragment extends Fragment implements ManageTaskResponseListener {
+public class ManageTaskFragment extends Fragment implements RetrofitListener<ManageTaskResponseModel> {
     private long taskId;
     private long projectId;
     private TextView taskNameTextView;
@@ -98,8 +98,13 @@ public class ManageTaskFragment extends Fragment implements ManageTaskResponseLi
     }
 
     @Override
-    public void onManageTaskResponse(ManageTaskResponseModel manageTaskResponseModel) {
-        model.getTask().setValue(manageTaskResponseModel.getTask());
+    public void onResponseSuccess(ManageTaskResponseModel response, @Nullable String TAG) {
+        model.getTask().setValue(response.getTask());
+    }
+
+    @Override
+    public void onResponseFailed(@Nullable String TAG) {
+
     }
 
     class TaskObserver implements Observer<Task> {

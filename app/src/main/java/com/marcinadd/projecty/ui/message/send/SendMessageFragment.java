@@ -22,7 +22,7 @@ import com.marcinadd.projecty.message.model.Message;
 
 import java.util.Objects;
 
-public class SendMessageFragment extends Fragment implements RetrofitListener {
+public class SendMessageFragment extends Fragment implements RetrofitListener<Void> {
 
     private TextInputLayout textInputRecipient;
     private TextInputLayout textInputSubject;
@@ -72,16 +72,15 @@ public class SendMessageFragment extends Fragment implements RetrofitListener {
     }
 
     @Override
-    public void onResponseSuccess() {
+    public void onResponseSuccess(Void response, @Nullable String TAG) {
         Snackbar.make(Objects.requireNonNull(getView()), getString(R.string.message_send), Snackbar.LENGTH_LONG).show();
         SendMessageFragmentDirections.ActionSendMessageFragmentToNavMessageSent action =
                 SendMessageFragmentDirections.actionSendMessageFragmentToNavMessageSent();
         Navigation.findNavController(getView()).navigate(action);
-
     }
 
     @Override
-    public void onResponseFailed() {
+    public void onResponseFailed(@Nullable String TAG) {
         Snackbar.make(Objects.requireNonNull(getView()), getString(R.string.sending_failed), Snackbar.LENGTH_LONG).show();
     }
 }
