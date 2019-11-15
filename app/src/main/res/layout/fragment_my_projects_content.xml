@@ -5,11 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_my_projects">
+    android:id="@+id/fragment_content"
+    tools:showIn="@layout/fragment_my_projects">
 
     <fragment
         android:id="@+id/fragment"
-        android:name="com.marcinadd.projecty.ui.project.ProjectFragment"
+        android:name="com.marcinadd.projecty.ui.project.ProjectListFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

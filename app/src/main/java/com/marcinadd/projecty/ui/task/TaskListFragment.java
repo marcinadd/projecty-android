@@ -21,6 +21,8 @@ import com.marcinadd.projecty.task.model.Task;
 import com.marcinadd.projecty.task.model.TaskListResponseModel;
 import com.marcinadd.projecty.task.ui.main.SectionsStatePagerAdapter;
 
+import java.util.Objects;
+
 public class TaskListFragment extends Fragment implements TaskFragment.OnListFragmentInteractionListener {
     private long projectId;
     private SectionsStatePagerAdapter sectionsStatePagerAdapter;
@@ -33,7 +35,7 @@ public class TaskListFragment extends Fragment implements TaskFragment.OnListFra
         View root = inflater.inflate(R.layout.activity_task_list, container, false);
         viewPager = root.findViewById(R.id.view_pager);
         tabs = root.findViewById(R.id.tabs);
-        projectId = TaskListFragmentArgs.fromBundle(getArguments()).getProjectId();
+        projectId = TaskListFragmentArgs.fromBundle(Objects.requireNonNull(getArguments())).getProjectId();
         TaskService.getInstance(getContext()).getTaskList(projectId, taskListResponseModelRetrofitListener());
         FloatingActionButton fab = root.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -51,7 +53,7 @@ public class TaskListFragment extends Fragment implements TaskFragment.OnListFra
     }
 
 
-    public RetrofitListener<TaskListResponseModel> taskListResponseModelRetrofitListener() {
+    private RetrofitListener<TaskListResponseModel> taskListResponseModelRetrofitListener() {
         return new RetrofitListener<TaskListResponseModel>() {
             @Override
             public void onResponseSuccess(TaskListResponseModel response, @Nullable String TAG) {
@@ -70,7 +72,7 @@ public class TaskListFragment extends Fragment implements TaskFragment.OnListFra
         };
     }
 
-    public RetrofitListener<Task> taskRetrofitListener() {
+    private RetrofitListener<Task> taskRetrofitListener() {
         return new RetrofitListener<Task>() {
             @Override
             public void onResponseSuccess(Task response, @Nullable String TAG) {

@@ -12,16 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.project.model.ProjectRole;
-import com.marcinadd.projecty.ui.project.ProjectFragment.OnListFragmentInteractionListener;
 import com.marcinadd.projecty.ui.project.ProjectFragmentDirections;
+import com.marcinadd.projecty.ui.project.ProjectListFragment.OnListFragmentInteractionListener;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class MyProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyProjectRecyclerViewAdapter.ViewHolder> {
 
     private final List<ProjectRole> mValues;
@@ -56,7 +51,6 @@ public class MyProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyProject
             }
         });
     }
-
     @Override
     public int getItemCount() {
         return mValues.size();

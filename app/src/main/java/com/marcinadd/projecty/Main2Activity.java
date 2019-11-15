@@ -24,10 +24,10 @@ import com.marcinadd.projecty.task.fragment.TaskFragment;
 import com.marcinadd.projecty.task.model.Task;
 import com.marcinadd.projecty.ui.login.LoginActivity;
 import com.marcinadd.projecty.ui.message.MessageListFragment;
-import com.marcinadd.projecty.ui.project.ProjectFragment;
+import com.marcinadd.projecty.ui.project.ProjectListFragment;
 import com.marcinadd.projecty.user.UserService;
 
-public class Main2Activity extends AppCompatActivity implements ProjectFragment.OnListFragmentInteractionListener,
+public class Main2Activity extends AppCompatActivity implements ProjectListFragment.OnListFragmentInteractionListener,
         ProjectRoleFragment.OnListFragmentInteractionListener,
         TaskFragment.OnListFragmentInteractionListener,
         MessageListFragment.OnListFragmentInteractionListener,

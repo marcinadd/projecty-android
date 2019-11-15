@@ -6,6 +6,7 @@ import com.marcinadd.projecty.callback.RetrofitCallback;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.project.model.ManageProject;
+import com.marcinadd.projecty.project.model.Project;
 import com.marcinadd.projecty.project.model.UserProject;
 
 import retrofit2.Retrofit;
@@ -32,5 +33,9 @@ public class ProjectService {
 
     public void manageProject(final long projectId, final RetrofitListener<ManageProject> listener) {
         apiProject.manageProject(projectId).enqueue(new RetrofitCallback<>(listener));
+    }
+
+    public void addProject(final Project project, final RetrofitListener<Void> listener) {
+        apiProject.addProject(project).enqueue(new RetrofitCallback<>(listener));
     }
 }
