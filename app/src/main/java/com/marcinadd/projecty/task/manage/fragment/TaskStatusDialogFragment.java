@@ -14,12 +14,12 @@ import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.task.TaskService;
 import com.marcinadd.projecty.task.TaskStatus;
-import com.marcinadd.projecty.task.manage.ManageTaskViewModel;
 import com.marcinadd.projecty.task.model.Task;
+import com.marcinadd.projecty.ui.task.manage.ManageTaskViewModel;
 
 import java.util.Map;
 
-public class TaskStatusDialogFragment extends DialogFragment implements RetrofitListener {
+public class TaskStatusDialogFragment extends DialogFragment implements RetrofitListener<Void> {
     private ManageTaskViewModel model;
     private Task task;
 
@@ -38,7 +38,6 @@ public class TaskStatusDialogFragment extends DialogFragment implements Retrofit
         };
         final Map<String, String> fields = new ArrayMap<>();
         task = model.getTask().getValue();
-        fields.put("id", String.valueOf(task.getId()));
         builder.setTitle(R.string.title_edit_task_status_dialog_fragment)
                 .setItems(statuses, new DialogInterface.OnClickListener() {
                     @Override
@@ -58,7 +57,7 @@ public class TaskStatusDialogFragment extends DialogFragment implements Retrofit
                         }
                         task.setStatus(newStatus);
                         fields.put("status", String.valueOf(newStatus));
-                        TaskService.getInstance(getContext()).editTaskDetails(fields, TaskStatusDialogFragment.this);
+                        TaskService.getInstance(getContext()).editTaskDetails(task.getId(), fields, TaskStatusDialogFragment.this);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -72,12 +71,12 @@ public class TaskStatusDialogFragment extends DialogFragment implements Retrofit
     }
 
     @Override
-    public void onResponseSuccess() {
+    public void onResponseSuccess(Void response, @Nullable String TAG) {
         model.getTask().setValue(task);
     }
 
     @Override
-    public void onResponseFailed() {
+    public void onResponseFailed(@Nullable String TAG) {
 
     }
 }

@@ -36,7 +36,6 @@ public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        /// addd here listener
         TaskRecyclerViewHelper.adjustRecyclerViewItemToTaskStatus(holder, mValues.get(position), projectId, taskStatusChangedListener);
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

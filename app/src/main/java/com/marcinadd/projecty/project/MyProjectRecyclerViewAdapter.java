@@ -1,28 +1,22 @@
 package com.marcinadd.projecty.project;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
-import com.marcinadd.projecty.project.ProjectFragment.OnListFragmentInteractionListener;
-import com.marcinadd.projecty.project.manage.ManageProjectActivity;
 import com.marcinadd.projecty.project.model.ProjectRole;
-import com.marcinadd.projecty.task.TaskListActivity;
+import com.marcinadd.projecty.ui.project.ProjectFragmentDirections;
+import com.marcinadd.projecty.ui.project.ProjectListFragment.OnListFragmentInteractionListener;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class MyProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyProjectRecyclerViewAdapter.ViewHolder> {
 
     private final List<ProjectRole> mValues;
@@ -57,7 +51,6 @@ public class MyProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyProject
             }
         });
     }
-
     @Override
     public int getItemCount() {
         return mValues.size();
@@ -98,9 +91,9 @@ public class MyProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyProject
             return new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, TaskListActivity.class);
-                    intent.putExtra("projectId", mItem.getProject().getId());
-                    mContext.startActivity(intent);
+                    ProjectFragmentDirections.ActionNavProjectToTaskListActivity action = ProjectFragmentDirections.actionNavProjectToTaskListActivity();
+                    action.setProjectId(mItem.getProject().getId());
+                    Navigation.findNavController(mView).navigate(action);
                 }
             };
         }
@@ -109,9 +102,9 @@ public class MyProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyProject
             return new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, ManageProjectActivity.class);
-                    intent.putExtra("projectId", mItem.getProject().getId());
-                    mContext.startActivity(intent);
+                    ProjectFragmentDirections.ActionNavProjectToManageProjectFragment action = ProjectFragmentDirections.actionNavProjectToManageProjectFragment();
+                    action.setProjectId(mItem.getProject().getId());
+                    Navigation.findNavController(mView).navigate(action);
                 }
             };
         }

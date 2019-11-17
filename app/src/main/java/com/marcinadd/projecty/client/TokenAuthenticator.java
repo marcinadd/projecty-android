@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 import com.marcinadd.projecty.login.AuthClient;
 
 import java.io.IOException;
-import java.util.Objects;
 
 import okhttp3.Authenticator;
 import okhttp3.Request;
@@ -32,9 +31,11 @@ public class TokenAuthenticator implements Authenticator {
         if (response.code() == 401) {
             Call<Token> refreshCall = authClient.refresh("refresh_token", refreshToken);
             Token token = refreshCall.execute().body();
-            TokenHelper.saveToken(Objects.requireNonNull(token), mContext);
+            if (token != null) {
+                TokenHelper.saveToken(token, mContext);
+            }
             return response.request().newBuilder()
-                    .header("Authorization", "Bearer " + token.getAccessToken())
+                    .header("Authorization", "Bearer " + (token != null ? token.getAccessToken() : null))
                     .build();
         } else {
             return null;

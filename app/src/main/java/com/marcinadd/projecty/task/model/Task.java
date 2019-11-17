@@ -10,6 +10,15 @@ import java.util.List;
 
 public class Task implements Serializable {
 
+    public Task() {
+    }
+
+    public Task(String name, Date startDate, Date endDate) {
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     private long id;
 
     private String name;

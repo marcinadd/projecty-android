@@ -5,6 +5,11 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.marcinadd.projecty.client.TokenHelper;
+import com.marcinadd.projecty.user.UserService;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -41,11 +46,18 @@ public class LoginRepository {
         dataSource.logout();
     }
 
+
     private void setLoggedInUser(LoggedInUser user, Context mContext) {
         this.user = user;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         sharedPreferences.edit().putString("username", user.getDisplayName()).apply();
         TokenHelper.saveToken(user.getToken(), mContext);
+        try {
+            ResponseBody body = UserService.getAvatar(user.getDisplayName(), mContext);
+            UserService.saveAvatarInCache(body, mContext);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // If user credentials will be cached in local storage, it is recommended it be encrypted
         // @see https://developer.android.com/training/articles/keystore
     }

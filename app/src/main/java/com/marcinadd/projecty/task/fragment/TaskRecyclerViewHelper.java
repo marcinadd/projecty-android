@@ -1,16 +1,17 @@
 package com.marcinadd.projecty.task.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
+
+import androidx.navigation.Navigation;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.listener.TaskStatusChangedListener;
 import com.marcinadd.projecty.task.TaskService;
 import com.marcinadd.projecty.task.TaskStatus;
-import com.marcinadd.projecty.task.manage.ManageTaskActivity;
 import com.marcinadd.projecty.task.model.Task;
+import com.marcinadd.projecty.ui.task.TaskListFragmentDirections;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -45,7 +46,7 @@ public class TaskRecyclerViewHelper {
                 arrowLeftIcon.setOnClickListener(new OnChangeStatusIconClick(task, IN_PROGRESS, context, taskStatusChangedListener));
                 arrowRightIcon.setVisibility(View.INVISIBLE);
         }
-        manageActivityIcon.setOnClickListener(new OnManageTaskIconClick(context, task.getId()));
+        manageActivityIcon.setOnClickListener(new OnManageTaskIconClick(task.getId(), holder.mView));
         holder.mItem = task;
         holder.taskName.setText(task.getName());
     }
@@ -71,20 +72,20 @@ public class TaskRecyclerViewHelper {
     }
 
     static class OnManageTaskIconClick implements View.OnClickListener {
-        private Context context;
         private long taskId;
+        private View mView;
 
-        OnManageTaskIconClick(Context context, long taskId) {
-            this.context = context;
+        OnManageTaskIconClick(long taskId, View view) {
             this.taskId = taskId;
+            mView = view;
         }
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(context, ManageTaskActivity.class);
-            intent.putExtra("taskId", taskId);
-            intent.putExtra("projectId", projectId);
-            context.startActivity(intent);
+            TaskListFragmentDirections.ActionTaskListActivityToManageTaskFragment action = TaskListFragmentDirections.actionTaskListActivityToManageTaskFragment();
+            action.setProjectId(projectId);
+            action.setTaskId(taskId);
+            Navigation.findNavController(mView).navigate(action);
         }
     }
 

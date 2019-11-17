@@ -6,21 +6,22 @@ import android.os.Bundle;
 import android.util.ArrayMap;
 import android.widget.DatePicker;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.marcinadd.projecty.helper.DateHelper;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.task.TaskService;
 import com.marcinadd.projecty.task.manage.DateType;
-import com.marcinadd.projecty.task.manage.ManageTaskViewModel;
 import com.marcinadd.projecty.task.model.Task;
+import com.marcinadd.projecty.ui.task.manage.ManageTaskViewModel;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
-public class TaskDatePickerDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener, RetrofitListener {
+public class TaskDatePickerDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener, RetrofitListener<Void> {
     private Date initDate;
     private DateType dateType;
     private ManageTaskViewModel model;
@@ -53,7 +54,6 @@ public class TaskDatePickerDialogFragment extends DialogFragment implements Date
         Date date = c.getTime();
         Map<String, String> fields = new ArrayMap<>();
         task = model.getTask().getValue();
-        fields.put("id", String.valueOf(task.getId()));
         if (dateType == DateType.START_DATE) {
             fields.put("startDate", DateHelper.formatDate(date));
             task.setStartDate(date);
@@ -62,16 +62,16 @@ public class TaskDatePickerDialogFragment extends DialogFragment implements Date
             task.setEndDate(date);
         }
 
-        TaskService.getInstance(getContext()).editTaskDetails(fields, this);
+        TaskService.getInstance(getContext()).editTaskDetails(task.getId(), fields, this);
     }
 
     @Override
-    public void onResponseSuccess() {
+    public void onResponseSuccess(Void response, @Nullable String TAG) {
         model.getTask().setValue(task);
     }
 
     @Override
-    public void onResponseFailed() {
+    public void onResponseFailed(@Nullable String TAG) {
 
     }
 }

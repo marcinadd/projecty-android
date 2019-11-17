@@ -2,11 +2,14 @@ package com.marcinadd.projecty.task;
 
 import android.content.Context;
 
+import com.marcinadd.projecty.callback.RetrofitCallback;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
-import com.marcinadd.projecty.listener.AddTaskListener;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.listener.TaskStatusChangedListener;
+import com.marcinadd.projecty.request.ChangeTaskStatusRequest;
+import com.marcinadd.projecty.task.model.ManageTaskResponseModel;
 import com.marcinadd.projecty.task.model.Task;
+import com.marcinadd.projecty.task.model.TaskListResponseModel;
 
 import java.util.Map;
 
@@ -31,43 +34,18 @@ public class TaskService extends AuthorizedNetworkClient {
         return taskService;
     }
 
-    public void editTaskDetails(Map<String, String> fields, final RetrofitListener retrofitListener) {
-        apiTask.editTaskDetails(fields).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    retrofitListener.onResponseSuccess();
-                }
-                retrofitListener.onResponseFailed();
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                retrofitListener.onResponseFailed();
-            }
-        });
+    public void editTaskDetails(long taskId, Map<String, String> fields, final RetrofitListener<Void> listener) {
+        apiTask.editTaskDetails(taskId, fields).enqueue(new RetrofitCallback<>(listener));
     }
 
-    public void addTask(long projectId, String name, String startDate, String endDate,
-                        final AddTaskListener addTaskListener) {
-        apiTask.addTask(projectId, name, startDate, endDate).enqueue(new Callback<Task>() {
-            @Override
-            public void onResponse(Call<Task> call, Response<Task> response) {
-                if (response.isSuccessful()) {
-                    addTaskListener.onTaskAdded(response.body());
-                }
-                addTaskListener.onAddFailed();
-            }
-
-            @Override
-            public void onFailure(Call<Task> call, Throwable t) {
-                addTaskListener.onAddFailed();
-            }
-        });
+    public void addTask(long projectId, Task task,
+                        final RetrofitListener<Task> listener) {
+        apiTask.addTask(projectId, task).enqueue(new RetrofitCallback<>(listener));
     }
 
     public void changeStatus(final Task task, final TaskStatus newTaskStatus, final TaskStatusChangedListener listener) {
-        apiTask.changeStatus(task.getId(), newTaskStatus).enqueue(new Callback<Void>() {
+        ChangeTaskStatusRequest changeTaskStatusRequest = new ChangeTaskStatusRequest(newTaskStatus);
+        apiTask.changeStatus(task.getId(), changeTaskStatusRequest).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
@@ -82,4 +60,11 @@ public class TaskService extends AuthorizedNetworkClient {
         });
     }
 
+    public void getTaskList(final long projectId, final RetrofitListener<TaskListResponseModel> listener) {
+        apiTask.taskList(projectId).enqueue(new RetrofitCallback<>(listener));
+    }
+
+    public void manageTask(final long taskId, final RetrofitListener<ManageTaskResponseModel> listener) {
+        apiTask.manageTask(taskId).enqueue(new RetrofitCallback<>(listener));
+    }
 }

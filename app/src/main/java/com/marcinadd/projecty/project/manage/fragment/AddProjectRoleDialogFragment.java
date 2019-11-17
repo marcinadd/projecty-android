@@ -14,7 +14,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
-import com.marcinadd.projecty.project.ProjectClient;
+import com.marcinadd.projecty.project.ApiProject;
 import com.marcinadd.projecty.project.model.Project;
 
 import java.util.Collections;
@@ -45,8 +45,8 @@ public class AddProjectRoleDialogFragment extends DialogFragment {
                         String username = editText.getText().toString();
                         List<String> usernames = Collections.singletonList(username);
                         Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(getContext());
-                        ProjectClient projectClient = retrofit.create(ProjectClient.class);
-                        projectClient.addUsers(project.getId(), usernames).enqueue(new Callback<Void>() {
+                        ApiProject apiProject = retrofit.create(ApiProject.class);
+                        apiProject.addUsers(project.getId(), usernames).enqueue(new Callback<Void>() {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
 

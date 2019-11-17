@@ -1,6 +1,5 @@
 package com.marcinadd.projecty.project;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -15,21 +14,21 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.marcinadd.projecty.R;
-import com.marcinadd.projecty.client.AuthorizedNetworkClient;
+import com.marcinadd.projecty.listener.RetrofitListener;
+import com.marcinadd.projecty.project.model.Project;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-
 public class AddProjectDialogFragment extends DialogFragment {
     private LinearLayout linearLayout;
     private EditText projectName;
-    private Activity activity;
+    private final RetrofitListener<Void> listener;
+
+    public AddProjectDialogFragment(RetrofitListener<Void> listener) {
+        this.listener = listener;
+    }
 
     @NonNull
     @Override
@@ -38,10 +37,9 @@ public class AddProjectDialogFragment extends DialogFragment {
         View view = Objects.requireNonNull(getActivity()).getLayoutInflater().inflate(R.layout.fragment_dialog_add_project, null);
         builder.setMessage("Add project")
                 .setPositiveButton(R.string.ok, new OnPositiveButtonClick())
-                .setNegativeButton(R.string.cancel, new OnNegativeButtonClick())
+                .setNegativeButton(R.string.cancel, null)
                 .setView(view);
-        ImageView imageView = view.findViewById(R.id.imageView);
-        activity = getActivity();
+        ImageView imageView = view.findViewById(R.id.nav_header_avatar);
         linearLayout = view.findViewById(R.id.layout_add_project_dialog);
         projectName = view.findViewById(R.id.add_project_edit_text);
         imageView.setOnClickListener(new OnAddEditTextImageViewClick());
@@ -79,27 +77,9 @@ public class AddProjectDialogFragment extends DialogFragment {
         public void onClick(DialogInterface dialog, int which) {
             List<String> usernames = getUsernamesToList();
             String name = projectName.getText().toString();
-            Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(getContext());
-            ProjectClient projectClient = retrofit.create(ProjectClient.class);
-            projectClient.addProject(name, usernames).enqueue(new Callback<Void>() {
-                @Override
-                public void onResponse(Call<Void> call, Response<Void> response) {
-                    activity.recreate();
-                }
-
-                @Override
-                public void onFailure(Call<Void> call, Throwable t) {
-
-                }
-            });
-        }
-    }
-
-    class OnNegativeButtonClick implements DialogInterface.OnClickListener {
-
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-
+            Project project = new Project(name);
+            project.setUsernames(usernames);
+            ProjectService.getInstance(getContext()).addProject(project, listener);
         }
     }
 }

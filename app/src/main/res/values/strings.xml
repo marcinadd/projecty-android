@@ -46,4 +46,26 @@
     <string name="hint_add_task_name">Task name</string>
     <string name="hint_add_task_start_date">Start date</string>
     <string name="hint_add_task_end_date">End date</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_project">Project list</string>
+    <string name="menu_manage_project">Manage Project</string>
+    <string name="menu_task_list">Task list</string>
+    <string name="menu_message">Messages</string>
+    <string name="menu_message_sent">Sent messages</string>
+    <string name="menu_message_received">Received messages</string>
+    <string name="recipient">Recipient</string>
+    <string name="subject">Subject</string>
+    <string name="message">Message</string>
+    <string name="send">Send</string>
+    <string name="message_send">Message send</string>
+    <string name="sending_failed">Sending Failed</string>
+    <string name="send_message">Send new message</string>
+    <string name="delete_project">Delete project</string>
 </resources>
