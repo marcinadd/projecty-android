@@ -22,15 +22,18 @@ import com.marcinadd.projecty.project.manage.fragment.ProjectRoleFragment;
 import com.marcinadd.projecty.project.model.ProjectRole;
 import com.marcinadd.projecty.task.fragment.TaskFragment;
 import com.marcinadd.projecty.task.model.Task;
+import com.marcinadd.projecty.team.model.TeamRole;
 import com.marcinadd.projecty.ui.login.LoginActivity;
 import com.marcinadd.projecty.ui.message.MessageListFragment;
 import com.marcinadd.projecty.ui.project.ProjectListFragment;
+import com.marcinadd.projecty.ui.team.TeamListFragment;
 import com.marcinadd.projecty.user.UserService;
 
 public class Main2Activity extends AppCompatActivity implements ProjectListFragment.OnListFragmentInteractionListener,
         ProjectRoleFragment.OnListFragmentInteractionListener,
         TaskFragment.OnListFragmentInteractionListener,
         MessageListFragment.OnListFragmentInteractionListener,
+        TeamListFragment.OnListFragmentInteractionListener,
         UserNotLoggedListener {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -108,6 +111,11 @@ public class Main2Activity extends AppCompatActivity implements ProjectListFragm
 
     @Override
     public void onListFragmentInteraction(Message message) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(TeamRole item) {
 
     }
 }

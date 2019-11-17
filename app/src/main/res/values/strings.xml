@@ -68,4 +68,6 @@
     <string name="sending_failed">Sending Failed</string>
     <string name="send_message">Send new message</string>
     <string name="delete_project">Delete project</string>
+    <string name="menu_team">Teams</string>
+    <string name="manage">Manage</string>
 </resources>

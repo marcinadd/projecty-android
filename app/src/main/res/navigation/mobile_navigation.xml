@@ -144,4 +144,10 @@
             app:popUpTo="@+id/nav_home"
             app:popUpToInclusive="true" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_team"
+        android:name="com.marcinadd.projecty.ui.team.TeamListFragment"
+        android:label="@string/menu_team"
+        tools:layout="@layout/fragment_team_list" />
 </navigation>
