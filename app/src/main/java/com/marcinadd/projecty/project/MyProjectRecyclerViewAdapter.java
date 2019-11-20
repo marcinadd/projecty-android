@@ -88,24 +88,18 @@ public class MyProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyProject
         }
 
         View.OnClickListener taskListListener() {
-            return new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ProjectFragmentDirections.ActionNavProjectToTaskListActivity action = ProjectFragmentDirections.actionNavProjectToTaskListActivity();
-                    action.setProjectId(mItem.getProject().getId());
-                    Navigation.findNavController(mView).navigate(action);
-                }
+            return v -> {
+                ProjectFragmentDirections.ActionNavProjectToTaskListActivity action = ProjectFragmentDirections.actionNavProjectToTaskListActivity();
+                action.setProjectId(mItem.getProject().getId());
+                Navigation.findNavController(mView).navigate(action);
             };
         }
 
         View.OnClickListener manageProjectListener() {
-            return new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ProjectFragmentDirections.ActionNavProjectToManageProjectFragment action = ProjectFragmentDirections.actionNavProjectToManageProjectFragment();
-                    action.setProjectId(mItem.getProject().getId());
-                    Navigation.findNavController(mView).navigate(action);
-                }
+            return v -> {
+                ProjectFragmentDirections.ActionNavProjectToManageProjectFragment action = ProjectFragmentDirections.actionNavProjectToManageProjectFragment();
+                action.setProjectId(mItem.getProject().getId());
+                Navigation.findNavController(mView).navigate(action);
             };
         }
     }

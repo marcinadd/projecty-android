@@ -3,8 +3,10 @@ package com.marcinadd.projecty.ui.team;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
@@ -58,17 +60,28 @@ public class MyTeamRecyclerViewAdapter extends RecyclerView.Adapter<MyTeamRecycl
         public final TextView mTeamNameView;
         public final TextView mTeamRoleNameView;
         public TeamRole mItem;
+        private Button mManageTeamButton;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mTeamNameView = view.findViewById(R.id.team_list_team_name);
             mTeamRoleNameView = view.findViewById(R.id.team_list_role_name);
+            mManageTeamButton = view.findViewById(R.id.team_list_manage_button);
+            mManageTeamButton.setOnClickListener(manageTeamListener());
         }
 
         @Override
         public String toString() {
             return super.toString() + " '" + mTeamRoleNameView.getText() + "'";
+        }
+
+        View.OnClickListener manageTeamListener() {
+            return v -> {
+                TeamListFragmentDirections.ActionNavTeamToManageTeamFragment action = TeamListFragmentDirections.actionNavTeamToManageTeamFragment();
+                action.setTeamId(mItem.getTeam().getId());
+                Navigation.findNavController(mView).navigate(action);
+            };
         }
     }
 }

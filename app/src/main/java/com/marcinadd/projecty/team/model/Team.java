@@ -2,9 +2,10 @@ package com.marcinadd.projecty.team.model;
 
 import com.marcinadd.projecty.project.model.Project;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Team {
+public class Team implements Serializable {
     private Long id;
     private String name;
     private List<Project> projects;

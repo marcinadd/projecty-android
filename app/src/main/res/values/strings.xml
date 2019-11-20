@@ -70,4 +70,6 @@
     <string name="delete_project">Delete project</string>
     <string name="menu_team">Teams</string>
     <string name="manage">Manage</string>
+    <string name="team_name">Team name</string>
+    <string name="team_delete">Delete team</string>
 </resources>

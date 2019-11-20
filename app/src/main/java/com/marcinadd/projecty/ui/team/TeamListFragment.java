@@ -2,7 +2,6 @@ package com.marcinadd.projecty.ui.team;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +60,6 @@ public class TeamListFragment extends Fragment implements RetrofitListener<List<
 
     @Override
     public void onResponseSuccess(List<TeamRole> response, @Nullable String TAG) {
-        response.forEach(teamRole -> Log.e("TAG", String.valueOf(teamRole)));
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;

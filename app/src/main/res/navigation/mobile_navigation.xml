@@ -149,5 +149,27 @@
         android:id="@+id/nav_team"
         android:name="com.marcinadd.projecty.ui.team.TeamListFragment"
         android:label="@string/menu_team"
-        tools:layout="@layout/fragment_team_list" />
+        tools:layout="@layout/fragment_team_list">
+        <action
+            android:id="@+id/action_nav_team_to_manageTeamFragment"
+            app:destination="@id/manageTeamFragment">
+            <argument
+                android:name="teamId"
+                android:defaultValue="0L" />
+        </action>
+        <argument
+            android:name="teamId"
+            android:defaultValue="0L"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/manageTeamFragment"
+        android:name="com.marcinadd.projecty.ui.team.manage.ManageTeamFragment"
+        android:label="fragment_manage_team"
+        tools:layout="@layout/fragment_manage_team">
+        <argument
+            android:name="teamId"
+            android:defaultValue="0L"
+            app:argType="long" />
+    </fragment>
 </navigation>

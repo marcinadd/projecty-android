@@ -5,9 +5,11 @@ import android.content.Context;
 import com.marcinadd.projecty.callback.RetrofitCallback;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.listener.RetrofitListener;
+import com.marcinadd.projecty.team.model.ManageTeamResponseModel;
 import com.marcinadd.projecty.team.model.TeamRole;
 
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Retrofit;
 
@@ -27,7 +29,16 @@ public class TeamService {
         return teamService;
     }
 
-    public void getTeams(final RetrofitListener<List<TeamRole>> listener) {
+    public void getTeams(RetrofitListener<List<TeamRole>> listener) {
         apiTeam.getTeams().enqueue(new RetrofitCallback<>(listener));
     }
+
+    public void getTeamWithRoles(long teamId, RetrofitListener<ManageTeamResponseModel> listener) {
+        apiTeam.getTeamWithRoles(teamId).enqueue(new RetrofitCallback<>(listener));
+    }
+
+    public void editTeam(long teamId, Map<String, String> fields, RetrofitListener<Void> listener) {
+        apiTeam.editTeam(teamId, fields).enqueue(new RetrofitCallback<>(listener));
+    }
+
 }
