@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
-import com.marcinadd.projecty.project.model.ProjectRole;
+import com.marcinadd.projecty.model.Role;
 
 import java.util.List;
 
@@ -61,7 +61,7 @@ public class ProjectRoleFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_projectrole_list, container, false);
 
-        List<ProjectRole> projectRoles = (List<ProjectRole>) getArguments().getSerializable("projectRoles");
+        List<Role> projectRoles = (List<Role>) getArguments().getSerializable("projectRoles");
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -106,6 +106,6 @@ public class ProjectRoleFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(ProjectRole item);
+        void onListFragmentInteraction(Role item);
     }
 }

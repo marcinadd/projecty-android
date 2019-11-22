@@ -18,6 +18,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.marcinadd.projecty.listener.UserNotLoggedListener;
 import com.marcinadd.projecty.login.LoginService;
 import com.marcinadd.projecty.message.model.Message;
+import com.marcinadd.projecty.model.Role;
 import com.marcinadd.projecty.project.manage.fragment.ProjectRoleFragment;
 import com.marcinadd.projecty.project.model.ProjectRole;
 import com.marcinadd.projecty.task.fragment.TaskFragment;
@@ -100,11 +101,6 @@ public class Main2Activity extends AppCompatActivity implements ProjectListFragm
     }
 
     @Override
-    public void onListFragmentInteraction(ProjectRole item) {
-
-    }
-
-    @Override
     public void onListFragmentInteraction(Task item) {
 
     }
@@ -116,6 +112,16 @@ public class Main2Activity extends AppCompatActivity implements ProjectListFragm
 
     @Override
     public void onListFragmentInteraction(TeamRole item) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(Role item) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(ProjectRole item) {
 
     }
 }

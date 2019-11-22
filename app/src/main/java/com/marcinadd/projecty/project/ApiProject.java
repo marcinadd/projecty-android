@@ -26,10 +26,10 @@ public interface ApiProject {
     Call<Void> updateProject(@Path("projectId") long projectId, @Body Map<String, String> fields);
 
     @PATCH("projectRoles/{projectRoleId}")
-    Call<Void> changeRole(@Path("projectRoleId") long projectRoleId, @Body Map<String, String> fields);
+    Call<Void> updateProjectRole(@Path("projectRoleId") long projectRoleId, @Body Map<String, String> fields);
 
     @DELETE("projectRoles/{projectRoleId}")
-    Call<Void> deleteUser(@Path("projectRoleId") long projectRoleId);
+    Call<Void> deleteProjectRole(@Path("projectRoleId") long projectRoleId);
 
     @POST("projects/{projectId}/roles")
     Call<Void> addUsers(@Path("projectId") long projectId, @Body List<String> usernames);

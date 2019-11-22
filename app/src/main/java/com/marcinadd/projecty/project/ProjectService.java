@@ -9,6 +9,8 @@ import com.marcinadd.projecty.project.model.ManageProject;
 import com.marcinadd.projecty.project.model.Project;
 import com.marcinadd.projecty.project.model.UserProject;
 
+import java.util.Map;
+
 import retrofit2.Retrofit;
 
 public class ProjectService {
@@ -37,5 +39,13 @@ public class ProjectService {
 
     public void addProject(final Project project, final RetrofitListener<Void> listener) {
         apiProject.addProject(project).enqueue(new RetrofitCallback<>(listener));
+    }
+
+    public void deleteProjectRole(long projectRoleId, RetrofitListener<Void> listener) {
+        apiProject.deleteProjectRole(projectRoleId).enqueue(new RetrofitCallback<>(listener));
+    }
+
+    public void updateProjectRole(long projectId, Map<String, String> fields, RetrofitListener<Void> listener) {
+        apiProject.updateProjectRole(projectId, fields).enqueue(new RetrofitCallback<>(listener));
     }
 }
