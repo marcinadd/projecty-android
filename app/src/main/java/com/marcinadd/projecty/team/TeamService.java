@@ -41,4 +41,11 @@ public class TeamService {
         apiTeam.editTeam(teamId, fields).enqueue(new RetrofitCallback<>(listener));
     }
 
+    public void updateTeamRole(long teamRoleId, Map<String, String> fields, RetrofitListener<Void> listener) {
+        apiTeam.updateTeamRole(teamRoleId, fields).enqueue(new RetrofitCallback<>(listener));
+    }
+
+    public void deleteTeamRole(long teamRoleId, RetrofitListener<Void> listener) {
+        apiTeam.deleteTeamRole(teamRoleId).enqueue(new RetrofitCallback<>(listener));
+    }
 }

@@ -1,6 +1,8 @@
 package com.marcinadd.projecty.model;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,22 +11,22 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
-import com.marcinadd.projecty.project.manage.fragment.ProjectRoleFragment.OnListFragmentInteractionListener;
+import com.marcinadd.projecty.listener.RetrofitListener;
 
 import java.util.List;
 
 public abstract class MyRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyRoleRecyclerViewAdapter.ViewHolder> {
 
     private final List<Role> mValues;
-    private final OnListFragmentInteractionListener mListener;
     private Context context;
+    private String currentUserUsername;
 
-    public MyRoleRecyclerViewAdapter(List<Role> items, OnListFragmentInteractionListener listener) {
+    public MyRoleRecyclerViewAdapter(List<Role> items) {
         mValues = items;
-        mListener = listener;
     }
 
     @Override
@@ -32,6 +34,8 @@ public abstract class MyRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyR
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_projectrole, parent, false);
         context = parent.getContext();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        currentUserUsername = sharedPreferences.getString("username", "");
         return new ViewHolder(view);
     }
 
@@ -42,13 +46,10 @@ public abstract class MyRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyR
         holder.mUsernameView.setText(mValues.get(position).getUser().getUsername());
         Roles name = mValues.get(position).getName();
         holder.mManagerSwitch.setChecked(name == Roles.MANAGER || name == Roles.ADMIN);
-        holder.mView.setOnClickListener(v -> {
-            if (null != mListener) {
-                // Notify the active callbacks interface (the activity, if the
-                // fragment is attached to one) that an item has been selected.
-                mListener.onListFragmentInteraction(holder.mItem);
-            }
-        });
+        if (holder.mItem.getUser().getUsername().equals(currentUserUsername)) {
+            holder.mManagerSwitch.setEnabled(false);
+            holder.mDeleteButtonIcon.setEnabled(false);
+        }
     }
 
     @Override
@@ -99,5 +100,35 @@ public abstract class MyRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyR
         public String toString() {
             return super.toString() + " '" + mUsernameView.getText() + "'";
         }
+    }
+
+    public RetrofitListener<Void> roleChangedListener(ViewHolder viewHolder, String newRoleName, boolean isChecked) {
+        return new RetrofitListener<Void>() {
+            @Override
+            public void onResponseSuccess(Void response, @Nullable String TAG) {
+                viewHolder.mRoleNameView.setText(newRoleName);
+            }
+
+            @Override
+            public void onResponseFailed(@Nullable String TAG) {
+                viewHolder.mManagerSwitch.setChecked(!isChecked);
+            }
+        };
+    }
+
+    public RetrofitListener<Void> deleteRoleListener(ViewHolder viewHolder) {
+        return new RetrofitListener<Void>() {
+            @Override
+            public void onResponseSuccess(Void response, @Nullable String TAG) {
+                getmValues().remove(viewHolder.mItem);
+                notifyItemRemoved(viewHolder.getAdapterPosition());
+                notifyItemRangeChanged(viewHolder.getAdapterPosition(), getmValues().size());
+            }
+
+            @Override
+            public void onResponseFailed(@Nullable String TAG) {
+
+            }
+        };
     }
 }

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.Path;
@@ -21,4 +22,10 @@ public interface ApiTeam {
 
     @PATCH("/teams/{teamId}")
     Call<Void> editTeam(@Path("teamId") long teamId, @Body Map<String, String> fields);
+
+    @PATCH("/teamRoles/{teamRoleId}")
+    Call<Void> updateTeamRole(@Path("teamRoleId") long teamRoleId, @Body Map<String, String> fields);
+
+    @DELETE("/teamRoles/{teamRoleId}")
+    Call<Void> deleteTeamRole(@Path("teamRoleId") long teamRoleId);
 }

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.model.Role;
+import com.marcinadd.projecty.ui.project.manage.MyProjectRoleRecyclerViewAdapter;
 
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class ProjectRoleFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyProjectRoleRecyclerViewAdapter(projectRoles, mListener));
+            recyclerView.setAdapter(new MyProjectRoleRecyclerViewAdapter(projectRoles));
         }
         return view;
     }

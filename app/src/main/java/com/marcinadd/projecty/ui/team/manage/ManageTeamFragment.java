@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -23,6 +24,7 @@ import com.marcinadd.projecty.team.model.ManageTeamResponseModel;
 import com.marcinadd.projecty.team.model.Team;
 import com.marcinadd.projecty.team.model.TeamRole;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -88,6 +90,7 @@ public class ManageTeamFragment extends Fragment implements RetrofitListener<Man
     public void onResponseSuccess(ManageTeamResponseModel response, @Nullable String TAG) {
         mViewModel.setTeam(response.getTeam());
         mViewModel.setTeamRoles(response.getTeamRoles());
+        loadProjectRoleManageFragment();
     }
 
     @Override
@@ -110,6 +113,16 @@ public class ManageTeamFragment extends Fragment implements RetrofitListener<Man
             team.setName(newName);
         }
         mViewModel.setTeam(team);
+    }
+
+    private void loadProjectRoleManageFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("teamRoles", (Serializable) mViewModel.getTeamRoles().getValue());
+        TeamRoleFragment teamRoleFragment = new TeamRoleFragment();
+        teamRoleFragment.setArguments(bundle);
+        FragmentTransaction transaction = Objects.requireNonNull(getFragmentManager()).beginTransaction();
+        transaction.replace(R.id.frameLayout3, teamRoleFragment);
+        transaction.commit();
     }
 
 }
