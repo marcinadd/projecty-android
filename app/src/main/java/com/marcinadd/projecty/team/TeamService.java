@@ -48,4 +48,8 @@ public class TeamService {
     public void deleteTeamRole(long teamRoleId, RetrofitListener<Void> listener) {
         apiTeam.deleteTeamRole(teamRoleId).enqueue(new RetrofitCallback<>(listener));
     }
+
+    public void addUsers(long teamId, List<String> usernames, RetrofitListener<List<TeamRole>> listener) {
+        apiTeam.addUsers(teamId, usernames).enqueue(new RetrofitCallback<>(listener));
+    }
 }

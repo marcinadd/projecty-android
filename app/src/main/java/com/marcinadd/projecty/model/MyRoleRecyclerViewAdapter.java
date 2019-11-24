@@ -27,6 +27,7 @@ public abstract class MyRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyR
 
     public MyRoleRecyclerViewAdapter(List<Role> items) {
         mValues = items;
+        setHasStableIds(true);
     }
 
     @Override
@@ -73,8 +74,13 @@ public abstract class MyRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyR
         return context;
     }
 
-    public List<Role> getmValues() {
-        return mValues;
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    public void addRole(Role role) {
+        notifyItemInserted(mValues.size() - 1);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -107,6 +113,7 @@ public abstract class MyRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyR
             @Override
             public void onResponseSuccess(Void response, @Nullable String TAG) {
                 viewHolder.mRoleNameView.setText(newRoleName);
+                viewHolder.mItem.setName(Roles.valueOf(newRoleName));
             }
 
             @Override
@@ -120,9 +127,10 @@ public abstract class MyRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyR
         return new RetrofitListener<Void>() {
             @Override
             public void onResponseSuccess(Void response, @Nullable String TAG) {
-                getmValues().remove(viewHolder.mItem);
-                notifyItemRemoved(viewHolder.getAdapterPosition());
-                notifyItemRangeChanged(viewHolder.getAdapterPosition(), getmValues().size());
+                int index = mValues.indexOf(viewHolder.mItem);
+                mValues.remove(viewHolder.mItem);
+                notifyItemRemoved(index);
+                notifyItemRangeChanged(index, mValues.size());
             }
 
             @Override

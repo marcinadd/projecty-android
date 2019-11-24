@@ -17,6 +17,7 @@ import com.marcinadd.projecty.model.Role;
 import java.util.List;
 
 public class TeamRoleFragment extends Fragment {
+    private MyTeamRoleRecyclerViewAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,8 +31,13 @@ public class TeamRoleFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyTeamRoleRecyclerViewAdapter(teamRoles));
+            adapter = new MyTeamRoleRecyclerViewAdapter(teamRoles);
+            recyclerView.setAdapter(adapter);
         }
         return view;
+    }
+
+    public void addRoleToRecyclerViewAdapater(Role role) {
+        adapter.addRole(role);
     }
 }

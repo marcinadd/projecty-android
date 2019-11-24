@@ -18,4 +18,25 @@ public class Role {
     public User getUser() {
         return user;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setName(Roles name) {
+        this.name = name;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", name=" + name +
+                ", user=" + user +
+                '}';
+    }
 }

@@ -1,4 +1,4 @@
-package com.marcinadd.projecty.ui.team.manage;
+package com.marcinadd.projecty.ui.team.manage.dialog;
 
 import android.app.Activity;
 import android.app.AlertDialog;

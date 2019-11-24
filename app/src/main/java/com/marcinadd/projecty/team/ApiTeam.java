@@ -11,6 +11,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface ApiTeam {
@@ -28,4 +29,7 @@ public interface ApiTeam {
 
     @DELETE("/teamRoles/{teamRoleId}")
     Call<Void> deleteTeamRole(@Path("teamRoleId") long teamRoleId);
+
+    @POST("/teams/{teamId}/roles")
+    Call<List<TeamRole>> addUsers(@Path("teamId") long teamId, @Body List<String> usernames);
 }
