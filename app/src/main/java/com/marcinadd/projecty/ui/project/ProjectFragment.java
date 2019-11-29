@@ -24,10 +24,11 @@ public class ProjectFragment extends Fragment implements RetrofitListener<Void> 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_my_projects, container, false);
         fab = view.findViewById(R.id.fab);
+        setRetainInstance(true);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddProjectDialogFragment dialogFragment = new AddProjectDialogFragment(ProjectFragment.this);
+                AddProjectDialogFragment dialogFragment = new AddProjectDialogFragment();
                 dialogFragment.show(getChildFragmentManager(), "TAG");
             }
         });
@@ -35,6 +36,13 @@ public class ProjectFragment extends Fragment implements RetrofitListener<Void> 
         return view;
     }
 
+    @Override
+    public void onAttachFragment(@NonNull Fragment childFragment) {
+        if (childFragment instanceof AddProjectDialogFragment) {
+            AddProjectDialogFragment addProjectDialogFragment = (AddProjectDialogFragment) childFragment;
+            addProjectDialogFragment.setListener(this);
+        }
+    }
 
     @Override
     public void onResponseSuccess(Void response, @Nullable String TAG) {

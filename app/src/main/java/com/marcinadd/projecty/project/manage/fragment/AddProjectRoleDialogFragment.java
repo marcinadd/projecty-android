@@ -59,12 +59,7 @@ public class AddProjectRoleDialogFragment extends DialogFragment {
                         });
                     }
                 })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
+                .setNegativeButton(R.string.cancel, null)
                 .setView(view);
         return builder.create();
     }

@@ -21,12 +21,12 @@ import com.marcinadd.projecty.message.model.Message;
 import com.marcinadd.projecty.model.Role;
 import com.marcinadd.projecty.project.manage.fragment.ProjectRoleFragment;
 import com.marcinadd.projecty.project.model.ProjectRole;
-import com.marcinadd.projecty.task.fragment.TaskFragment;
 import com.marcinadd.projecty.task.model.Task;
 import com.marcinadd.projecty.team.model.TeamRole;
 import com.marcinadd.projecty.ui.login.LoginActivity;
 import com.marcinadd.projecty.ui.message.MessageListFragment;
 import com.marcinadd.projecty.ui.project.ProjectListFragment;
+import com.marcinadd.projecty.ui.task.TaskFragment;
 import com.marcinadd.projecty.ui.team.TeamListFragment;
 import com.marcinadd.projecty.user.UserService;
 
@@ -45,38 +45,29 @@ public class Main2Activity extends AppCompatActivity implements ProjectListFragm
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        checkIfUserCredintialsAreValid();
 
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        UserService.setSidebarData(navigationView.getHeaderView(0), getApplicationContext());
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_project, R.id.nav_message_received, R.id.nav_message_sent)
-                .setDrawerLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+        if (!getCurrentUserUsername().isEmpty()) {
+            LoginService.getInstance(getApplicationContext()).checkIfUserIsLogged(this);
+            DrawerLayout drawer = findViewById(R.id.drawer_layout);
+            NavigationView navigationView = findViewById(R.id.nav_view);
+            UserService.setSidebarData(navigationView.getHeaderView(0), getApplicationContext());
+            // Passing each menu ID as a set of Ids because each
+            // menu should be considered as top level destinations.
+            mAppBarConfiguration = new AppBarConfiguration.Builder(
+                    R.id.nav_home, R.id.nav_project, R.id.nav_message_received, R.id.nav_message_sent)
+                    .setDrawerLayout(drawer)
+                    .build();
+            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+            NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+            NavigationUI.setupWithNavController(navigationView, navController);
+        } else {
+            onUserNotLogged();
+        }
     }
 
-    public void checkIfUserCredintialsAreValid() {
+    public String getCurrentUserUsername() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String username = sharedPreferences.getString("username", "");
-        if (username.isEmpty()) {
-            this.onUserNotLogged();
-        } else {
-            LoginService.getInstance(getApplicationContext()).checkIfUserIsLogged(this);
-        }
+        return sharedPreferences.getString("username", "");
     }
 
     @Override

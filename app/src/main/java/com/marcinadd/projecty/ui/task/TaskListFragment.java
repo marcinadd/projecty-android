@@ -16,10 +16,8 @@ import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.task.TaskService;
 import com.marcinadd.projecty.task.fragment.AddTaskDialogFragment;
-import com.marcinadd.projecty.task.fragment.TaskFragment;
 import com.marcinadd.projecty.task.model.Task;
 import com.marcinadd.projecty.task.model.TaskListResponseModel;
-import com.marcinadd.projecty.task.ui.main.SectionsStatePagerAdapter;
 
 import java.util.Objects;
 
@@ -32,6 +30,7 @@ public class TaskListFragment extends Fragment implements TaskFragment.OnListFra
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setRetainInstance(true);
         View root = inflater.inflate(R.layout.activity_task_list, container, false);
         viewPager = root.findViewById(R.id.view_pager);
         tabs = root.findViewById(R.id.tabs);
@@ -41,11 +40,28 @@ public class TaskListFragment extends Fragment implements TaskFragment.OnListFra
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddTaskDialogFragment addTaskDialogFragment = new AddTaskDialogFragment(projectId, taskRetrofitListener());
+                Bundle bundle = new Bundle();
+                bundle.putLong("projectId", projectId);
+                AddTaskDialogFragment addTaskDialogFragment = new AddTaskDialogFragment();
+                addTaskDialogFragment.setArguments(bundle);
                 addTaskDialogFragment.show(getChildFragmentManager(), "TAG");
             }
         });
         return root;
+    }
+
+    @Override
+    public void onAttachFragment(@NonNull Fragment childFragment) {
+        if (childFragment instanceof AddTaskDialogFragment) {
+            AddTaskDialogFragment fragment = (AddTaskDialogFragment) childFragment;
+            fragment.setAddTaskListener(taskAddRetrofitListener());
+        } else if (childFragment instanceof TaskFragment) {
+            //FIXME Crash when screen orientation change
+            TaskFragment taskFragment = (TaskFragment) childFragment;
+            taskFragment.setTaskStatusChangedListener((task, newTaskStatus) -> {
+                sectionsStatePagerAdapter.onTaskStatusChanged(task, newTaskStatus);
+            });
+        }
     }
 
     @Override
@@ -72,7 +88,7 @@ public class TaskListFragment extends Fragment implements TaskFragment.OnListFra
         };
     }
 
-    private RetrofitListener<Task> taskRetrofitListener() {
+    private RetrofitListener<Task> taskAddRetrofitListener() {
         return new RetrofitListener<Task>() {
             @Override
             public void onResponseSuccess(Task response, @Nullable String TAG) {

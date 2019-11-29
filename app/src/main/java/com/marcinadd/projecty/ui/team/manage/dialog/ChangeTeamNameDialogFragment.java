@@ -24,7 +24,7 @@ public class ChangeTeamNameDialogFragment extends DialogFragment implements Retr
     private Team team;
     private NameChangedListener listener;
 
-    public ChangeTeamNameDialogFragment(NameChangedListener listener) {
+    public void setListener(NameChangedListener listener) {
         this.listener = listener;
     }
 
@@ -55,7 +55,7 @@ public class ChangeTeamNameDialogFragment extends DialogFragment implements Retr
 
     @Override
     public void onResponseSuccess(Void response, @Nullable String TAG) {
-        listener.onNameChanged(team.getName());
+        listener.onNameChanged("Lolololo");
     }
 
     @Override

@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.listener.RetrofitListener;
@@ -29,9 +30,12 @@ import com.marcinadd.projecty.project.model.Project;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class ManageProjectFragment extends Fragment implements RetrofitListener<ManageProject> {
+public class ManageProjectFragment extends Fragment
+        implements RetrofitListener<ManageProject>,
+        DeleteProjectDialogFragment.OnProjectDeletedListener {
     private TextView projectName;
     private ManageProjectViewModel model;
+    private DeleteProjectDialogFragment deleteFragment;
 
     @Nullable
     @Override
@@ -123,8 +127,21 @@ public class ManageProjectFragment extends Fragment implements RetrofitListener<
     private void delete() {
             Bundle bundle1 = new Bundle();
             bundle1.putSerializable("project", model.getProject().getValue());
-        DeleteProjectDialogFragment fragment = new DeleteProjectDialogFragment(getView());
-            fragment.setArguments(bundle1);
-            fragment.show(Objects.requireNonNull(getFragmentManager()), "TAG");
+        deleteFragment = new DeleteProjectDialogFragment();
+        deleteFragment.setOnProjectDeletedListener(this);
+        deleteFragment.setArguments(bundle1);
+        deleteFragment.show(Objects.requireNonNull(getFragmentManager()), "TAG");
+    }
+
+    @Override
+    public void onProjectDeleted() {
+        Navigation.findNavController(Objects.requireNonNull(getView())).navigateUp();
+    }
+
+    @Override
+    public void onAttachFragment(@NonNull Fragment childFragment) {
+        if (deleteFragment != null)
+            deleteFragment.setOnProjectDeletedListener(this);
+        super.onAttachFragment(childFragment);
     }
 }

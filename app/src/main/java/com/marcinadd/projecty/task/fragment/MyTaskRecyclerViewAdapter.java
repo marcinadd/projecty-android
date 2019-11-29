@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.listener.TaskStatusChangedListener;
-import com.marcinadd.projecty.task.fragment.TaskFragment.OnListFragmentInteractionListener;
 import com.marcinadd.projecty.task.model.Task;
+import com.marcinadd.projecty.ui.task.TaskFragment.OnListFragmentInteractionListener;
 
 import java.util.List;
 

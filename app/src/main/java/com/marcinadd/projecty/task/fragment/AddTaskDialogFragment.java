@@ -26,20 +26,27 @@ import java.util.Date;
 
 public class AddTaskDialogFragment extends DialogFragment {
 
-    private final long projectId;
+    private long projectId;
     private EditText editTextName;
     private EditText editTextStartDate;
     private EditText editTextEndDate;
     private RetrofitListener<Task> addTaskListener;
 
-    public AddTaskDialogFragment(long projectId, RetrofitListener<Task> addTaskListener) {
-        this.projectId = projectId;
+    public void setAddTaskListener(RetrofitListener<Task> addTaskListener) {
         this.addTaskListener = addTaskListener;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        if (getArguments() != null) {
+            projectId = getArguments().getLong("projectId");
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         final View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_add_task, null);
         editTextName = view.findViewById(R.id.edit_add_task_name);

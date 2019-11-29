@@ -1,4 +1,4 @@
-package com.marcinadd.projecty.task.fragment;
+package com.marcinadd.projecty.ui.task;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,35 +12,33 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.listener.TaskStatusChangedListener;
+import com.marcinadd.projecty.task.fragment.MyTaskRecyclerViewAdapter;
 import com.marcinadd.projecty.task.model.Task;
 
+import java.io.Serializable;
 import java.util.List;
 
 
 public class TaskFragment extends Fragment {
-
     private OnListFragmentInteractionListener mListener;
     private TaskStatusChangedListener taskStatusChangedListener;
     private List<Task> tasks;
     private long projectId;
     private MyTaskRecyclerViewAdapter myTaskRecyclerViewAdapter;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public TaskFragment() {
-    }
-
-    public TaskFragment(List<Task> tasks, long projectId, TaskStatusChangedListener taskStatusChangedListener) {
-        this.tasks = tasks;
-        this.projectId = projectId;
+    public void setTaskStatusChangedListener(TaskStatusChangedListener taskStatusChangedListener) {
         this.taskStatusChangedListener = taskStatusChangedListener;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        if (getArguments() != null) {
+            Serializable serializable = getArguments().getSerializable("tasks");
+            tasks = (List<Task>) serializable;
+            projectId = getArguments().getLong("projectId");
+        }
     }
 
     @Override
@@ -61,12 +59,12 @@ public class TaskFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
+//        if (context instanceof OnListFragmentInteractionListener) {
+//            mListener = (OnListFragmentInteractionListener) context;
+//        } else {
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnListFragmentInteractionListener");
+//        }
     }
 
     public void addTaskToRecyclerViewAdapter(Task task) {

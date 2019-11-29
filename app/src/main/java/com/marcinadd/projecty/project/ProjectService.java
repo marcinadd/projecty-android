@@ -48,4 +48,8 @@ public class ProjectService {
     public void updateProjectRole(long projectId, Map<String, String> fields, RetrofitListener<Void> listener) {
         apiProject.updateProjectRole(projectId, fields).enqueue(new RetrofitCallback<>(listener));
     }
+
+    public void deleteProject(long projectId, RetrofitListener<Void> listener) {
+        apiProject.deleteProject(projectId).enqueue(new RetrofitCallback<>(listener));
+    }
 }

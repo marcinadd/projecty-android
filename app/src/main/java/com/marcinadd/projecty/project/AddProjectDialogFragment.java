@@ -24,9 +24,9 @@ import java.util.Objects;
 public class AddProjectDialogFragment extends DialogFragment {
     private LinearLayout linearLayout;
     private EditText projectName;
-    private final RetrofitListener<Void> listener;
+    private RetrofitListener<Void> listener;
 
-    public AddProjectDialogFragment(RetrofitListener<Void> listener) {
+    public void setListener(RetrofitListener<Void> listener) {
         this.listener = listener;
     }
 

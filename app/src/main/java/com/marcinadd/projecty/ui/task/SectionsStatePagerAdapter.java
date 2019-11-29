@@ -1,6 +1,8 @@
-package com.marcinadd.projecty.task.ui.main;
+package com.marcinadd.projecty.ui.task;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,9 +14,9 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.listener.TaskStatusChangedListener;
 import com.marcinadd.projecty.task.TaskStatus;
-import com.marcinadd.projecty.task.fragment.TaskFragment;
 import com.marcinadd.projecty.task.model.Task;
 
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -31,6 +33,7 @@ public class SectionsStatePagerAdapter extends FragmentStatePagerAdapter impleme
     private TaskFragment inProgressTaskFragment;
     private TaskFragment doneTaskFragment;
 
+
     public SectionsStatePagerAdapter(Context context, FragmentManager fm,
                                      List<Task> toDoTasks,
                                      List<Task> inProgressTasks,
@@ -43,34 +46,60 @@ public class SectionsStatePagerAdapter extends FragmentStatePagerAdapter impleme
         this.inProgressTasks = inProgressTasks;
         this.doneTasks = doneTasks;
         this.projectId = projectId;
+
     }
-
-
-//    @Override
-//    public long getItemId(int position) {
-//        return super.getItemId(position);
-//    }
 
     @Override
     public int getItemPosition(@NonNull Object object) {
         return POSITION_NONE;
     }
 
+    @NonNull
+    @Override
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
+        Fragment createdFragment = (Fragment) super.instantiateItem(container, position);
+        switch (position) {
+            case 0:
+                toDoTaskFragment = (TaskFragment) createdFragment;
+                break;
+            case 1:
+                inProgressTaskFragment = (TaskFragment) createdFragment;
+                break;
+            case 2:
+                doneTaskFragment = (TaskFragment) createdFragment;
+                break;
+
+        }
+        return createdFragment;
+    }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                toDoTaskFragment = new TaskFragment(toDoTasks, projectId, this);
-                return toDoTaskFragment;
+                TaskFragment f1 = new TaskFragment();
+                setTaskFragmentArguments(f1, toDoTasks);
+                toDoTaskFragment = f1;
+                return f1;
             case 1:
-                inProgressTaskFragment = new TaskFragment(inProgressTasks, projectId, this);
-                return inProgressTaskFragment;
+                TaskFragment f2 = new TaskFragment();
+                setTaskFragmentArguments(f2, inProgressTasks);
+                inProgressTaskFragment = f2;
+                return f2;
             case 2:
             default:
-                doneTaskFragment = new TaskFragment(doneTasks, projectId, this);
-                return doneTaskFragment;
+                TaskFragment f3 = new TaskFragment();
+                setTaskFragmentArguments(f3, doneTasks);
+                doneTaskFragment = f3;
+                return f3;
         }
+    }
+
+    private void setTaskFragmentArguments(TaskFragment fragment, List<Task> tasks) {
+        Bundle bundle = new Bundle();
+        bundle.putLong("projectId", projectId);
+        bundle.putSerializable("tasks", (Serializable) tasks);
+        fragment.setArguments(bundle);
     }
 
     @Override
@@ -117,17 +146,5 @@ public class SectionsStatePagerAdapter extends FragmentStatePagerAdapter impleme
     @Override
     public int getCount() {
         return 3;
-    }
-
-    public void setToDoTasks(List<Task> toDoTasks) {
-        this.toDoTasks = toDoTasks;
-    }
-
-    public void setInProgressTasks(List<Task> inProgressTasks) {
-        this.inProgressTasks = inProgressTasks;
-    }
-
-    public void setDoneTasks(List<Task> doneTasks) {
-        this.doneTasks = doneTasks;
     }
 }
