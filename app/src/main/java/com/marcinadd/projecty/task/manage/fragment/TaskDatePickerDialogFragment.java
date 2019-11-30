@@ -14,7 +14,6 @@ import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.task.TaskService;
 import com.marcinadd.projecty.task.manage.DateType;
 import com.marcinadd.projecty.task.model.Task;
-import com.marcinadd.projecty.ui.task.manage.ManageTaskViewModel;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -22,24 +21,38 @@ import java.util.Map;
 import java.util.Objects;
 
 public class TaskDatePickerDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener, RetrofitListener<Void> {
-    private Date initDate;
     private DateType dateType;
-    private ManageTaskViewModel model;
     private Task task;
+    private OnTaskDateChangedListener onTaskDateChangedListener;
 
-    public TaskDatePickerDialogFragment(ManageTaskViewModel model, DateType dateType) {
-        this.model = model;
-        this.dateType = dateType;
-        if (dateType == DateType.START_DATE) {
-            initDate = Objects.requireNonNull(model.getTask().getValue()).getStartDate();
-        } else {
-            initDate = Objects.requireNonNull(model.getTask().getValue()).getEndDate();
-        }
+    public static TaskDatePickerDialogFragment newInstance(Task task, DateType dateType) {
+        TaskDatePickerDialogFragment fragment = new TaskDatePickerDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("task", task);
+        bundle.putSerializable("dateType", dateType);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    public void setOnTaskDateChangedListener(OnTaskDateChangedListener onTaskDateChangedListener) {
+        this.onTaskDateChangedListener = onTaskDateChangedListener;
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Calendar c = Calendar.getInstance();
+        if (getArguments() != null) {
+            dateType = (DateType) getArguments().getSerializable("dateType");
+            task = (Task) getArguments().getSerializable("task");
+        }
+
+        Date initDate;
+        if (dateType == DateType.START_DATE) {
+            initDate = Objects.requireNonNull(task).getStartDate();
+        } else {
+            initDate = Objects.requireNonNull(task).getEndDate();
+        }
+
         c.setTime(initDate);
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
@@ -53,7 +66,6 @@ public class TaskDatePickerDialogFragment extends DialogFragment implements Date
         c.set(year, month, dayOfMonth);
         Date date = c.getTime();
         Map<String, String> fields = new ArrayMap<>();
-        task = model.getTask().getValue();
         if (dateType == DateType.START_DATE) {
             fields.put("startDate", DateHelper.formatDate(date));
             task.setStartDate(date);
@@ -67,11 +79,16 @@ public class TaskDatePickerDialogFragment extends DialogFragment implements Date
 
     @Override
     public void onResponseSuccess(Void response, @Nullable String TAG) {
-        model.getTask().setValue(task);
+        onTaskDateChangedListener.onTaskDateChanged(task);
     }
 
     @Override
     public void onResponseFailed(@Nullable String TAG) {
 
     }
+
+    public interface OnTaskDateChangedListener {
+        void onTaskDateChanged(Task task);
+    }
+
 }

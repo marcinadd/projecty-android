@@ -16,6 +16,7 @@ import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.helper.DateHelper;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.task.TaskService;
+import com.marcinadd.projecty.task.TaskStatus;
 import com.marcinadd.projecty.task.manage.DateType;
 import com.marcinadd.projecty.task.manage.fragment.TaskDatePickerDialogFragment;
 import com.marcinadd.projecty.task.manage.fragment.TaskNameDialogFragment;
@@ -23,9 +24,9 @@ import com.marcinadd.projecty.task.manage.fragment.TaskStatusDialogFragment;
 import com.marcinadd.projecty.task.model.ManageTaskResponseModel;
 import com.marcinadd.projecty.task.model.Task;
 
-public class ManageTaskFragment extends Fragment implements RetrofitListener<ManageTaskResponseModel> {
-    private long taskId;
-    private long projectId;
+import java.util.Objects;
+
+public class ManageTaskFragment extends Fragment implements RetrofitListener<ManageTaskResponseModel>, TaskDatePickerDialogFragment.OnTaskDateChangedListener, TaskNameDialogFragment.OnTaskNameChangedListener, TaskStatusDialogFragment.OnTaskStatusChangedListener {
     private TextView taskNameTextView;
     private TextView taskStartDateTextView;
     private TextView taskEndDateTextView;
@@ -38,12 +39,12 @@ public class ManageTaskFragment extends Fragment implements RetrofitListener<Man
 
     private ManageTaskViewModel model;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_manage_task, container, false);
-        projectId = ManageTaskFragmentArgs.fromBundle(getArguments()).getProjectId();
-        taskId = ManageTaskFragmentArgs.fromBundle(getArguments()).getTaskId();
+        long taskId = ManageTaskFragmentArgs.fromBundle(Objects.requireNonNull(getArguments())).getTaskId();
         taskNameTextView = root.findViewById(R.id.manage_task_name_text_view);
         taskStartDateTextView = root.findViewById(R.id.manage_task_data_start_text_view);
         taskEndDateTextView = root.findViewById(R.id.manage_task_data_end_text_view);
@@ -63,37 +64,35 @@ public class ManageTaskFragment extends Fragment implements RetrofitListener<Man
         return root;
     }
 
-    void setOnClickListeners() {
-        taskStartDateEditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TaskDatePickerDialogFragment taskDatePickerDialogFragment = new TaskDatePickerDialogFragment(model, DateType.START_DATE);
-                taskDatePickerDialogFragment.show(getChildFragmentManager(), "TAG");
-            }
+    private void setOnClickListeners() {
+        taskStartDateEditText.setOnClickListener(v -> {
+            TaskDatePickerDialogFragment taskDatePickerDialogFragment =
+                    TaskDatePickerDialogFragment.newInstance(
+                            model.getTask().getValue(), DateType.START_DATE);
+            taskDatePickerDialogFragment.setOnTaskDateChangedListener(this);
+            taskDatePickerDialogFragment.show(getChildFragmentManager(), "START_DATE");
         });
 
-        taskEndDateEditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TaskDatePickerDialogFragment taskDatePickerDialogFragment = new TaskDatePickerDialogFragment(model, DateType.END_DATE);
-                taskDatePickerDialogFragment.show(getChildFragmentManager(), "TAG");
-            }
+        taskEndDateEditText.setOnClickListener(v -> {
+            TaskDatePickerDialogFragment taskDatePickerDialogFragment =
+                    TaskDatePickerDialogFragment.newInstance(
+                            model.getTask().getValue(), DateType.END_DATE);
+            taskDatePickerDialogFragment.setOnTaskDateChangedListener(this);
+            taskDatePickerDialogFragment.show(getChildFragmentManager(), "END_DATE");
         });
 
-        taskNameEditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TaskNameDialogFragment taskNameDialogFragment = new TaskNameDialogFragment(model);
-                taskNameDialogFragment.show(getChildFragmentManager(), "TAG");
-            }
+        taskNameEditText.setOnClickListener(v -> {
+            TaskNameDialogFragment taskNameDialogFragment =
+                    TaskNameDialogFragment.newInstance(model.getTask().getValue());
+            taskNameDialogFragment.setOnTaskNameChangedListener(this);
+            taskNameDialogFragment.show(getChildFragmentManager(), "TAG");
         });
 
-        taskStatusEditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TaskStatusDialogFragment taskStatusDialogFragment = new TaskStatusDialogFragment(model);
+        taskStatusEditText.setOnClickListener(v -> {
+            TaskStatusDialogFragment taskStatusDialogFragment =
+                    TaskStatusDialogFragment.newInstance(model.getTask().getValue());
+            taskStatusDialogFragment.setOnTaskStatusChangedListener(this);
                 taskStatusDialogFragment.show(getChildFragmentManager(), "TAG");
-            }
         });
     }
 
@@ -105,6 +104,25 @@ public class ManageTaskFragment extends Fragment implements RetrofitListener<Man
     @Override
     public void onResponseFailed(@Nullable String TAG) {
 
+    }
+
+    @Override
+    public void onTaskDateChanged(Task task) {
+        model.getTask().setValue(task);
+    }
+
+    @Override
+    public void onTaskNameChanged(String newName) {
+        Task task = model.getTask().getValue();
+        Objects.requireNonNull(task).setName(newName);
+        model.getTask().setValue(task);
+    }
+
+    @Override
+    public void onTaskStatusChanged(TaskStatus newTaskStatus) {
+        Task task = model.getTask().getValue();
+        Objects.requireNonNull(task).setStatus(newTaskStatus);
+        model.getTask().setValue(task);
     }
 
     class TaskObserver implements Observer<Task> {
@@ -119,6 +137,21 @@ public class ManageTaskFragment extends Fragment implements RetrofitListener<Man
             taskStartDateEditText.setText(DateHelper.formatDate(task.getStartDate()));
             taskEndDateEditText.setText(DateHelper.formatDate(task.getEndDate()));
             taskStatusEditText.setText(String.valueOf(task.getStatus()));
+        }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            getChildFragmentManager().getFragments().forEach(fragment -> {
+                if (fragment instanceof TaskDatePickerDialogFragment) {
+                    ((TaskDatePickerDialogFragment) fragment).setOnTaskDateChangedListener(this);
+                } else if (fragment instanceof TaskNameDialogFragment) {
+                    ((TaskNameDialogFragment) fragment).setOnTaskNameChangedListener(this);
+                } else if (fragment instanceof TaskStatusDialogFragment)
+                    ((TaskStatusDialogFragment) fragment).setOnTaskStatusChangedListener(this);
+            });
         }
     }
 }

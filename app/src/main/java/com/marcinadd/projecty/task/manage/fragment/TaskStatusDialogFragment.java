@@ -15,21 +15,31 @@ import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.task.TaskService;
 import com.marcinadd.projecty.task.TaskStatus;
 import com.marcinadd.projecty.task.model.Task;
-import com.marcinadd.projecty.ui.task.manage.ManageTaskViewModel;
 
 import java.util.Map;
 
 public class TaskStatusDialogFragment extends DialogFragment implements RetrofitListener<Void> {
-    private ManageTaskViewModel model;
     private Task task;
+    private OnTaskStatusChangedListener onTaskStatusChangedListener;
 
-    public TaskStatusDialogFragment(ManageTaskViewModel model) {
-        this.model = model;
+    public static TaskStatusDialogFragment newInstance(Task task) {
+        TaskStatusDialogFragment fragment = new TaskStatusDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("task", task);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    public void setOnTaskStatusChangedListener(OnTaskStatusChangedListener onTaskStatusChangedListener) {
+        this.onTaskStatusChangedListener = onTaskStatusChangedListener;
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        if (getArguments() != null) {
+            task = (Task) getArguments().getSerializable("task");
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         String[] statuses = {
                 getString(R.string.task_status_to_do),
@@ -37,7 +47,6 @@ public class TaskStatusDialogFragment extends DialogFragment implements Retrofit
                 getString(R.string.task_status_done)
         };
         final Map<String, String> fields = new ArrayMap<>();
-        task = model.getTask().getValue();
         builder.setTitle(R.string.title_edit_task_status_dialog_fragment)
                 .setItems(statuses, new DialogInterface.OnClickListener() {
                     @Override
@@ -72,11 +81,16 @@ public class TaskStatusDialogFragment extends DialogFragment implements Retrofit
 
     @Override
     public void onResponseSuccess(Void response, @Nullable String TAG) {
-        model.getTask().setValue(task);
+        onTaskStatusChangedListener.onTaskStatusChanged(task.getStatus());
     }
 
     @Override
     public void onResponseFailed(@Nullable String TAG) {
 
     }
+
+    public interface OnTaskStatusChangedListener {
+        void onTaskStatusChanged(TaskStatus newTaskStatus);
+    }
+
 }

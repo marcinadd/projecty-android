@@ -16,16 +16,23 @@ import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.task.TaskService;
 import com.marcinadd.projecty.task.model.Task;
-import com.marcinadd.projecty.ui.task.manage.ManageTaskViewModel;
 
 import java.util.Map;
 
 public class TaskNameDialogFragment extends DialogFragment implements RetrofitListener<Void> {
-    private ManageTaskViewModel model;
     private Task task;
+    private OnTaskNameChangedListener onTaskNameChangedListener;
 
-    public TaskNameDialogFragment(ManageTaskViewModel model) {
-        this.model = model;
+    public static TaskNameDialogFragment newInstance(Task task) {
+        TaskNameDialogFragment fragment = new TaskNameDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("task", task);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    public void setOnTaskNameChangedListener(OnTaskNameChangedListener onTaskNameChangedListener) {
+        this.onTaskNameChangedListener = onTaskNameChangedListener;
     }
 
     @NonNull
@@ -34,6 +41,11 @@ public class TaskNameDialogFragment extends DialogFragment implements RetrofitLi
         final View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_dialog_change_name, null);
         final Map<String, String> fields = new ArrayMap<>();
         final EditText editText = view.findViewById(R.id.change_name_edit_text);
+
+        if (getArguments() != null) {
+            task = (Task) getArguments().getSerializable("task");
+        }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.title_edit_task_name_dialog_fragment)
                 .setView(view)
@@ -42,7 +54,6 @@ public class TaskNameDialogFragment extends DialogFragment implements RetrofitLi
                     public void onClick(DialogInterface dialog, int which) {
                         String newName = editText.getText().toString();
                         fields.put("name", newName);
-                        task = model.getTask().getValue();
                         task.setName(newName);
                         TaskService.getInstance(getContext()).editTaskDetails(task.getId(), fields, TaskNameDialogFragment.this);
                     }
@@ -58,11 +69,15 @@ public class TaskNameDialogFragment extends DialogFragment implements RetrofitLi
 
     @Override
     public void onResponseSuccess(Void response, @Nullable String TAG) {
-        model.getTask().setValue(task);
+        onTaskNameChangedListener.onTaskNameChanged(task.getName());
     }
 
     @Override
     public void onResponseFailed(@Nullable String TAG) {
 
+    }
+
+    public interface OnTaskNameChangedListener {
+        void onTaskNameChanged(String newName);
     }
 }
