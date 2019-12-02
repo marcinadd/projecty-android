@@ -21,7 +21,7 @@ import java.util.List;
 
 public abstract class MyRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyRoleRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Role> mValues;
+    private List<Role> mValues;
     private Context context;
     private String currentUserUsername;
 
@@ -81,6 +81,11 @@ public abstract class MyRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyR
 
     public void addRole(Role role) {
         notifyItemInserted(mValues.size() - 1);
+    }
+
+    public void updateRoles(List<Role> roles) {
+        mValues = roles;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

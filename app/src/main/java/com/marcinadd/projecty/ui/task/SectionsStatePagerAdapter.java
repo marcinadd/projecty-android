@@ -1,7 +1,6 @@
 package com.marcinadd.projecty.ui.task;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -16,7 +15,6 @@ import com.marcinadd.projecty.listener.TaskStatusChangedListener;
 import com.marcinadd.projecty.task.TaskStatus;
 import com.marcinadd.projecty.task.model.Task;
 
-import java.io.Serializable;
 import java.util.List;
 
 
@@ -34,11 +32,11 @@ public class SectionsStatePagerAdapter extends FragmentStatePagerAdapter impleme
     private TaskFragment doneTaskFragment;
 
 
-    public SectionsStatePagerAdapter(Context context, FragmentManager fm,
-                                     List<Task> toDoTasks,
-                                     List<Task> inProgressTasks,
-                                     List<Task> doneTasks,
-                                     long projectId
+    SectionsStatePagerAdapter(Context context, FragmentManager fm,
+                              List<Task> toDoTasks,
+                              List<Task> inProgressTasks,
+                              List<Task> doneTasks,
+                              long projectId
     ) {
         super(fm);
         mContext = context;
@@ -77,29 +75,16 @@ public class SectionsStatePagerAdapter extends FragmentStatePagerAdapter impleme
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                TaskFragment f1 = new TaskFragment();
-                setTaskFragmentArguments(f1, toDoTasks);
-                toDoTaskFragment = f1;
-                return f1;
+                toDoTaskFragment = TaskFragment.newInstance(toDoTasks, projectId);
+                return toDoTaskFragment;
             case 1:
-                TaskFragment f2 = new TaskFragment();
-                setTaskFragmentArguments(f2, inProgressTasks);
-                inProgressTaskFragment = f2;
-                return f2;
+                inProgressTaskFragment = TaskFragment.newInstance(inProgressTasks, projectId);
+                return inProgressTaskFragment;
             case 2:
             default:
-                TaskFragment f3 = new TaskFragment();
-                setTaskFragmentArguments(f3, doneTasks);
-                doneTaskFragment = f3;
-                return f3;
+                doneTaskFragment = TaskFragment.newInstance(doneTasks, projectId);
+                return doneTaskFragment;
         }
-    }
-
-    private void setTaskFragmentArguments(TaskFragment fragment, List<Task> tasks) {
-        Bundle bundle = new Bundle();
-        bundle.putLong("projectId", projectId);
-        bundle.putSerializable("tasks", (Serializable) tasks);
-        fragment.setArguments(bundle);
     }
 
     @Override
@@ -112,7 +97,7 @@ public class SectionsStatePagerAdapter extends FragmentStatePagerAdapter impleme
     }
 
 
-    public TaskFragment getTaskFragment(TaskStatus taskStatus) {
+    private TaskFragment getTaskFragment(TaskStatus taskStatus) {
         switch (taskStatus) {
             case TO_DO:
                 return toDoTaskFragment;
@@ -124,16 +109,16 @@ public class SectionsStatePagerAdapter extends FragmentStatePagerAdapter impleme
         }
     }
 
-    public void addTaskToTaskFragment(Task task, TaskFragment taskFragment) {
+    private void addTaskToTaskFragment(Task task, TaskFragment taskFragment) {
         taskFragment.addTaskToRecyclerViewAdapter(task);
     }
 
-    public void removeTaskFromTaskFragment(Task task, TaskFragment taskFragment) {
+    private void removeTaskFromTaskFragment(Task task, TaskFragment taskFragment) {
         taskFragment.removeTaskFromRecyclerViewAdapter(task);
     }
 
 
-    public void addTaskToDo(Task task) {
+    void addTaskToDo(Task task) {
         toDoTaskFragment.addTaskToRecyclerViewAdapter(task);
     }
 

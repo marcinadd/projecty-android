@@ -2,33 +2,32 @@ package com.marcinadd.projecty.project.manage.fragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.navigation.Navigation;
 
 import com.marcinadd.projecty.R;
-import com.marcinadd.projecty.client.AuthorizedNetworkClient;
-import com.marcinadd.projecty.project.ApiProject;
+import com.marcinadd.projecty.listener.RetrofitListener;
+import com.marcinadd.projecty.project.ProjectService;
 import com.marcinadd.projecty.project.model.Project;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
-public class DeleteProjectDialogFragment extends DialogFragment {
-
+public class DeleteProjectDialogFragment extends DialogFragment implements RetrofitListener<Void> {
     private Project project;
+    private OnProjectDeletedListener callback;
 
-    private final View mViev;
+    public static DeleteProjectDialogFragment newInstance(Project project) {
+        DeleteProjectDialogFragment fragment = new DeleteProjectDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("project", project);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
-    public DeleteProjectDialogFragment(View view) {
-        this.mViev = view;
+    public void setOnProjectDeletedListener(OnProjectDeletedListener callback) {
+        this.callback = callback;
     }
 
     @NonNull
@@ -39,32 +38,28 @@ public class DeleteProjectDialogFragment extends DialogFragment {
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getString(R.string.delete_project_confirm, project.getName()))
-                .setPositiveButton(R.string.ok, new OnOkButtonClick())
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
+                .setPositiveButton(R.string.ok, onPositivebuttonClick())
+                .setNegativeButton(R.string.cancel, null);
         return builder.create();
     }
 
-    class OnOkButtonClick implements Dialog.OnClickListener {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            Retrofit retrofit = AuthorizedNetworkClient.getRetrofitClient(getContext());
-            ApiProject apiProject = retrofit.create(ApiProject.class);
-            apiProject.deleteProject(project.getId()).enqueue(new Callback<Void>() {
-                @Override
-                public void onResponse(Call<Void> call, Response<Void> response) {
-                    Navigation.findNavController(mViev).navigateUp();
-                }
+    Dialog.OnClickListener onPositivebuttonClick() {
+        return (dialog, which) -> {
+            ProjectService.getInstance(getContext()).deleteProject(project.getId(), this);
+        };
+    }
 
-                @Override
-                public void onFailure(Call<Void> call, Throwable t) {
+    @Override
+    public void onResponseSuccess(Void response, @Nullable String TAG) {
+        callback.onProjectDeleted();
+    }
 
-                }
-            });
-        }
+    @Override
+    public void onResponseFailed(@Nullable String TAG) {
+
+    }
+
+    public interface OnProjectDeletedListener {
+        void onProjectDeleted();
     }
 }

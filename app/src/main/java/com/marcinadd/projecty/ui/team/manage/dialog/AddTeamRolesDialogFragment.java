@@ -22,13 +22,21 @@ import com.marcinadd.projecty.team.model.TeamRole;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddTeamRolesDialogFragment extends DialogFragment {
-    private final RetrofitListener<List<TeamRole>> listener;
+public class AddTeamRolesDialogFragment extends DialogFragment implements RetrofitListener<List<TeamRole>> {
     private Team team;
     private LinearLayout linearLayout;
+    private OnTeamRolesAddedListener onTeamRolesAddedListener;
 
-    public AddTeamRolesDialogFragment(RetrofitListener<List<TeamRole>> listener) {
-        this.listener = listener;
+    public static AddTeamRolesDialogFragment newInstance(Team team) {
+        AddTeamRolesDialogFragment fragment = new AddTeamRolesDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("team", team);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    public void setOnTeamRolesAddedListener(OnTeamRolesAddedListener onTeamRolesAddedListener) {
+        this.onTeamRolesAddedListener = onTeamRolesAddedListener;
     }
 
     @NonNull
@@ -54,7 +62,7 @@ public class AddTeamRolesDialogFragment extends DialogFragment {
     DialogInterface.OnClickListener onSuccessButtonClicked() {
         return (dialog, which) -> {
             List<String> usernames = getUsernamesToList();
-            TeamService.getInstance(getContext()).addUsers(team.getId(), usernames, listener);
+            TeamService.getInstance(getContext()).addUsers(team.getId(), usernames, this);
         };
     }
 
@@ -83,5 +91,19 @@ public class AddTeamRolesDialogFragment extends DialogFragment {
                 addEditText();
             }
         };
+    }
+
+    @Override
+    public void onResponseSuccess(List<TeamRole> response, @Nullable String TAG) {
+        onTeamRolesAddedListener.onTeamRolesAdded(response);
+    }
+
+    @Override
+    public void onResponseFailed(@Nullable String TAG) {
+
+    }
+
+    public interface OnTeamRolesAddedListener {
+        void onTeamRolesAdded(List<TeamRole> teamRoles);
     }
 }

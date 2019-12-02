@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.model.Role;
+import com.marcinadd.projecty.team.model.TeamRole;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TeamRoleFragment extends Fragment {
@@ -37,7 +39,11 @@ public class TeamRoleFragment extends Fragment {
         return view;
     }
 
-    public void addRoleToRecyclerViewAdapater(Role role) {
+    void addRoleToRecyclerViewAdapater(Role role) {
         adapter.addRole(role);
+    }
+
+    void updateRolesInRecyclerViewAdapter(List<TeamRole> roles) {
+        adapter.updateRoles(new ArrayList<>(roles));
     }
 }

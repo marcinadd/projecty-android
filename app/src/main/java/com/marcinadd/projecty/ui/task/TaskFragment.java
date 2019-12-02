@@ -26,7 +26,16 @@ public class TaskFragment extends Fragment {
     private long projectId;
     private MyTaskRecyclerViewAdapter myTaskRecyclerViewAdapter;
 
-    public void setTaskStatusChangedListener(TaskStatusChangedListener taskStatusChangedListener) {
+    static TaskFragment newInstance(List<Task> tasks, long projectId) {
+        TaskFragment fragment = new TaskFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("tasks", (Serializable) tasks);
+        bundle.putLong("projectId", projectId);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    void setTaskStatusChangedListener(TaskStatusChangedListener taskStatusChangedListener) {
         this.taskStatusChangedListener = taskStatusChangedListener;
     }
 
@@ -67,11 +76,11 @@ public class TaskFragment extends Fragment {
 //        }
     }
 
-    public void addTaskToRecyclerViewAdapter(Task task) {
+    void addTaskToRecyclerViewAdapter(Task task) {
         myTaskRecyclerViewAdapter.addItem(task);
     }
 
-    public void removeTaskFromRecyclerViewAdapter(Task task) {
+    void removeTaskFromRecyclerViewAdapter(Task task) {
         myTaskRecyclerViewAdapter.removeItem(task);
     }
 

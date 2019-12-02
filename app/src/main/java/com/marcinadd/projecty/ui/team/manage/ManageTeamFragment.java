@@ -1,6 +1,5 @@
 package com.marcinadd.projecty.ui.team.manage;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +18,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.marcinadd.projecty.R;
-import com.marcinadd.projecty.listener.NameChangedListener;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.team.TeamService;
 import com.marcinadd.projecty.team.model.ManageTeamResponseModel;
@@ -32,17 +30,14 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public class ManageTeamFragment extends Fragment implements NameChangedListener {
+public class ManageTeamFragment extends Fragment implements ChangeTeamNameDialogFragment.OnTeamNameChangedListener, AddTeamRolesDialogFragment.OnTeamRolesAddedListener {
     private static final String TAG = "TAG";
-    private static final String TEAM = "team";
 
     private ManageTeamViewModel mViewModel;
 
     private long teamId;
     private TextView textViewName;
     private TeamRoleFragment teamRoleFragment;
-
-    private ChangeTeamNameDialogFragment changeTeamNameDialogFragment;
 
     public static ManageTeamFragment newInstance() {
         return new ManageTeamFragment();
@@ -94,36 +89,26 @@ public class ManageTeamFragment extends Fragment implements NameChangedListener 
 
     private Observer<List<TeamRole>> teamRolesObserver() {
         return teamRoles -> {
-
+            if (teamRoleFragment != null) {
+                teamRoleFragment.updateRolesInRecyclerViewAdapter(teamRoles);
+            }
         };
     }
 
-
     private void changeName() {
-        Bundle bundle1 = new Bundle();
-        bundle1.putSerializable(TEAM, mViewModel.getTeam().getValue());
-        changeTeamNameDialogFragment = new ChangeTeamNameDialogFragment();
-        changeTeamNameDialogFragment.setListener(this);
-        changeTeamNameDialogFragment.setArguments(bundle1);
-        changeTeamNameDialogFragment.show(Objects.requireNonNull(getFragmentManager()), TAG);
+        ChangeTeamNameDialogFragment changeTeamNameDialogFragment =
+                ChangeTeamNameDialogFragment.newInstance(mViewModel.getTeam().getValue());
+        changeTeamNameDialogFragment.setOnTeamNameChangedListener(this);
+        changeTeamNameDialogFragment.show(getChildFragmentManager(), TAG);
     }
 
     private void addRole() {
-        Bundle bundle1 = new Bundle();
-        bundle1.putSerializable(TEAM, mViewModel.getTeam().getValue());
-        AddTeamRolesDialogFragment fragment = new AddTeamRolesDialogFragment(onTeamRolesAddListener());
-        fragment.setArguments(bundle1);
-        fragment.show(Objects.requireNonNull(getFragmentManager()), TAG);
+        AddTeamRolesDialogFragment fragment =
+                AddTeamRolesDialogFragment.newInstance(mViewModel.getTeam().getValue());
+        fragment.setOnTeamRolesAddedListener(this);
+        fragment.show(Objects.requireNonNull(getChildFragmentManager()), TAG);
     }
 
-    @Override
-    public void onNameChanged(String newName) {
-        Team team = mViewModel.getTeam().getValue();
-        if (team != null) {
-            team.setName(newName);
-        }
-        mViewModel.setTeam(team);
-    }
 
     private void loadProjectRoleManageFragment() {
         Bundle bundle = new Bundle();
@@ -135,9 +120,7 @@ public class ManageTeamFragment extends Fragment implements NameChangedListener 
         transaction.commit();
     }
 
-    private void loadDialogFragments() {
 
-    }
 
     private RetrofitListener<ManageTeamResponseModel> getManageTeamResponseModelListener() {
         return new RetrofitListener<ManageTeamResponseModel>() {
@@ -146,7 +129,6 @@ public class ManageTeamFragment extends Fragment implements NameChangedListener 
                 mViewModel.setTeam(response.getTeam());
                 mViewModel.setTeamRoles(response.getTeamRoles());
                 loadProjectRoleManageFragment();
-                loadDialogFragments();
             }
 
             @Override
@@ -175,16 +157,29 @@ public class ManageTeamFragment extends Fragment implements NameChangedListener 
     }
 
     @Override
-    public void onAttachFragment(@NonNull Fragment childFragment) {
-        if (childFragment instanceof ChangeTeamNameDialogFragment) {
-            ChangeTeamNameDialogFragment dialogFragment = (ChangeTeamNameDialogFragment) childFragment;
-            dialogFragment.setListener(this);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            getChildFragmentManager().getFragments().forEach(fragment -> {
+                if (fragment instanceof ChangeTeamNameDialogFragment) {
+                    ((ChangeTeamNameDialogFragment) fragment).setOnTeamNameChangedListener(this);
+                } else if (fragment instanceof AddTeamRolesDialogFragment)
+                    ((AddTeamRolesDialogFragment) fragment).setOnTeamRolesAddedListener(this);
+            });
         }
     }
 
     @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        changeTeamNameDialogFragment.setListener(this);
+    public void onTeamNameChanged(String newTeamName) {
+        Team team = mViewModel.getTeam().getValue();
+        Objects.requireNonNull(team).setName(newTeamName);
+        mViewModel.setTeam(team);
+    }
+
+    @Override
+    public void onTeamRolesAdded(List<TeamRole> teamRoles) {
+        List<TeamRole> roleList = mViewModel.getTeamRoles().getValue();
+        Objects.requireNonNull(roleList).addAll(teamRoles);
+        mViewModel.setTeamRoles(roleList);
     }
 }

@@ -35,7 +35,6 @@ public class ManageProjectFragment extends Fragment
         DeleteProjectDialogFragment.OnProjectDeletedListener {
     private TextView projectName;
     private ManageProjectViewModel model;
-    private DeleteProjectDialogFragment deleteFragment;
 
     @Nullable
     @Override
@@ -89,12 +88,7 @@ public class ManageProjectFragment extends Fragment
     }
 
     private Observer<Project> projectObserver() {
-        return new Observer<Project>() {
-            @Override
-            public void onChanged(Project project) {
-                projectName.setText(project.getName());
-            }
-        };
+        return project -> projectName.setText(project.getName());
     }
 
     private void loadProjectRoleManageFragment() {
@@ -112,7 +106,7 @@ public class ManageProjectFragment extends Fragment
         bundle1.putSerializable("project", model.getProject().getValue());
         ChangeProjectNameDialogFragment fragment = new ChangeProjectNameDialogFragment();
         fragment.setArguments(bundle1);
-        fragment.show(Objects.requireNonNull(getFragmentManager()), "TAG");
+        fragment.show(Objects.requireNonNull(getChildFragmentManager()), "TAG");
     }
 
 
@@ -121,16 +115,14 @@ public class ManageProjectFragment extends Fragment
             bundle1.putSerializable("project", model.getProject().getValue());
             AddProjectRoleDialogFragment fragment = new AddProjectRoleDialogFragment();
             fragment.setArguments(bundle1);
-            fragment.show(Objects.requireNonNull(getFragmentManager()), "TAG");
+        fragment.show(Objects.requireNonNull(getChildFragmentManager()), "TAG");
     }
 
     private void delete() {
-            Bundle bundle1 = new Bundle();
-            bundle1.putSerializable("project", model.getProject().getValue());
-        deleteFragment = new DeleteProjectDialogFragment();
+        DeleteProjectDialogFragment deleteFragment =
+                DeleteProjectDialogFragment.newInstance(model.getProject().getValue());
         deleteFragment.setOnProjectDeletedListener(this);
-        deleteFragment.setArguments(bundle1);
-        deleteFragment.show(Objects.requireNonNull(getFragmentManager()), "TAG");
+        deleteFragment.show(Objects.requireNonNull(getChildFragmentManager()), "TAG");
     }
 
     @Override
@@ -139,9 +131,14 @@ public class ManageProjectFragment extends Fragment
     }
 
     @Override
-    public void onAttachFragment(@NonNull Fragment childFragment) {
-        if (deleteFragment != null)
-            deleteFragment.setOnProjectDeletedListener(this);
-        super.onAttachFragment(childFragment);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            getChildFragmentManager().getFragments().forEach(fragment -> {
+                if (fragment instanceof DeleteProjectDialogFragment) {
+                    ((DeleteProjectDialogFragment) fragment).setOnProjectDeletedListener(this);
+                }
+            });
+        }
     }
 }
