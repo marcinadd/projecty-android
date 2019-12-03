@@ -9,8 +9,9 @@ import java.util.Objects;
 import retrofit2.Retrofit;
 
 public class LoginDataSource {
-    public Result<LoggedInUser> login(String username, String password) {
-        Retrofit retrofit = NetworkClient.getRetrofitClient();
+    public Result<LoggedInUser> login(String username, String password, String server) {
+        Retrofit retrofit = NetworkClient.getRetrofitClient(server);
+
         AuthClient authClient = retrofit.create(AuthClient.class);
 
         try {

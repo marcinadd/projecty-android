@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -51,6 +52,7 @@ public class Main2Activity extends AppCompatActivity implements ProjectListFragm
             DrawerLayout drawer = findViewById(R.id.drawer_layout);
             NavigationView navigationView = findViewById(R.id.nav_view);
             UserService.setSidebarData(navigationView.getHeaderView(0), getApplicationContext());
+
             // Passing each menu ID as a set of Ids because each
             // menu should be considered as top level destinations.
             mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -114,5 +116,15 @@ public class Main2Activity extends AppCompatActivity implements ProjectListFragm
     @Override
     public void onListFragmentInteraction(ProjectRole item) {
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

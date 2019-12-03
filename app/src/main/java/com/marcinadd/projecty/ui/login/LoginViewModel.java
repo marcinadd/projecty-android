@@ -33,19 +33,26 @@ public class LoginViewModel extends ViewModel {
         return loginResult;
     }
 
-    public void login(final String username, final String password, Context context) {
+    public void login(final String username, final String password, final String host, Context context) {
         // can be launched in a separate asynchronous job
-        new LoginTask(context).execute(username, password);
+        new LoginTask(context).execute(username, password, host);
     }
 
-    public void loginDataChanged(String username, String password) {
+    public void loginDataChanged(String username, String password, String server) {
         if (!isUserNameValid(username)) {
-            loginFormState.setValue(new LoginFormState(R.string.invalid_username, null));
+            loginFormState.setValue(new LoginFormState(R.string.invalid_username, null, null));
         } else if (!isPasswordValid(password)) {
-            loginFormState.setValue(new LoginFormState(null, R.string.invalid_password));
+            loginFormState.setValue(new LoginFormState(null, R.string.invalid_password, null));
+        } else if (!isServerValid(server)) {
+            loginFormState.setValue(new LoginFormState(null, null, R.string.invalid_server));
         } else {
             loginFormState.setValue(new LoginFormState(true));
         }
+    }
+
+    private boolean isServerValid(String server) {
+        String REGEX = "http://(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]):[0-9]+$";
+        return server.matches(REGEX);
     }
 
     // A placeholder username validation check
@@ -74,7 +81,7 @@ public class LoginViewModel extends ViewModel {
 
         @Override
         protected Result<LoggedInUser> doInBackground(String... strings) {
-            return loginRepository.login(strings[0], strings[1], contextRef.get());
+            return loginRepository.login(strings[0], strings[1], strings[2], contextRef.get());
         }
 
         @Override

@@ -47,10 +47,11 @@ public class LoginRepository {
     }
 
 
-    private void setLoggedInUser(LoggedInUser user, Context mContext) {
+    private void setLoggedInUser(LoggedInUser user, String server, Context mContext) {
         this.user = user;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         sharedPreferences.edit().putString("username", user.getDisplayName()).apply();
+        sharedPreferences.edit().putString("server", server).apply();
         TokenHelper.saveToken(user.getToken(), mContext);
         try {
             ResponseBody body = UserService.getAvatar(user.getDisplayName(), mContext);
@@ -62,11 +63,11 @@ public class LoginRepository {
         // @see https://developer.android.com/training/articles/keystore
     }
 
-    public Result<LoggedInUser> login(String username, String password, Context mContext) {
+    public Result<LoggedInUser> login(String username, String password, String server, Context mContext) {
         // handle login
-        Result<LoggedInUser> result = dataSource.login(username, password);
+        Result<LoggedInUser> result = dataSource.login(username, password, server);
         if (result instanceof Result.Success) {
-            setLoggedInUser(((Result.Success<LoggedInUser>) result).getData(), mContext);
+            setLoggedInUser(((Result.Success<LoggedInUser>) result).getData(), server, mContext);
         }
         return result;
     }

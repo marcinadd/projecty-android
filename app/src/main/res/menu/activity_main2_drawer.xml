@@ -17,15 +17,19 @@
             android:id="@+id/nav_team"
             android:icon="@drawable/ic_people"
             android:title="@string/menu_team" />
-
-        <item
-            android:id="@+id/nav_message_received"
-            android:icon="@drawable/ic_mail"
-            android:title="@string/menu_message_received" />
-
-        <item
-            android:id="@+id/nav_message_sent"
-            android:icon="@drawable/ic_mail"
-            android:title="@string/menu_message_sent" />
     </group>
+
+    <item android:title="@string/messages">
+        <menu>
+            <item
+                android:id="@+id/nav_message_received"
+                android:icon="@drawable/ic_mail"
+                android:title="@string/menu_message_received" />
+
+            <item
+                android:id="@+id/nav_message_sent"
+                android:icon="@drawable/ic_mail"
+                android:title="@string/menu_message_sent" />
+        </menu>
+    </item>
 </menu>

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.marcinadd.projecty.helper.ServerHelper;
 
 import java.io.IOException;
 
@@ -14,8 +15,6 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import static com.marcinadd.projecty.client.NetworkClient.BASE_URL;
 
 public class AuthorizedNetworkClient {
     private static Retrofit INSTANCE = null;
@@ -39,7 +38,7 @@ public class AuthorizedNetworkClient {
                     .setDateFormat("yyyy-MM-dd")
                     .create();
             INSTANCE = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(ServerHelper.getServerURL(context))
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .client(httpClient)
                     .build();

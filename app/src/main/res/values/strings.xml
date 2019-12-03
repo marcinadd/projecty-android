@@ -72,4 +72,10 @@
     <string name="manage">Manage</string>
     <string name="team_name">Team name</string>
     <string name="team_delete">Delete team</string>
+    <string name="messages">Messages</string>
+    <string name="account">Account</string>
+    <string name="log_out">Log out</string>
+    <string name="enter_host">Enter host</string>
+    <string name="invalid_server">Invalid Server</string>
+    <string name="action_logout">Log Out</string>
 </resources>
