@@ -10,14 +10,14 @@ public class NetworkClient {
     public static final String BASE_URL = "http://10.0.2.2:8080";
     public static Retrofit retrofit;
 
-    public static Retrofit getRetrofitClient(String server) {
+    public static Retrofit getRetrofitClient(String server, boolean forceNew) {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
                 .build();
 
-        if (retrofit == null) {
+        if (retrofit == null || forceNew) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(server)
                     .addConverterFactory(GsonConverterFactory.create())

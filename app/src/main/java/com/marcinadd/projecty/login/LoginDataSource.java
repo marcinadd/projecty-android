@@ -10,7 +10,7 @@ import retrofit2.Retrofit;
 
 public class LoginDataSource {
     public Result<LoggedInUser> login(String username, String password, String server) {
-        Retrofit retrofit = NetworkClient.getRetrofitClient(server);
+        Retrofit retrofit = NetworkClient.getRetrofitClient(server, true);
 
         AuthClient authClient = retrofit.create(AuthClient.class);
 

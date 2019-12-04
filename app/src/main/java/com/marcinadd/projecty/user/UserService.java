@@ -85,4 +85,12 @@ public class UserService {
         }
         return null;
     }
+
+    public static void logOut(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences.edit().remove("username").apply();
+        sharedPreferences.edit().remove("access_token").apply();
+        sharedPreferences.edit().remove("refresh_token").apply();
+        sharedPreferences.edit().remove("server").apply();
+    }
 }

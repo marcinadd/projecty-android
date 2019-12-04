@@ -27,7 +27,7 @@ public class TokenAuthenticator implements Authenticator {
     @Override
     public Request authenticate(@Nullable Route route, Response response) throws IOException {
         String refreshToken = TokenHelper.getRefreshToken(mContext);
-        Retrofit retrofit = NetworkClient.getRetrofitClient(ServerHelper.getServerURL(mContext));
+        Retrofit retrofit = NetworkClient.getRetrofitClient(ServerHelper.getServerURL(mContext), false);
         AuthClient authClient = retrofit.create(AuthClient.class);
         if (response.code() == 401) {
             Call<Token> refreshCall = authClient.refresh("refresh_token", refreshToken);

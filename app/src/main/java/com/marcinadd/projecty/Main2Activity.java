@@ -120,9 +120,10 @@ public class Main2Activity extends AppCompatActivity implements ProjectListFragm
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.action_logout:
+                UserService.logOut(getApplicationContext());
+                onUserNotLogged();
                 break;
         }
         return super.onOptionsItemSelected(item);
