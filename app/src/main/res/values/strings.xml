@@ -10,14 +10,9 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="preference_file_key">com.marcinadd.projecty</string>
-    <string name="title_activity_my_projects">MyProjectsActivity</string>
-    <string name="title_activity_manage_project">ManageProjectActivity</string>
-    <string name="button_change_name">Change name</string>
     <string name="edit_text_change_name_hint">Enter New Name</string>
     <string name="text_view_change_name">Change Name</string>
     <string name="project_name">Project name</string>
-    <string name="manage_roles">Manage Roles</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="add_role">Add Role</string>
@@ -28,15 +23,12 @@
     <string name="content">Content</string>
     <string name="add_project">Add project</string>
     <string name="delete_project_confirm">Do you really want to delete project %1$s?</string>
-    <string name="title_activity_task_list">TaskListActivity</string>
     <string name="tab_to_do">To do</string>
     <string name="tab_in_progress">In progress</string>
     <string name="tab_done">Done</string>
     <string name="starts_on">Starts on %1$s</string>
     <string name="ends_on">Ends on %1$s</string>
-    <string name="title_activity_manage_task">ManageTaskActivity</string>
     <string name="title_edit_task_name_dialog_fragment">Task name</string>
-    <string name="message_edit_task_name_dialog_fragment">Enter new task name</string>
     <string name="button_positive_edit_task_name_dialog_fragment">Edit</string>
     <string name="title_edit_task_status_dialog_fragment">Select new status</string>
     <string name="task_status_to_do">TO DO</string>
@@ -46,9 +38,6 @@
     <string name="hint_add_task_name">Task name</string>
     <string name="hint_add_task_start_date">Start date</string>
     <string name="hint_add_task_end_date">End date</string>
-    <string name="title_activity_main2">Main2Activity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
@@ -57,7 +46,6 @@
     <string name="menu_project">Project list</string>
     <string name="menu_manage_project">Manage Project</string>
     <string name="menu_task_list">Task list</string>
-    <string name="menu_message">Messages</string>
     <string name="menu_message_sent">Sent messages</string>
     <string name="menu_message_received">Received messages</string>
     <string name="recipient">Recipient</string>
@@ -73,8 +61,6 @@
     <string name="team_name">Team name</string>
     <string name="team_delete">Delete team</string>
     <string name="messages">Messages</string>
-    <string name="account">Account</string>
-    <string name="log_out">Log out</string>
     <string name="enter_host">Enter host</string>
     <string name="invalid_server">Invalid Server</string>
     <string name="action_logout">Log Out</string>

@@ -1,4 +1,4 @@
-package com.marcinadd.projecty.task.fragment;
+package com.marcinadd.projecty.task.dialog;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;

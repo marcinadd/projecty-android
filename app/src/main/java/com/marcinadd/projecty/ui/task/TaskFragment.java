@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.listener.TaskStatusChangedListener;
-import com.marcinadd.projecty.task.fragment.MyTaskRecyclerViewAdapter;
+import com.marcinadd.projecty.task.dialog.MyTaskRecyclerViewAdapter;
 import com.marcinadd.projecty.task.model.Task;
 
 import java.io.Serializable;

@@ -15,22 +15,17 @@ import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.project.AddProjectDialogFragment;
 
 public class ProjectFragment extends Fragment implements RetrofitListener<Void> {
-    private View view;
-    private FloatingActionButton fab;
     private ProjectListFragment fragment;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_my_projects, container, false);
-        fab = view.findViewById(R.id.fab);
+        View view = inflater.inflate(R.layout.fragment_my_projects, container, false);
+        FloatingActionButton fab = view.findViewById(R.id.fab);
         setRetainInstance(true);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddProjectDialogFragment dialogFragment = new AddProjectDialogFragment();
-                dialogFragment.show(getChildFragmentManager(), "TAG");
-            }
+        fab.setOnClickListener(v -> {
+            AddProjectDialogFragment dialogFragment = new AddProjectDialogFragment();
+            dialogFragment.show(getChildFragmentManager(), "TAG");
         });
         fragment = (ProjectListFragment) getChildFragmentManager().findFragmentById(R.id.fragment);
         return view;

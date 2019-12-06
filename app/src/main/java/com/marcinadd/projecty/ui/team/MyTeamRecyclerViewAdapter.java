@@ -10,6 +10,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
+import com.marcinadd.projecty.model.Roles;
 import com.marcinadd.projecty.team.model.TeamRole;
 import com.marcinadd.projecty.ui.team.TeamListFragment.OnListFragmentInteractionListener;
 
@@ -37,6 +38,10 @@ public class MyTeamRecyclerViewAdapter extends RecyclerView.Adapter<MyTeamRecycl
         holder.mItem = mValues.get(position);
         holder.mTeamNameView.setText(mValues.get(position).getTeam().getName());
         holder.mTeamRoleNameView.setText(mValues.get(position).getName().toString());
+
+        if (holder.mItem.getName() != Roles.MANAGER) {
+            holder.mManageTeamButton.setEnabled(false);
+        }
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

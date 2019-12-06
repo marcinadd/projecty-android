@@ -54,6 +54,7 @@ public class ProjectListFragment extends Fragment implements RetrofitListener<Us
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        view = null;
     }
 
     @Override

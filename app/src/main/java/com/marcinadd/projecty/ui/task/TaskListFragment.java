@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,7 +16,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.task.TaskService;
-import com.marcinadd.projecty.task.fragment.AddTaskDialogFragment;
+import com.marcinadd.projecty.task.dialog.AddTaskDialogFragment;
 import com.marcinadd.projecty.task.model.Task;
 import com.marcinadd.projecty.task.model.TaskListResponseModel;
 
@@ -26,16 +27,17 @@ public class TaskListFragment extends Fragment implements TaskFragment.OnListFra
     private SectionsStatePagerAdapter sectionsStatePagerAdapter;
     private ViewPager viewPager;
     private TabLayout tabs;
+    private ProgressBar progressBar;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setRetainInstance(true);
-        View root = inflater.inflate(R.layout.activity_task_list, container, false);
+        View root = inflater.inflate(R.layout.fragment_task_list, container, false);
         viewPager = root.findViewById(R.id.view_pager);
         tabs = root.findViewById(R.id.tabs);
         projectId = TaskListFragmentArgs.fromBundle(Objects.requireNonNull(getArguments())).getProjectId();
-        TaskService.getInstance(getContext()).getTaskList(projectId, taskListResponseModelRetrofitListener());
+        progressBar = root.findViewById(R.id.progress_bar);
         FloatingActionButton fab = root.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +58,6 @@ public class TaskListFragment extends Fragment implements TaskFragment.OnListFra
             AddTaskDialogFragment fragment = (AddTaskDialogFragment) childFragment;
             fragment.setAddTaskListener(taskAddRetrofitListener());
         } else if (childFragment instanceof TaskFragment) {
-            //FIXME Crash when screen orientation change
             TaskFragment taskFragment = (TaskFragment) childFragment;
             taskFragment.setTaskStatusChangedListener((task, newTaskStatus) -> {
                 sectionsStatePagerAdapter.onTaskStatusChanged(task, newTaskStatus);
@@ -79,6 +80,7 @@ public class TaskListFragment extends Fragment implements TaskFragment.OnListFra
                 viewPager.setAdapter(sectionsStatePagerAdapter);
                 tabs.setupWithViewPager(viewPager);
                 sectionsStatePagerAdapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
@@ -100,5 +102,18 @@ public class TaskListFragment extends Fragment implements TaskFragment.OnListFra
 
             }
         };
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        TaskService.getInstance(getContext()).getTaskList(projectId, taskListResponseModelRetrofitListener());
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        progressBar = null;
+        viewPager = null;
     }
 }

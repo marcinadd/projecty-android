@@ -30,9 +30,6 @@ public class MessageListFragment extends Fragment implements RetrofitListener<Li
     private RecyclerView recyclerView;
     private View mView;
 
-    public MessageListFragment() {
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +68,7 @@ public class MessageListFragment extends Fragment implements RetrofitListener<Li
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        mView = null;
     }
 
     @Override

@@ -11,6 +11,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
+import com.marcinadd.projecty.model.Roles;
 import com.marcinadd.projecty.project.model.ProjectRole;
 import com.marcinadd.projecty.ui.project.ProjectFragmentDirections;
 import com.marcinadd.projecty.ui.project.ProjectListFragment.OnListFragmentInteractionListener;
@@ -39,6 +40,9 @@ public class MyProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyProject
         holder.mItem = mValues.get(position);
         //holder.mRoleNameView.setText(mValues.get(position).id);
         holder.mContentView.setText(mValues.get(position).getProject().getName());
+        if (holder.mItem.getName() != Roles.ADMIN) {
+            holder.manageProject.setEnabled(false);
+        }
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

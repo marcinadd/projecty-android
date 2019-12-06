@@ -46,7 +46,7 @@
         android:id="@+id/taskListActivity"
         android:name="com.marcinadd.projecty.ui.task.TaskListFragment"
         android:label="@string/menu_task_list"
-        tools:layout="@layout/activity_task_list">
+        tools:layout="@layout/fragment_task_list">
         <argument
             android:name="projectId"
             android:defaultValue="1L"
