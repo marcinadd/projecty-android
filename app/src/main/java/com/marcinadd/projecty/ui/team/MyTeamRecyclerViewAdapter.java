@@ -29,7 +29,7 @@ public class MyTeamRecyclerViewAdapter extends RecyclerView.Adapter<MyTeamRecycl
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_team, parent, false);
+                .inflate(R.layout.fragment_team_list_element, parent, false);
         return new ViewHolder(view);
     }
 
@@ -83,7 +83,7 @@ public class MyTeamRecyclerViewAdapter extends RecyclerView.Adapter<MyTeamRecycl
 
         View.OnClickListener manageTeamListener() {
             return v -> {
-                TeamListFragmentDirections.ActionNavTeamToManageTeamFragment action = TeamListFragmentDirections.actionNavTeamToManageTeamFragment();
+                TeamFragmentDirections.ActionNavTeamToManageTeamFragment action = TeamFragmentDirections.actionNavTeamToManageTeamFragment();
                 action.setTeamId(mItem.getTeam().getId());
                 Navigation.findNavController(mView).navigate(action);
             };

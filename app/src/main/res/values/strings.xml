@@ -64,4 +64,7 @@
     <string name="enter_host">Enter host</string>
     <string name="invalid_server">Invalid Server</string>
     <string name="action_logout">Log Out</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

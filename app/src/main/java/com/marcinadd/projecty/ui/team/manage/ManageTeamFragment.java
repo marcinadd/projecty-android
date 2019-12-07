@@ -46,7 +46,7 @@ public class ManageTeamFragment extends Fragment implements ChangeTeamNameDialog
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_manage_team, container, false);
+        View view = inflater.inflate(R.layout.fragment_team_manage, container, false);
         textViewName = view.findViewById(R.id.team_manage_name);
         teamId = ManageTeamFragmentArgs.fromBundle(Objects.requireNonNull(getArguments())).getTeamId();
         TeamService.getInstance(getContext()).getTeamWithRoles(teamId, getManageTeamResponseModelListener());

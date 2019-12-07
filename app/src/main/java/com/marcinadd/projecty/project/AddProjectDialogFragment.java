@@ -34,7 +34,7 @@ public class AddProjectDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View view = Objects.requireNonNull(getActivity()).getLayoutInflater().inflate(R.layout.fragment_dialog_add_project, null);
+        View view = Objects.requireNonNull(getActivity()).getLayoutInflater().inflate(R.layout.dialog_project_add, null);
         builder.setMessage("Add project")
                 .setPositiveButton(R.string.ok, new OnPositiveButtonClick())
                 .setNegativeButton(R.string.cancel, null)

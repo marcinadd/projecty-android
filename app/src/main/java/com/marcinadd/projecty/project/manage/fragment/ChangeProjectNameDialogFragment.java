@@ -36,7 +36,7 @@ public class ChangeProjectNameDialogFragment extends DialogFragment {
             project = (Project) getArguments().getSerializable("project");
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        final View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_dialog_change_name, null);
+        final View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_change_name, null);
         final EditText editText = view.findViewById(R.id.change_name_edit_text);
         final Activity activity = getActivity();
         builder.setMessage(R.string.text_view_change_name)

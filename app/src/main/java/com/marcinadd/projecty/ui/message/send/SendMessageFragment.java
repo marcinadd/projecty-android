@@ -31,7 +31,7 @@ public class SendMessageFragment extends Fragment implements RetrofitListener<Vo
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_send_message, container, false);
+        View view = inflater.inflate(R.layout.fragment_message_send, container, false);
         textInputRecipient = view.findViewById(R.id.message_send_recipient);
         textInputSubject = view.findViewById(R.id.message_send_subject);
         textInputContent = view.findViewById(R.id.message_send_content);

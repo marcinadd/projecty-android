@@ -48,7 +48,7 @@ public class AddTaskDialogFragment extends DialogFragment {
             projectId = getArguments().getLong("projectId");
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        final View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_add_task, null);
+        final View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_task_add, null);
         editTextName = view.findViewById(R.id.edit_add_task_name);
         editTextStartDate = view.findViewById(R.id.edit_add_task_start_date);
         editTextStartDate.setOnClickListener(new OnDateClick(DateType.START_DATE));

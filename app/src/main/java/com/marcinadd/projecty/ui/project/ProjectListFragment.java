@@ -21,6 +21,7 @@ import com.marcinadd.projecty.project.model.UserProject;
 public class ProjectListFragment extends Fragment implements RetrofitListener<UserProject> {
     private OnListFragmentInteractionListener mListener;
     private View view;
+    private OnDataLoadedListener onDataLoadedListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +66,7 @@ public class ProjectListFragment extends Fragment implements RetrofitListener<Us
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(new MyProjectRecyclerViewAdapter(response.getProjectRoles(), mListener));
+            onDataLoadedListener.onDataLoaded();
         }
     }
 
@@ -77,4 +79,19 @@ public class ProjectListFragment extends Fragment implements RetrofitListener<Us
         // TODO: Update argument type and name
         void onListFragmentInteraction(ProjectRole item);
     }
+
+    public void setOnDataLoadedListener(OnDataLoadedListener onDataLoadedListener) {
+        this.onDataLoadedListener = onDataLoadedListener;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        onDataLoadedListener = null;
+    }
+
+    public interface OnDataLoadedListener {
+        void onDataLoaded();
+    }
+
 }

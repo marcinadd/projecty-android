@@ -19,12 +19,9 @@ import com.marcinadd.projecty.team.model.TeamRole;
 import java.util.List;
 
 public class TeamListFragment extends Fragment implements RetrofitListener<List<TeamRole>> {
-
     private OnListFragmentInteractionListener mListener;
+    private OnDataLoadedListener onDataLoadedListener;
     private View view;
-
-    public TeamListFragment() {
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +62,7 @@ public class TeamListFragment extends Fragment implements RetrofitListener<List<
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(new MyTeamRecyclerViewAdapter(response, mListener));
+            onDataLoadedListener.onDataLoaded();
         }
     }
 
@@ -75,5 +73,13 @@ public class TeamListFragment extends Fragment implements RetrofitListener<List<
 
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(TeamRole item);
+    }
+
+    public void setOnDataLoadedListener(OnDataLoadedListener onDataLoadedListener) {
+        this.onDataLoadedListener = onDataLoadedListener;
+    }
+
+    public interface OnDataLoadedListener {
+        void onDataLoaded();
     }
 }

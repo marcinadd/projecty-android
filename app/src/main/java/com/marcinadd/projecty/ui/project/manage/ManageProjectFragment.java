@@ -39,7 +39,7 @@ public class ManageProjectFragment extends Fragment
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_manage_project, container, false);
+        View view = inflater.inflate(R.layout.fragment_project_manage, container, false);
         projectName = view.findViewById(R.id.projectName);
         long projectId = ManageProjectFragmentArgs.fromBundle(Objects.requireNonNull(getArguments())).getProjectId();
 

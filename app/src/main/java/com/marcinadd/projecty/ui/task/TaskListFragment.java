@@ -33,7 +33,7 @@ public class TaskListFragment extends Fragment implements TaskFragment.OnListFra
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setRetainInstance(true);
-        View root = inflater.inflate(R.layout.fragment_task_list, container, false);
+        View root = inflater.inflate(R.layout.fragment_tasks, container, false);
         viewPager = root.findViewById(R.id.view_pager);
         tabs = root.findViewById(R.id.tabs);
         projectId = TaskListFragmentArgs.fromBundle(Objects.requireNonNull(getArguments())).getProjectId();

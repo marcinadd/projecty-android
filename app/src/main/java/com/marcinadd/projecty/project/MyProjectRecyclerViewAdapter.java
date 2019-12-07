@@ -31,7 +31,7 @@ public class MyProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyProject
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_project, parent, false);
+                .inflate(R.layout.fragment_project_list_element, parent, false);
         return new ViewHolder(view);
     }
 

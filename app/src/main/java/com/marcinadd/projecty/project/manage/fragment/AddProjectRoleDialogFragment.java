@@ -35,7 +35,7 @@ public class AddProjectRoleDialogFragment extends DialogFragment {
             project = (Project) getArguments().getSerializable("project");
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_dialog_add_projectrole, null);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_project_role_add, null);
         final EditText editText = view.findViewById(R.id.projectrole_username_edit_text);
         final Activity activity = getActivity();
         builder.setMessage(R.string.add_role)

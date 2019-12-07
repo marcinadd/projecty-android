@@ -43,7 +43,7 @@ public class ManageTaskFragment extends Fragment implements RetrofitListener<Man
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_manage_task, container, false);
+        View root = inflater.inflate(R.layout.fragment_task_manage, container, false);
         long taskId = ManageTaskFragmentArgs.fromBundle(Objects.requireNonNull(getArguments())).getTaskId();
         taskNameTextView = root.findViewById(R.id.manage_task_name_text_view);
         taskStartDateTextView = root.findViewById(R.id.manage_task_data_start_text_view);

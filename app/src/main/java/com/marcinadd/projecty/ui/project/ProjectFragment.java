@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,20 +15,22 @@ import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.project.AddProjectDialogFragment;
 
-public class ProjectFragment extends Fragment implements RetrofitListener<Void> {
+public class ProjectFragment extends Fragment implements RetrofitListener<Void>, ProjectListFragment.OnDataLoadedListener {
     private ProjectListFragment fragment;
+    private ProgressBar progressBar;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_my_projects, container, false);
+        View view = inflater.inflate(R.layout.fragment_projects, container, false);
         FloatingActionButton fab = view.findViewById(R.id.fab);
-        setRetainInstance(true);
         fab.setOnClickListener(v -> {
             AddProjectDialogFragment dialogFragment = new AddProjectDialogFragment();
             dialogFragment.show(getChildFragmentManager(), "TAG");
         });
         fragment = (ProjectListFragment) getChildFragmentManager().findFragmentById(R.id.fragment);
+        fragment.setOnDataLoadedListener(this);
+        progressBar = view.findViewById(R.id.progress_bar);
         return view;
     }
 
@@ -39,6 +42,7 @@ public class ProjectFragment extends Fragment implements RetrofitListener<Void> 
         }
     }
 
+    //Add project listeners
     @Override
     public void onResponseSuccess(Void response, @Nullable String TAG) {
         fragment.loadData();
@@ -47,5 +51,17 @@ public class ProjectFragment extends Fragment implements RetrofitListener<Void> 
     @Override
     public void onResponseFailed(@Nullable String TAG) {
 
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        progressBar = null;
+    }
+
+    @Override
+    public void onDataLoaded() {
+        progressBar.setVisibility(View.GONE);
     }
 }

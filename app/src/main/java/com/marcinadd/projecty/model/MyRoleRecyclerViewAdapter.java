@@ -33,7 +33,7 @@ public abstract class MyRoleRecyclerViewAdapter extends RecyclerView.Adapter<MyR
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_role, parent, false);
+                .inflate(R.layout.fragment_role_list_element, parent, false);
         context = parent.getContext();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         currentUserUsername = sharedPreferences.getString("username", "");

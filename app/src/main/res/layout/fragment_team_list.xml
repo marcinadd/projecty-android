@@ -10,4 +10,4 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".ui.team.TeamListFragment"
-    tools:listitem="@layout/fragment_team" />
+    tools:listitem="@layout/fragment_team_list_element" />

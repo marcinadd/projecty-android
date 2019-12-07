@@ -50,7 +50,7 @@ public class ViewMessageFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_view_message, container, false);
+        View root = inflater.inflate(R.layout.fragment_message_view, container, false);
         messageId = ViewMessageFragmentArgs.fromBundle(getArguments()).getMessageId();
         messageType = ViewMessageFragmentArgs.fromBundle(getArguments()).getType();
         textViewSubject = root.findViewById(R.id.msgview_subject);

@@ -2,12 +2,16 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_teams"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/fragment_project_list"
-    tools:context=".ui.project.ProjectFragment">
+    tools:context=".ui.team.TeamFragment">
 
-    <include layout="@layout/fragment_my_projects_content" />
+    <fragment
+        android:id="@+id/fragment"
+        android:name="com.marcinadd.projecty.ui.team.TeamListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -17,4 +21,11 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/ic_add" />
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/Base.Widget.AppCompat.ProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

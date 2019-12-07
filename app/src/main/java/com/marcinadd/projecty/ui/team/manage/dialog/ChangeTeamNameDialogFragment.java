@@ -41,7 +41,7 @@ public class ChangeTeamNameDialogFragment extends DialogFragment implements Retr
             team = (Team) getArguments().getSerializable("team");
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        final View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_dialog_change_name, null);
+        final View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_change_name, null);
         final EditText editText = view.findViewById(R.id.change_name_edit_text);
         builder.setMessage(R.string.text_view_change_name)
                 .setPositiveButton(R.string.ok, (dialog, which) -> {

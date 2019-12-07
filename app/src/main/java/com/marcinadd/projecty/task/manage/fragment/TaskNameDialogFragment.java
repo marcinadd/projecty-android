@@ -38,7 +38,7 @@ public class TaskNameDialogFragment extends DialogFragment implements RetrofitLi
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        final View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_dialog_change_name, null);
+        final View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_change_name, null);
         final Map<String, String> fields = new ArrayMap<>();
         final EditText editText = view.findViewById(R.id.change_name_edit_text);
 
