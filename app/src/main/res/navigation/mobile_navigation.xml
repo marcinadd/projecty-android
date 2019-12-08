@@ -178,6 +178,21 @@
                 android:name="teamId"
                 android:defaultValue="0L" />
         </action>
+        <action
+            android:id="@+id/action_nav_team_to_teamProjectFragment"
+            app:destination="@id/teamProjectFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/teamProjectFragment"
+        android:name="com.marcinadd.projecty.ui.team.project.TeamProjectFragment"
+        android:label="fragment_team_project_list"
+        tools:layout="@layout/fragment_team_project_list">
+        <argument
+            android:name="teamId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_teamProjectFragment_to_taskListActivity"
+            app:destination="@id/taskListActivity" />
     </fragment>
 
 </navigation>

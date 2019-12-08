@@ -6,6 +6,7 @@ import com.marcinadd.projecty.callback.RetrofitCallback;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.team.model.ManageTeamResponseModel;
+import com.marcinadd.projecty.team.model.TeamProjectListResponseModel;
 import com.marcinadd.projecty.team.model.TeamRole;
 
 import java.util.List;
@@ -51,5 +52,9 @@ public class TeamService {
 
     public void addUsers(long teamId, List<String> usernames, RetrofitListener<List<TeamRole>> listener) {
         apiTeam.addUsers(teamId, usernames).enqueue(new RetrofitCallback<>(listener));
+    }
+
+    public void getProjects(long teamId, RetrofitListener<TeamProjectListResponseModel> listener) {
+        apiTeam.getProjects(teamId).enqueue(new RetrofitCallback<>(listener));
     }
 }

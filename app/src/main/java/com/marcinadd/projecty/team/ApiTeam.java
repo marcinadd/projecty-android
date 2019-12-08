@@ -1,6 +1,7 @@
 package com.marcinadd.projecty.team;
 
 import com.marcinadd.projecty.team.model.ManageTeamResponseModel;
+import com.marcinadd.projecty.team.model.TeamProjectListResponseModel;
 import com.marcinadd.projecty.team.model.TeamRole;
 
 import java.util.List;
@@ -32,4 +33,7 @@ public interface ApiTeam {
 
     @POST("/teams/{teamId}/roles")
     Call<List<TeamRole>> addUsers(@Path("teamId") long teamId, @Body List<String> usernames);
+
+    @GET("/teams/{teamId}/projects")
+    Call<TeamProjectListResponseModel> getProjects(@Path("teamId") long teamId);
 }

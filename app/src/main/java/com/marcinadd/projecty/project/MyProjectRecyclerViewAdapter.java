@@ -76,7 +76,7 @@ public class MyProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyProject
             mContext = view.getContext();
             mIdView = view.findViewById(R.id.role_name);
             mContentView = view.findViewById(R.id.username);
-            taskList = view.findViewById(R.id.task_list);
+            taskList = view.findViewById(R.id.team_project_task_list_button);
             manageProject = view.findViewById(R.id.manage_project);
             setButtons();
         }

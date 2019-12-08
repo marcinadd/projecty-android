@@ -61,19 +61,22 @@ public class MyTeamRecyclerViewAdapter extends RecyclerView.Adapter<MyTeamRecycl
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mTeamNameView;
-        public final TextView mTeamRoleNameView;
-        public TeamRole mItem;
+        final View mView;
+        final TextView mTeamNameView;
+        final TextView mTeamRoleNameView;
+        TeamRole mItem;
         private Button mManageTeamButton;
+        private Button mProjectListButton;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             mView = view;
             mTeamNameView = view.findViewById(R.id.team_list_team_name);
             mTeamRoleNameView = view.findViewById(R.id.team_list_role_name);
             mManageTeamButton = view.findViewById(R.id.team_list_manage_button);
             mManageTeamButton.setOnClickListener(manageTeamListener());
+            mProjectListButton = view.findViewById(R.id.team_list_project_list_button);
+            mProjectListButton.setOnClickListener(projectListListener());
         }
 
         @Override
@@ -85,6 +88,14 @@ public class MyTeamRecyclerViewAdapter extends RecyclerView.Adapter<MyTeamRecycl
             return v -> {
                 TeamFragmentDirections.ActionNavTeamToManageTeamFragment action = TeamFragmentDirections.actionNavTeamToManageTeamFragment();
                 action.setTeamId(mItem.getTeam().getId());
+                Navigation.findNavController(mView).navigate(action);
+            };
+        }
+
+        View.OnClickListener projectListListener() {
+            return v -> {
+                TeamFragmentDirections.ActionNavTeamToTeamProjectFragment action =
+                        TeamFragmentDirections.actionNavTeamToTeamProjectFragment(mItem.getTeam().getId());
                 Navigation.findNavController(mView).navigate(action);
             };
         }

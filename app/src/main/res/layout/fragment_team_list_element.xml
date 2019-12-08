@@ -40,15 +40,15 @@
         android:text="@string/manage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/team_list_view_projects_button"
+        app:layout_constraintStart_toEndOf="@+id/team_list_project_list_button"
         app:layout_constraintTop_toBottomOf="@+id/team_list_role_name" />
 
     <Button
-        android:id="@+id/team_list_view_projects_button"
+        android:id="@+id/team_list_project_list_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="Button"
+        android:text="@string/project_list"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/team_list_manage_button"
         app:layout_constraintStart_toStartOf="parent" />
