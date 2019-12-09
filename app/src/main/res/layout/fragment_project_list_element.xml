@@ -35,13 +35,13 @@
         android:id="@+id/manage_project"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:text="Manage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/leave_project"
         app:layout_constraintStart_toEndOf="@+id/team_project_task_list_button"
-        app:layout_constraintTop_toBottomOf="@id/username" />
+        app:layout_constraintTop_toBottomOf="@id/project_list_in_progress" />
 
     <Button
         android:id="@+id/leave_project"
@@ -51,5 +51,37 @@
         app:layout_constraintBottom_toBottomOf="@id/manage_project"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/manage_project" />
+
+    <TextView
+        android:id="@+id/project_list_to_do"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="#429ef5"
+        app:layout_constraintBottom_toBottomOf="@+id/project_list_in_progress"
+        app:layout_constraintEnd_toStartOf="@+id/project_list_in_progress"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/project_list_in_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        android:textColor="#eba834"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/username" />
+
+    <TextView
+        android:id="@+id/project_list_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="#00FF00"
+        app:layout_constraintBottom_toBottomOf="@+id/project_list_in_progress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.44"
+        app:layout_constraintStart_toEndOf="@+id/project_list_in_progress" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

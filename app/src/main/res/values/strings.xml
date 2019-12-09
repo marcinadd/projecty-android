@@ -65,6 +65,10 @@
     <string name="invalid_server">Invalid Server</string>
     <string name="action_logout">Log Out</string>
 
+    <string name="to_do_number">To do: %1$d</string>
+    <string name="in_progress_number">In progress: %1$d</string>
+    <string name="done_number">Done: %1$d</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="project_list">Project list</string>

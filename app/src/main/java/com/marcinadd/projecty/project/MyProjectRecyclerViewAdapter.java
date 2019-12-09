@@ -13,10 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.model.Roles;
 import com.marcinadd.projecty.project.model.ProjectRole;
+import com.marcinadd.projecty.task.TaskStatus;
 import com.marcinadd.projecty.ui.project.ProjectFragmentDirections;
 import com.marcinadd.projecty.ui.project.ProjectListFragment.OnListFragmentInteractionListener;
 
 import java.util.List;
+import java.util.Map;
 
 public class MyProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyProjectRecyclerViewAdapter.ViewHolder> {
 
@@ -37,9 +39,14 @@ public class MyProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyProject
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        Context context = holder.mView.getContext();
         holder.mItem = mValues.get(position);
         //holder.mRoleNameView.setText(mValues.get(position).id);
         holder.mContentView.setText(mValues.get(position).getProject().getName());
+        Map<TaskStatus, Long> summary = mValues.get(position).getProject().getTaskSummary();
+        holder.mTodoView.setText(context.getString(R.string.to_do_number, summary.get(TaskStatus.TO_DO)));
+        holder.mInProgressView.setText(context.getString(R.string.in_progress_number, summary.get(TaskStatus.IN_PROGRESS)));
+        holder.mDoneView.setText(context.getString(R.string.done_number, summary.get(TaskStatus.DONE)));
         if (holder.mItem.getName() != Roles.ADMIN) {
             holder.manageProject.setEnabled(false);
         }
@@ -64,6 +71,9 @@ public class MyProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyProject
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
+        final TextView mTodoView;
+        final TextView mInProgressView;
+        final TextView mDoneView;
         public final Button taskList;
         public final Button manageProject;
         public final Context mContext;
@@ -76,6 +86,9 @@ public class MyProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyProject
             mContext = view.getContext();
             mIdView = view.findViewById(R.id.role_name);
             mContentView = view.findViewById(R.id.username);
+            mTodoView = view.findViewById(R.id.project_list_to_do);
+            mInProgressView = view.findViewById(R.id.project_list_in_progress);
+            mDoneView = view.findViewById(R.id.project_list_done);
             taskList = view.findViewById(R.id.team_project_task_list_button);
             manageProject = view.findViewById(R.id.manage_project);
             setButtons();

@@ -1,16 +1,16 @@
 package com.marcinadd.projecty.project.model;
 
+import com.marcinadd.projecty.task.TaskStatus;
+
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public class Project implements Serializable {
     private List<String> usernames;
-
-    public Project() {
-    }
-
     private long id;
     private String name;
+    private Map<TaskStatus, Long> taskSummary;
 
     public Project(String name) {
         this.name = name;
@@ -34,6 +34,10 @@ public class Project implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Map<TaskStatus, Long> getTaskSummary() {
+        return taskSummary;
     }
 
     @Override
