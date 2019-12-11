@@ -1,6 +1,7 @@
 package com.marcinadd.projecty.team;
 
 import com.marcinadd.projecty.team.model.ManageTeamResponseModel;
+import com.marcinadd.projecty.team.model.Team;
 import com.marcinadd.projecty.team.model.TeamProjectListResponseModel;
 import com.marcinadd.projecty.team.model.TeamRole;
 
@@ -36,4 +37,10 @@ public interface ApiTeam {
 
     @GET("/teams/{teamId}/projects")
     Call<TeamProjectListResponseModel> getProjects(@Path("teamId") long teamId);
+
+    @POST("/teams")
+    Call<Team> addTeam(@Body Team team);
+
+    @DELETE("/teams/{teamId}")
+    Call<Void> deleteTeam(@Path("teamId") long teamId);
 }

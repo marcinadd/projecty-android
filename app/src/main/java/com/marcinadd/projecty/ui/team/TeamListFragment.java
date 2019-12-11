@@ -33,8 +33,12 @@ public class TeamListFragment extends Fragment implements RetrofitListener<List<
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_team_list, container, false);
-        TeamService.getInstance(getContext()).getTeams(this);
+        loadData();
         return view;
+    }
+
+    public void loadData() {
+        TeamService.getInstance(getContext()).getTeams(this);
     }
 
 

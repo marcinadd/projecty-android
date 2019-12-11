@@ -72,4 +72,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="project_list">Project list</string>
+    <string name="team_add">Add team</string>
+    <string name="team_create">Create Team</string>
+    <string name="team_delete_confirm">Do you really want to delete team?</string>
 </resources>

@@ -9,6 +9,7 @@ public class Team implements Serializable {
     private Long id;
     private String name;
     private List<Project> projects;
+    private List<String> usernames;
 
     public Long getId() {
         return id;
@@ -32,5 +33,9 @@ public class Team implements Serializable {
 
     public void setProjects(List<Project> projects) {
         this.projects = projects;
+    }
+
+    public void setUsernames(List<String> usernames) {
+        this.usernames = usernames;
     }
 }

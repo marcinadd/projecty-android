@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.listener.RetrofitListener;
@@ -23,6 +24,7 @@ import com.marcinadd.projecty.team.TeamService;
 import com.marcinadd.projecty.team.model.ManageTeamResponseModel;
 import com.marcinadd.projecty.team.model.Team;
 import com.marcinadd.projecty.team.model.TeamRole;
+import com.marcinadd.projecty.ui.team.dialog.TeamDeleteDialogFragment;
 import com.marcinadd.projecty.ui.team.manage.dialog.AddTeamRolesDialogFragment;
 import com.marcinadd.projecty.ui.team.manage.dialog.ChangeTeamNameDialogFragment;
 
@@ -30,7 +32,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public class ManageTeamFragment extends Fragment implements ChangeTeamNameDialogFragment.OnTeamNameChangedListener, AddTeamRolesDialogFragment.OnTeamRolesAddedListener {
+public class ManageTeamFragment extends Fragment implements ChangeTeamNameDialogFragment.OnTeamNameChangedListener, AddTeamRolesDialogFragment.OnTeamRolesAddedListener, TeamDeleteDialogFragment.OnTeamDeletedListener {
     private static final String TAG = "TAG";
 
     private ManageTeamViewModel mViewModel;
@@ -68,6 +70,9 @@ public class ManageTeamFragment extends Fragment implements ChangeTeamNameDialog
                 break;
             case R.id.role_add:
                 addRole();
+                break;
+            case R.id.delete:
+                deleteTeam();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -109,6 +114,12 @@ public class ManageTeamFragment extends Fragment implements ChangeTeamNameDialog
         fragment.show(Objects.requireNonNull(getChildFragmentManager()), TAG);
     }
 
+    public void deleteTeam() {
+        TeamDeleteDialogFragment fragment =
+                TeamDeleteDialogFragment.newInstance(mViewModel.getTeam().getValue());
+        fragment.setOnTeamDeletedListener(this);
+        fragment.show(getChildFragmentManager(), TAG);
+    }
 
     private void loadProjectRoleManageFragment() {
         Bundle bundle = new Bundle();
@@ -163,8 +174,11 @@ public class ManageTeamFragment extends Fragment implements ChangeTeamNameDialog
             getChildFragmentManager().getFragments().forEach(fragment -> {
                 if (fragment instanceof ChangeTeamNameDialogFragment) {
                     ((ChangeTeamNameDialogFragment) fragment).setOnTeamNameChangedListener(this);
-                } else if (fragment instanceof AddTeamRolesDialogFragment)
+                } else if (fragment instanceof AddTeamRolesDialogFragment) {
                     ((AddTeamRolesDialogFragment) fragment).setOnTeamRolesAddedListener(this);
+                } else if (fragment instanceof TeamDeleteDialogFragment) {
+                    ((TeamDeleteDialogFragment) fragment).setOnTeamDeletedListener(this);
+                }
             });
         }
     }
@@ -181,5 +195,10 @@ public class ManageTeamFragment extends Fragment implements ChangeTeamNameDialog
         List<TeamRole> roleList = mViewModel.getTeamRoles().getValue();
         Objects.requireNonNull(roleList).addAll(teamRoles);
         mViewModel.setTeamRoles(roleList);
+    }
+
+    @Override
+    public void onTeamDeleted() {
+        Navigation.findNavController(Objects.requireNonNull(getView())).navigateUp();
     }
 }
