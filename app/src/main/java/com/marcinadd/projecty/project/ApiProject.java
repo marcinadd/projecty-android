@@ -2,6 +2,7 @@ package com.marcinadd.projecty.project;
 
 import com.marcinadd.projecty.project.model.ManageProject;
 import com.marcinadd.projecty.project.model.Project;
+import com.marcinadd.projecty.project.model.ProjectRole;
 import com.marcinadd.projecty.project.model.UserProject;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public interface ApiProject {
     Call<Void> deleteProjectRole(@Path("projectRoleId") long projectRoleId);
 
     @POST("projects/{projectId}/roles")
-    Call<Void> addUsers(@Path("projectId") long projectId, @Body List<String> usernames);
+    Call<List<ProjectRole>> addUsers(@Path("projectId") long projectId, @Body List<String> usernames);
 
     @DELETE("projects/{projectId}")
     Call<Void> deleteProject(@Path("projectId") long projectId);

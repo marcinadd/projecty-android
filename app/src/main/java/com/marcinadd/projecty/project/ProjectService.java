@@ -7,8 +7,10 @@ import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.project.model.ManageProject;
 import com.marcinadd.projecty.project.model.Project;
+import com.marcinadd.projecty.project.model.ProjectRole;
 import com.marcinadd.projecty.project.model.UserProject;
 
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Retrofit;
@@ -51,5 +53,9 @@ public class ProjectService {
 
     public void deleteProject(long projectId, RetrofitListener<Void> listener) {
         apiProject.deleteProject(projectId).enqueue(new RetrofitCallback<>(listener));
+    }
+
+    public void addUsers(long projectId, List<String> usernames, RetrofitListener<List<ProjectRole>> listener) {
+        apiProject.addUsers(projectId, usernames).enqueue(new RetrofitCallback<>(listener));
     }
 }

@@ -9,5 +9,5 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".project.manage.fragment.ProjectRoleFragment"
+    tools:context=".ui.project.manage.ProjectRoleFragment"
     tools:listitem="@layout/fragment_role_list_element" />

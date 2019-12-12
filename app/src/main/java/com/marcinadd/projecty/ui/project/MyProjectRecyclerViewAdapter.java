@@ -1,4 +1,4 @@
-package com.marcinadd.projecty.project;
+package com.marcinadd.projecty.ui.project;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,7 +14,6 @@ import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.model.Roles;
 import com.marcinadd.projecty.project.model.ProjectRole;
 import com.marcinadd.projecty.task.TaskStatus;
-import com.marcinadd.projecty.ui.project.ProjectFragmentDirections;
 import com.marcinadd.projecty.ui.project.ProjectListFragment.OnListFragmentInteractionListener;
 
 import java.util.List;

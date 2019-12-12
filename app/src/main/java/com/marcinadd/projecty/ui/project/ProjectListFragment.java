@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.listener.RetrofitListener;
-import com.marcinadd.projecty.project.MyProjectRecyclerViewAdapter;
 import com.marcinadd.projecty.project.ProjectService;
 import com.marcinadd.projecty.project.model.ProjectRole;
 import com.marcinadd.projecty.project.model.UserProject;

@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.listener.RetrofitListener;
-import com.marcinadd.projecty.project.AddProjectDialogFragment;
+import com.marcinadd.projecty.ui.project.dialog.AddProjectDialogFragment;
 
 public class ProjectFragment extends Fragment implements RetrofitListener<Void>, ProjectListFragment.OnDataLoadedListener {
     private ProjectListFragment fragment;

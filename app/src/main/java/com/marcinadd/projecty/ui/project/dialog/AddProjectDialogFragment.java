@@ -1,4 +1,4 @@
-package com.marcinadd.projecty.project;
+package com.marcinadd.projecty.ui.project.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -15,6 +15,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.listener.RetrofitListener;
+import com.marcinadd.projecty.project.ProjectService;
 import com.marcinadd.projecty.project.model.Project;
 
 import java.util.ArrayList;

@@ -20,21 +20,23 @@ import androidx.navigation.Navigation;
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.project.ProjectService;
-import com.marcinadd.projecty.project.manage.fragment.AddProjectRoleDialogFragment;
-import com.marcinadd.projecty.project.manage.fragment.ChangeProjectNameDialogFragment;
-import com.marcinadd.projecty.project.manage.fragment.DeleteProjectDialogFragment;
-import com.marcinadd.projecty.project.manage.fragment.ProjectRoleFragment;
 import com.marcinadd.projecty.project.model.ManageProject;
 import com.marcinadd.projecty.project.model.Project;
+import com.marcinadd.projecty.project.model.ProjectRole;
+import com.marcinadd.projecty.ui.project.manage.dialog.ChangeProjectNameDialogFragment;
+import com.marcinadd.projecty.ui.project.manage.dialog.DeleteProjectDialogFragment;
+import com.marcinadd.projecty.ui.project.manage.dialog.ProjectRoleAddDialogFragment;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 public class ManageProjectFragment extends Fragment
         implements RetrofitListener<ManageProject>,
-        DeleteProjectDialogFragment.OnProjectDeletedListener {
+        DeleteProjectDialogFragment.OnProjectDeletedListener, ProjectRoleAddDialogFragment.OnProjectRolesAddedListener {
     private TextView projectName;
-    private ManageProjectViewModel model;
+    private ManageProjectViewModel mViewModel;
+    private ProjectRoleFragment projectRoleFragment;
 
     @Nullable
     @Override
@@ -42,14 +44,17 @@ public class ManageProjectFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_project_manage, container, false);
         projectName = view.findViewById(R.id.projectName);
         long projectId = ManageProjectFragmentArgs.fromBundle(Objects.requireNonNull(getArguments())).getProjectId();
-
-        model = ViewModelProviders.of(this).get(ManageProjectViewModel.class);
-        model.getProject().observe(this, projectObserver());
         ProjectService.getInstance(getContext()).manageProject(projectId, this);
-
         setHasOptionsMenu(true);
-
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(ManageProjectViewModel.class);
+        mViewModel.getProject().observe(this, projectObserver());
+        mViewModel.getProjectRoles().observe(this, projectRolesObserver());
     }
 
     @Override
@@ -77,8 +82,8 @@ public class ManageProjectFragment extends Fragment
 
     @Override
     public void onResponseSuccess(ManageProject response, @Nullable String TAG) {
-        model.setProject(response.getProject());
-        model.setProjectRoles(response.getProjectRoles());
+        mViewModel.setProject(response.getProject());
+        mViewModel.setProjectRoles(response.getProjectRoles());
         loadProjectRoleManageFragment();
     }
 
@@ -91,10 +96,18 @@ public class ManageProjectFragment extends Fragment
         return project -> projectName.setText(project.getName());
     }
 
+    private Observer<List<ProjectRole>> projectRolesObserver() {
+        return projectRoles -> {
+            if (projectRoleFragment != null) {
+                projectRoleFragment.updateRolesInRecyclerViewAdapter(projectRoles);
+            }
+        };
+    }
+
     private void loadProjectRoleManageFragment() {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("projectRoles", (Serializable) model.getProjectRoles().getValue());
-        ProjectRoleFragment projectRoleFragment = new ProjectRoleFragment();
+        bundle.putSerializable("projectRoles", (Serializable) mViewModel.getProjectRoles().getValue());
+        projectRoleFragment = new ProjectRoleFragment();
         projectRoleFragment.setArguments(bundle);
         FragmentTransaction transaction = Objects.requireNonNull(getFragmentManager()).beginTransaction();
         transaction.replace(R.id.frameLayout2, projectRoleFragment);
@@ -103,7 +116,7 @@ public class ManageProjectFragment extends Fragment
 
     private void changeName() {
         Bundle bundle1 = new Bundle();
-        bundle1.putSerializable("project", model.getProject().getValue());
+        bundle1.putSerializable("project", mViewModel.getProject().getValue());
         ChangeProjectNameDialogFragment fragment = new ChangeProjectNameDialogFragment();
         fragment.setArguments(bundle1);
         fragment.show(Objects.requireNonNull(getChildFragmentManager()), "TAG");
@@ -112,15 +125,16 @@ public class ManageProjectFragment extends Fragment
 
     private void addRole() {
             Bundle bundle1 = new Bundle();
-            bundle1.putSerializable("project", model.getProject().getValue());
-            AddProjectRoleDialogFragment fragment = new AddProjectRoleDialogFragment();
+        bundle1.putSerializable("project", mViewModel.getProject().getValue());
+        ProjectRoleAddDialogFragment fragment = new ProjectRoleAddDialogFragment();
+        fragment.setOnProjectRolesAddedListener(this);
             fragment.setArguments(bundle1);
         fragment.show(Objects.requireNonNull(getChildFragmentManager()), "TAG");
     }
 
     private void delete() {
         DeleteProjectDialogFragment deleteFragment =
-                DeleteProjectDialogFragment.newInstance(model.getProject().getValue());
+                DeleteProjectDialogFragment.newInstance(mViewModel.getProject().getValue());
         deleteFragment.setOnProjectDeletedListener(this);
         deleteFragment.show(Objects.requireNonNull(getChildFragmentManager()), "TAG");
     }
@@ -137,8 +151,22 @@ public class ManageProjectFragment extends Fragment
             getChildFragmentManager().getFragments().forEach(fragment -> {
                 if (fragment instanceof DeleteProjectDialogFragment) {
                     ((DeleteProjectDialogFragment) fragment).setOnProjectDeletedListener(this);
-                }
+                } else if (fragment instanceof ProjectRoleAddDialogFragment)
+                    ((ProjectRoleAddDialogFragment) fragment).setOnProjectRolesAddedListener(this);
             });
         }
+    }
+
+    @Override
+    public void onProjectRolesAdded(List<ProjectRole> projectRoles) {
+        List<ProjectRole> roleList = mViewModel.getProjectRoles().getValue();
+        Objects.requireNonNull(roleList).addAll(projectRoles);
+        mViewModel.setProjectRoles(roleList);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        projectRoleFragment = null;
     }
 }

@@ -9,11 +9,14 @@
 
     <TextView
         android:id="@+id/task_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textAppearance="?attr/textAppearanceListItem"
         app:layout_constraintBottom_toTopOf="@+id/date"
         app:layout_constraintEnd_toStartOf="@+id/icon_task_move_left"
@@ -39,7 +42,7 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/date"
         app:layout_constraintEnd_toStartOf="@+id/icon_task_manage"
-        app:layout_constraintStart_toEndOf="@+id/task_name"
+        app:layout_constraintStart_toEndOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_keyboard_arrow_left" />
 
@@ -48,7 +51,6 @@
         android:layout_width="47dp"
         android:layout_height="32dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/date"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,6 +69,13 @@
         app:layout_constraintStart_toEndOf="@+id/icon_task_move_left"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_settings" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="175dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

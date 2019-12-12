@@ -1,4 +1,4 @@
-package com.marcinadd.projecty.project.manage.fragment;
+package com.marcinadd.projecty.ui.project.manage.dialog;
 
 import android.app.Activity;
 import android.app.AlertDialog;
