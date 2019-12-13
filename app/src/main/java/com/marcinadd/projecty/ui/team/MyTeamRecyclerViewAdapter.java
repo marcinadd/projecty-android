@@ -1,5 +1,6 @@
 package com.marcinadd.projecty.ui.team;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.model.Roles;
 import com.marcinadd.projecty.team.model.TeamRole;
+import com.marcinadd.projecty.team.model.TeamSummary;
 import com.marcinadd.projecty.ui.team.TeamListFragment.OnListFragmentInteractionListener;
 
 import java.util.List;
@@ -35,9 +37,14 @@ public class MyTeamRecyclerViewAdapter extends RecyclerView.Adapter<MyTeamRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        Context context = holder.mView.getContext();
         holder.mItem = mValues.get(position);
         holder.mTeamNameView.setText(mValues.get(position).getTeam().getName());
         holder.mTeamRoleNameView.setText(mValues.get(position).getName().toString());
+        TeamSummary summary = holder.mItem.getTeam().getTeamSummary();
+        holder.mUserCount.setText(context.getString(R.string.user_count, summary.getUserCount()));
+        holder.mProjectCount.setText(context.getString(R.string.project_count, summary.getProjectCount()));
+        holder.mTaskCount.setText(context.getString(R.string.task_count, summary.getTaskCount()));
 
         if (holder.mItem.getName() != Roles.MANAGER) {
             holder.mManageTeamButton.setEnabled(false);
@@ -67,6 +74,9 @@ public class MyTeamRecyclerViewAdapter extends RecyclerView.Adapter<MyTeamRecycl
         TeamRole mItem;
         private Button mManageTeamButton;
         private Button mProjectListButton;
+        private final TextView mUserCount;
+        private final TextView mProjectCount;
+        private final TextView mTaskCount;
 
         ViewHolder(View view) {
             super(view);
@@ -77,6 +87,9 @@ public class MyTeamRecyclerViewAdapter extends RecyclerView.Adapter<MyTeamRecycl
             mManageTeamButton.setOnClickListener(manageTeamListener());
             mProjectListButton = view.findViewById(R.id.team_list_project_list_button);
             mProjectListButton.setOnClickListener(projectListListener());
+            mUserCount = view.findViewById(R.id.team_list_user_count);
+            mProjectCount = view.findViewById(R.id.team_list_project_count);
+            mTaskCount = view.findViewById(R.id.team_list_task_count);
         }
 
         @Override

@@ -10,6 +10,7 @@ public class Team implements Serializable {
     private String name;
     private List<Project> projects;
     private List<String> usernames;
+    private TeamSummary teamSummary;
 
     public Long getId() {
         return id;
@@ -37,5 +38,9 @@ public class Team implements Serializable {
 
     public void setUsernames(List<String> usernames) {
         this.usernames = usernames;
+    }
+
+    public TeamSummary getTeamSummary() {
+        return teamSummary;
     }
 }

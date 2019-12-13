@@ -73,10 +73,6 @@ public class MyTeamProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyTea
 //            mContentView = (TextView) view.findViewById(R.id.content);
         }
 
-//        @Override
-//        public String toString() {
-//            return super.toString() + " '" + mContentView.getText() + "'";
-//        }
 
         View.OnClickListener onTaskListButtonClick() {
             return v -> {

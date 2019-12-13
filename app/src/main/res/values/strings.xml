@@ -69,10 +69,12 @@
     <string name="in_progress_number">In progress: %1$d</string>
     <string name="done_number">Done: %1$d</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="project_list">Project list</string>
     <string name="team_add">Add team</string>
     <string name="team_create">Create Team</string>
     <string name="team_delete_confirm">Do you really want to delete team?</string>
+
+    <string name="user_count">Users: %1$d</string>
+    <string name="project_count">Projects: %1$d</string>
+    <string name="task_count">Tasks: %1$d</string>
 </resources>
