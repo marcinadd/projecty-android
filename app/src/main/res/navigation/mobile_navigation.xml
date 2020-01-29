@@ -194,5 +194,10 @@
             android:id="@+id/action_teamProjectFragment_to_taskListActivity"
             app:destination="@id/taskListActivity" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_chat"
+        android:name="com.marcinadd.projecty.chat.ChatFragment"
+        android:label="chat_fragment"
+        tools:layout="@layout/chat_fragment" />
 
 </navigation>

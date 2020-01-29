@@ -77,4 +77,7 @@
     <string name="user_count">Users: %1$d</string>
     <string name="project_count">Projects: %1$d</string>
     <string name="task_count">Tasks: %1$d</string>
+    <string name="menu_chat">Chat</string>
+    <string name="channel_name">Messages</string>
+    <string name="channel_description">ChatMessages</string>
 </resources>

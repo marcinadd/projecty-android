@@ -21,6 +21,7 @@ import com.marcinadd.projecty.login.LoginService;
 import com.marcinadd.projecty.message.model.Message;
 import com.marcinadd.projecty.model.Role;
 import com.marcinadd.projecty.project.model.ProjectRole;
+import com.marcinadd.projecty.service.ChatService;
 import com.marcinadd.projecty.task.model.Task;
 import com.marcinadd.projecty.team.model.TeamRole;
 import com.marcinadd.projecty.ui.login.LoginActivity;
@@ -46,6 +47,7 @@ public class Main2Activity extends AppCompatActivity implements ProjectListFragm
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        startService(new Intent(this, ChatService.class));
 
         if (!getCurrentUserUsername().isEmpty()) {
             LoginService.getInstance(getApplicationContext()).checkIfUserIsLogged(this);

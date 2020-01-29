@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.marcinadd.projecty.exception.BlankTokenException;
 import com.marcinadd.projecty.helper.ServerHelper;
 
 import java.io.IOException;
@@ -28,7 +29,11 @@ public class AuthorizedNetworkClient {
                         @Override
                         public Response intercept(Chain chain) throws IOException {
                             Request.Builder ongoing = chain.request().newBuilder();
-                            ongoing.addHeader("Authorization", "Bearer " + TokenHelper.getAccessToken(context));
+                            try {
+                                ongoing.addHeader("Authorization", "Bearer " + TokenHelper.getAccessToken(context));
+                            } catch (BlankTokenException e) {
+                                e.printStackTrace();
+                            }
                             return chain.proceed(ongoing.build());
                         }
                     })
