@@ -40,7 +40,6 @@ public class AuthorizedNetworkClient {
                     .authenticator(new TokenAuthenticator(context))
                     .build();
             Gson gson = new GsonBuilder()
-                    .setDateFormat("yyyy-MM-dd")
                     .create();
             INSTANCE = new Retrofit.Builder()
                     .baseUrl(ServerHelper.getServerURL(context))

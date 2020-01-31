@@ -27,29 +27,33 @@ import static org.junit.Assert.assertEquals;
  */
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
-    String username = "user";
-    String password = "user1234";
+
+    private final String HOST = "http://10.0.2.2:8080";
+    private final String USERNAME = "user";
+    private final String PASSWORD = "user1234";
+    private Context appContext;
+
     @Test
     public void useAppContext() {
         // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         assertEquals("com.marcinadd.projecty", appContext.getPackageName());
     }
 
     @Test
     public void retrofitTest() throws IOException {
-        Retrofit retrofit = NetworkClient.getRetrofitClient();
+        Retrofit retrofit = NetworkClient.getRetrofitClient(HOST, true);
         AuthClient authClient = retrofit.create(AuthClient.class);
-        Response<Token> tokenResponse = authClient.getToken("password", username, this.password).execute();
+        Response<Token> tokenResponse = authClient.getToken("PASSWORD", USERNAME, this.PASSWORD).execute();
         assertEquals(200, tokenResponse.code());
     }
 
     @Test
     public void authorizedRetrofitTest() throws IOException {
-        Retrofit retrofit = NetworkClient.getRetrofitClient();
+        Retrofit retrofit = NetworkClient.getRetrofitClient(HOST, true);
         AuthClient authClient = retrofit.create(AuthClient.class);
-        Response<Token> response = authClient.getToken("password", username, this.password).execute();
+        Response<Token> response = authClient.getToken("password", USERNAME, this.PASSWORD).execute();
         assert response.body() != null;
         assertEquals(200, response.code());
 
@@ -58,7 +62,7 @@ public class ExampleInstrumentedTest {
         Response<LoggedInUser> response1 = authClient1.getAuthenticatedUser().execute();
         assert response1.body() != null;
         assertEquals(200, response1.code());
-        assertEquals(username, response1.body().getDisplayName());
+        assertEquals(USERNAME, response1.body().getDisplayName());
 
     }
 }

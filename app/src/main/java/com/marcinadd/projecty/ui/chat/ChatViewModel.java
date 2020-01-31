@@ -1,4 +1,4 @@
-package com.marcinadd.projecty.chat;
+package com.marcinadd.projecty.ui.chat;
 
 import androidx.lifecycle.ViewModel;
 

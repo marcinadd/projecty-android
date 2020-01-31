@@ -80,4 +80,5 @@
     <string name="menu_chat">Chat</string>
     <string name="channel_name">Messages</string>
     <string name="channel_description">ChatMessages</string>
+    <string name="date_header_yesterday">Yesterday</string>
 </resources>

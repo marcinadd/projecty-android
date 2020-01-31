@@ -27,6 +27,7 @@ import ua.naiksoftware.stomp.dto.StompMessage;
 public class ChatService extends Service {
     private final String TAG = "StompChatClient";
     private final String SUBSCRIBE_URL = "/user/queue/specific-user";
+
     private StompClient mStompClient;
 
     @Override
@@ -72,8 +73,7 @@ public class ChatService extends Service {
         compositeDisposable.add(lifecycler);
 
         Disposable topic = mStompClient.topic(SUBSCRIBE_URL).subscribe(stompMessage -> {
-            Log.e(TAG, stompMessage.getPayload());
-            sendNotification(parseJson(stompMessage));
+            sendNotification(parseStompMessage(stompMessage));
         }, throwable -> Log.e("Error", throwable.getMessage()));
 
         compositeDisposable.add(topic);
@@ -81,14 +81,14 @@ public class ChatService extends Service {
 
     public void sendNotification(ChatMessage chatMessage) {
         NotificationService.sendNotification(
-                chatMessage.getSender(),
+                chatMessage.getSender().getUsername(),
                 chatMessage.getText(),
                 R.drawable.ic_mail,
                 getApplicationContext()
         );
     }
 
-    public ChatMessage parseJson(StompMessage stompMessage) {
+    public ChatMessage parseStompMessage(StompMessage stompMessage) {
         Gson gson = new Gson();
         return gson.fromJson(stompMessage.getPayload(), ChatMessage.class);
     }

@@ -1,9 +1,7 @@
 package com.marcinadd.projecty;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -16,6 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.marcinadd.projecty.helper.UserHelper;
 import com.marcinadd.projecty.listener.UserNotLoggedListener;
 import com.marcinadd.projecty.login.LoginService;
 import com.marcinadd.projecty.message.model.Message;
@@ -49,7 +48,7 @@ public class Main2Activity extends AppCompatActivity implements ProjectListFragm
         setSupportActionBar(toolbar);
         startService(new Intent(this, ChatService.class));
 
-        if (!getCurrentUserUsername().isEmpty()) {
+        if (!UserHelper.getCurrentUserUsername(getApplicationContext()).isEmpty()) {
             LoginService.getInstance(getApplicationContext()).checkIfUserIsLogged(this);
             DrawerLayout drawer = findViewById(R.id.drawer_layout);
             NavigationView navigationView = findViewById(R.id.nav_view);
@@ -67,11 +66,6 @@ public class Main2Activity extends AppCompatActivity implements ProjectListFragm
         } else {
             onUserNotLogged();
         }
-    }
-
-    public String getCurrentUserUsername() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        return sharedPreferences.getString("username", "");
     }
 
     @Override

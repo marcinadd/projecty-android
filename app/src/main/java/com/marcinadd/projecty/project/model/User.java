@@ -6,6 +6,14 @@ public class User implements Serializable {
     private long id;
     private String username;
 
+    public User(long id, String username) {
+        this.id = id;
+        this.username = username;
+    }
+
+    public User() {
+    }
+
     public long getId() {
         return id;
     }
@@ -16,7 +24,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "ChatUser{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 '}';
