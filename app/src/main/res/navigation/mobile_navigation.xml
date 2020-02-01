@@ -198,6 +198,24 @@
         android:id="@+id/nav_chat"
         android:name="com.marcinadd.projecty.ui.chat.ChatDialogsListFragment"
         android:label="chat_fragment"
-        tools:layout="@layout/fragment_chat_dialogs_list" />
+        tools:layout="@layout/fragment_chat_dialogs_list">
+        <action
+            android:id="@+id/action_nav_chat_to_chatMessagesListFragment"
+            app:destination="@id/chatMessagesListFragment">
+            <argument
+                android:name="username"
+                android:defaultValue="user" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/chatMessagesListFragment"
+        android:name="com.marcinadd.projecty.ui.chat.list.ChatMessagesListFragment"
+        android:label="fragment_chat_messages_list"
+        tools:layout="@layout/fragment_chat_messages_list">
+        <argument
+            android:name="username"
+            android:defaultValue="user"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

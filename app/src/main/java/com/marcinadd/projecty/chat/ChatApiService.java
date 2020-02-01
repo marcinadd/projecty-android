@@ -5,6 +5,7 @@ import android.content.Context;
 import com.marcinadd.projecty.callback.RetrofitCallback;
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.listener.RetrofitListener;
+import com.marcinadd.projecty.model.Page;
 
 import java.util.List;
 
@@ -27,6 +28,10 @@ public class ChatApiService {
     }
 
     public void getChatMessageHistory(final RetrofitListener<List<ChatMessageProjection>> listener) {
-        apiChat.getChatMessages().enqueue(new RetrofitCallback<>(listener));
+        apiChat.getChatHistory().enqueue(new RetrofitCallback<>(listener));
+    }
+
+    public void getChatMessagesForSpecifiedUsername(final String username, final RetrofitListener<Page<ChatMessage>> listener) {
+        apiChat.getChatMessagesForSpecifiedUsername(username).enqueue(new RetrofitCallback<>(listener));
     }
 }

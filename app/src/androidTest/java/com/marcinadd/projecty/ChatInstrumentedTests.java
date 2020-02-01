@@ -11,7 +11,7 @@ import com.marcinadd.projecty.chat.ChatMessage;
 import com.marcinadd.projecty.chat.ChatMessageProjection;
 import com.marcinadd.projecty.chat.ui.model.Dialog;
 import com.marcinadd.projecty.chat.ui.model.Message;
-import com.marcinadd.projecty.helper.DialogHelper;
+import com.marcinadd.projecty.helper.ChatHelper;
 import com.marcinadd.projecty.project.model.User;
 
 import org.junit.Before;
@@ -22,7 +22,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 @RunWith(AndroidJUnit4.class)
-public class DialogInstrumentedTests {
+public class ChatInstrumentedTests {
 
     private static final long MESSAGE_ID = 416L;
     private static final String MESSAGE_TEXT = "This is sample message text";
@@ -51,15 +51,15 @@ public class DialogInstrumentedTests {
 
     @Test
     public void whenCreateMessageFromChatMessage_shouldReturnChatMessage() {
-        Message message = DialogHelper.createMessageFromChatMessage(chatMessageProjection.getLastMessage(), context);
+        Message message = ChatHelper.createMessageFromChatMessage(chatMessageProjection.getLastMessage());
         assertThat(message.getId(), equalTo(String.valueOf(MESSAGE_ID)));
-        assertThat(message.getUser().getName(), equalTo("admin"));
+        assertThat(message.getUser().getName(), equalTo("user"));
         assertThat(message.getText(), equalTo(MESSAGE_TEXT));
     }
 
     @Test
     public void whenCreateDialogFromChatMessage_shouldReturnDialog() {
-        Dialog dialog = DialogHelper.createDialogFromChatMessageProjection(chatMessageProjection, context);
+        Dialog dialog = ChatHelper.createDialogFromChatMessageProjection(chatMessageProjection, context);
         assertThat(dialog.getDialogName(), equalTo("admin"));
         assertThat(dialog.getLastMessage().getText(), equalTo(chatMessage.getText()));
         assertThat(dialog.getUnreadCount(), equalTo(78));

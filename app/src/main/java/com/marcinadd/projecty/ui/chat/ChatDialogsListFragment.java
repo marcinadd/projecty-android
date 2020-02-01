@@ -1,7 +1,6 @@
 package com.marcinadd.projecty.ui.chat;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +9,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.chat.ChatApiService;
 import com.marcinadd.projecty.chat.ChatMessageProjection;
 import com.marcinadd.projecty.chat.ui.model.Dialog;
-import com.marcinadd.projecty.helper.DialogHelper;
+import com.marcinadd.projecty.helper.ChatHelper;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.stfalcon.chatkit.dialogs.DialogsList;
 import com.stfalcon.chatkit.dialogs.DialogsListAdapter;
 import com.stfalcon.chatkit.utils.DateFormatter;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +30,8 @@ public class ChatDialogsListFragment extends Fragment
         implements RetrofitListener<List<ChatMessageProjection>>, DateFormatter.Formatter,
         DialogsListAdapter.OnDialogClickListener<Dialog> {
 
-    private ChatViewModel mViewModel;
+    private ChatDialogsListModel mViewModel;
+    private View mView;
     private DialogsList dialogsListView;
     private DialogsListAdapter dialogsListAdapter;
 
@@ -40,8 +42,8 @@ public class ChatDialogsListFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_chat_dialogs_list, container, false);
-        dialogsListView = view.findViewById(R.id.dialogsList);
+        mView = inflater.inflate(R.layout.fragment_chat_dialogs_list, container, false);
+        dialogsListView = mView.findViewById(R.id.dialogsList);
 
         ChatApiService.getInstance(getContext()).getChatMessageHistory(this);
 
@@ -51,7 +53,7 @@ public class ChatDialogsListFragment extends Fragment
         dialogsListAdapter.setDatesFormatter(this);
         dialogsListAdapter.setOnDialogClickListener(this);
         dialogsListView.setAdapter(dialogsListAdapter);
-        return view;
+        return mView;
     }
 
     @Override
@@ -62,7 +64,7 @@ public class ChatDialogsListFragment extends Fragment
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(ChatViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(ChatDialogsListModel.class);
         // TODO: Use the ViewModel
 
     }
@@ -70,16 +72,23 @@ public class ChatDialogsListFragment extends Fragment
     @Override
     public void onDetach() {
         super.onDetach();
+        mViewModel = null;
+        mView = null;
+        dialogsListView = null;
+        dialogsListAdapter = null;
     }
 
     @Override
     public void onResponseSuccess(List<ChatMessageProjection> response, @Nullable String TAG) {
         Collections.reverse(response);
+        List<Dialog> dialogs = new ArrayList<>();
         for (ChatMessageProjection chatMessageProjection : response
         ) {
-            Dialog dialog = DialogHelper.createDialogFromChatMessageProjection(chatMessageProjection, getContext());
-            dialogsListAdapter.upsertItem(dialog);
+            Dialog dialog = ChatHelper.createDialogFromChatMessageProjection(chatMessageProjection, getContext());
+            dialogs.add(dialog);
         }
+        dialogsListAdapter.setItems(dialogs);
+        mViewModel.setDialogs(dialogs);
     }
 
     @Override
@@ -100,6 +109,9 @@ public class ChatDialogsListFragment extends Fragment
 
     @Override
     public void onDialogClick(Dialog dialog) {
-        Log.e("Cliked! on dialog", dialog.getId());
+        ChatDialogsListFragmentDirections.ActionNavChatToChatMessagesListFragment action =
+                ChatDialogsListFragmentDirections.actionNavChatToChatMessagesListFragment();
+        action.setUsername(dialog.getDialogName());
+        Navigation.findNavController(mView).navigate(action);
     }
 }

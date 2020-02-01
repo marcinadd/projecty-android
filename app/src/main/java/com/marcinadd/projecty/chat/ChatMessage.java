@@ -60,4 +60,16 @@ public class ChatMessage {
     public void setText(String text) {
         this.text = text;
     }
+
+    @Override
+    public String toString() {
+        return "ChatMessage{" +
+                "id=" + id +
+                ", sender=" + sender +
+                ", recipient=" + recipient +
+                ", sendDate=" + sendDate +
+                ", seenDate=" + seenDate +
+                ", text='" + text + '\'' +
+                '}';
+    }
 }

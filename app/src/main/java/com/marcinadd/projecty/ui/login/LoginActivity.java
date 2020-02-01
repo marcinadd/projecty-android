@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.marcinadd.projecty.Main2Activity;
 import com.marcinadd.projecty.R;
+import com.marcinadd.projecty.helper.UserHelper;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -72,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                     showLoginFailed(loginResult.getError());
                 }
                 if (loginResult.getSuccess() != null) {
+                    UserHelper.setCurrentUserId(getApplicationContext());
                     updateUiWithUser(loginResult.getSuccess());
                     setResult(Activity.RESULT_OK);
                     finish();
