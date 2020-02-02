@@ -28,6 +28,8 @@ public class ChatService extends Service {
     private final String TAG = "StompChatClient";
     private final String SUBSCRIBE_URL = "/user/queue/specific-user";
 
+    public static final String INTENT_FILTER_TAG = "com.marcinadd.projecty.CHAT_MESSAGE";
+
     private StompClient mStompClient;
 
     @Override
@@ -73,7 +75,10 @@ public class ChatService extends Service {
         compositeDisposable.add(lifecycler);
 
         Disposable topic = mStompClient.topic(SUBSCRIBE_URL).subscribe(stompMessage -> {
-            sendNotification(parseStompMessage(stompMessage));
+            ChatMessage message = parseStompMessage(stompMessage);
+            sendNotification(message);
+            sendBroadcast(message);
+
         }, throwable -> Log.e("Error", throwable.getMessage()));
 
         compositeDisposable.add(topic);
@@ -86,6 +91,13 @@ public class ChatService extends Service {
                 R.drawable.ic_mail,
                 getApplicationContext()
         );
+    }
+
+    public void sendBroadcast(ChatMessage chatMessage) {
+        Intent intent = new Intent();
+        intent.setAction(INTENT_FILTER_TAG);
+        intent.putExtra("message", chatMessage);
+        sendBroadcast(intent);
     }
 
     public ChatMessage parseStompMessage(StompMessage stompMessage) {

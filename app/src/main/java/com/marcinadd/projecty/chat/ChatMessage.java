@@ -2,9 +2,10 @@ package com.marcinadd.projecty.chat;
 
 import com.marcinadd.projecty.project.model.User;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ChatMessage {
+public class ChatMessage implements Serializable {
     private Long id;
     private User sender;
     private User recipient;

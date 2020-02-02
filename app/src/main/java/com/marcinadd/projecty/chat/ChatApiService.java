@@ -31,7 +31,7 @@ public class ChatApiService {
         apiChat.getChatHistory().enqueue(new RetrofitCallback<>(listener));
     }
 
-    public void getChatMessagesForSpecifiedUsername(final String username, final RetrofitListener<Page<ChatMessage>> listener) {
-        apiChat.getChatMessagesForSpecifiedUsername(username).enqueue(new RetrofitCallback<>(listener));
+    public void getChatMessagesForSpecifiedUsername(final String username, Integer offset, Integer limit, final RetrofitListener<Page<ChatMessage>> listener) {
+        apiChat.getChatMessagesForSpecifiedUsername(username, offset, limit).enqueue(new RetrofitCallback<>(listener));
     }
 }
