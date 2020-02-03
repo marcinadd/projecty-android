@@ -5,9 +5,10 @@ import androidx.annotation.Nullable;
 import com.stfalcon.chatkit.commons.models.IMessage;
 import com.stfalcon.chatkit.commons.models.MessageContentType;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Message implements IMessage, MessageContentType.Image {
+public class Message implements IMessage, MessageContentType.Image, Serializable {
     private String id;
     private String text;
     private ChatUser chatUser;
@@ -19,7 +20,6 @@ public class Message implements IMessage, MessageContentType.Image {
         this.chatUser = chatUser;
         this.date = sendDate;
     }
-
 
     @Override
     public String getId() {

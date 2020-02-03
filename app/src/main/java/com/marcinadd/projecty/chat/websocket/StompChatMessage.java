@@ -4,11 +4,19 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class StompChatMessage implements Serializable {
-
     private String sender;
     private String recipient;
     private String text;
     private Date sendDate;
+
+    public StompChatMessage() {
+    }
+
+    public StompChatMessage(String sender, String recipient, String text) {
+        this.sender = sender;
+        this.recipient = recipient;
+        this.text = text;
+    }
 
     public String getSender() {
         return sender;

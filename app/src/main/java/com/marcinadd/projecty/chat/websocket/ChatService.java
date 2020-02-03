@@ -1,8 +1,10 @@
 package com.marcinadd.projecty.chat.websocket;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -28,7 +30,11 @@ public class ChatService extends Service {
     private final String TAG = "StompChatClient";
     private final String SUBSCRIBE_URL = "/user/queue/specific-user";
 
-    public static final String INTENT_FILTER_TAG = "com.marcinadd.projecty.CHAT_MESSAGE";
+    public static final String INTENT_FILTER_TAG_RECEIVED = "com.marcinadd.projecty.CHAT_MESSAGE_RECEIVED";
+    public static final String INTENT_FILTER_TAG_TO_SEND = "com.marcinadd.projecty.CHAT_MESSAGE_TO_SEND";
+
+    private BroadcastReceiver broadcastReceiver;
+    private IntentFilter intentFilter;
 
     private StompClient mStompClient;
 
@@ -37,9 +43,25 @@ public class ChatService extends Service {
         super.onCreate();
         try {
             initChat();
+            initBroadcastReceiver();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void initBroadcastReceiver() {
+        intentFilter = new IntentFilter(INTENT_FILTER_TAG_TO_SEND);
+        broadcastReceiver = toSendMessageBroadcastReceiver();
+    }
+
+    BroadcastReceiver toSendMessageBroadcastReceiver() {
+        return new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                StompChatMessage message = (StompChatMessage) intent.getSerializableExtra("message");
+                mStompClient.send("/app/secured/room", new Gson().toJson(message)).subscribe();
+            }
+        };
     }
 
     public void initChat() throws BlankTokenException {
@@ -95,21 +117,13 @@ public class ChatService extends Service {
 
     public void sendBroadcast(StompChatMessage stompChatMessage) {
         Intent intent = new Intent();
-        intent.setAction(INTENT_FILTER_TAG);
+        intent.setAction(INTENT_FILTER_TAG_RECEIVED);
         intent.putExtra("message", stompChatMessage);
         sendBroadcast(intent);
     }
 
     public StompChatMessage parseStompMessage(StompMessage stompMessage) {
-        Gson gson = new Gson();
-        return gson.fromJson(stompMessage.getPayload(), StompChatMessage.class);
-    }
-
-
-    @Override
-    public void onDestroy() {
-        if (mStompClient != null && mStompClient.isConnected())
-            mStompClient.disconnect();
+        return new Gson().fromJson(stompMessage.getPayload(), StompChatMessage.class);
     }
 
     @Nullable
@@ -118,4 +132,20 @@ public class ChatService extends Service {
         return null;
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (broadcastReceiver != null && intentFilter != null)
+            getApplicationContext().registerReceiver(broadcastReceiver, intentFilter);
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mStompClient != null && mStompClient.isConnected())
+            mStompClient.disconnect();
+        if (broadcastReceiver != null)
+            getApplicationContext().unregisterReceiver(broadcastReceiver);
+        broadcastReceiver = null;
+        intentFilter = null;
+    }
 }

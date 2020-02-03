@@ -43,8 +43,10 @@ public class ChatMessagesListFragment extends Fragment
     private BroadcastReceiver broadcastReceiver;
     private IntentFilter intentFilter;
 
-    private String username;
+    private String recipientUsername;
+
     private String senderId;
+    private String senderUsername;
 
     public static ChatMessagesListFragment newInstance() {
         return new ChatMessagesListFragment();
@@ -60,15 +62,15 @@ public class ChatMessagesListFragment extends Fragment
         messageInput.setInputListener(this);
 
         senderId = String.valueOf(UserHelper.getCurrentUserId(getContext()));
+        senderUsername = UserHelper.getCurrentUserUsername(getContext());
 
         adapter = new MessagesListAdapter<>(senderId, null);
         adapter.setLoadMoreListener(this);
 
         messagesList.setAdapter(adapter);
 
-        intentFilter = new IntentFilter(ChatService.INTENT_FILTER_TAG);
+        intentFilter = new IntentFilter(ChatService.INTENT_FILTER_TAG_RECEIVED);
         broadcastReceiver = broadcastReceiver();
-
 
         getContext().registerReceiver(broadcastReceiver, intentFilter);
 
@@ -79,8 +81,8 @@ public class ChatMessagesListFragment extends Fragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 //        mViewModel = ViewModelProviders.of(this).get(ChatMessagesListViewModel.class);
-        username = ChatMessagesListFragmentArgs.fromBundle(Objects.requireNonNull(getArguments())).getUsername();
-        ChatApiService.getInstance(getContext()).getChatMessagesForSpecifiedUsername(username, null, null, this);
+        recipientUsername = ChatMessagesListFragmentArgs.fromBundle(Objects.requireNonNull(getArguments())).getUsername();
+        ChatApiService.getInstance(getContext()).getChatMessagesForSpecifiedUsername(recipientUsername, null, null, this);
     }
 
     @Override
@@ -105,12 +107,21 @@ public class ChatMessagesListFragment extends Fragment
 
     @Override
     public void onLoadMore(int page, int totalItemsCount) {
-        ChatApiService.getInstance(getContext()).getChatMessagesForSpecifiedUsername(username, page, null, this);
+        ChatApiService.getInstance(getContext()).getChatMessagesForSpecifiedUsername(recipientUsername, page, null, this);
     }
 
     @Override
     public boolean onSubmit(CharSequence input) {
-        adapter.addToStart(new Message(null, input.toString(), new ChatUser(senderId, null), new Date()), true);
+        Message message = new Message(null, input.toString(), new ChatUser(senderId, null), new Date());
+        adapter.addToStart(message, true);
+
+        StompChatMessage stompChatMessage =
+                new StompChatMessage(senderUsername, recipientUsername, input.toString());
+
+        Intent intent = new Intent();
+        intent.setAction(ChatService.INTENT_FILTER_TAG_TO_SEND);
+        intent.putExtra("message", stompChatMessage);
+        getContext().sendBroadcast(intent);
         return true;
     }
 
@@ -118,13 +129,12 @@ public class ChatMessagesListFragment extends Fragment
         return new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                StompChatMessage cstompChatMessage = (StompChatMessage) intent.getSerializableExtra("message");
-                Message message = ChatHelper.createMessageFromStompChatMessage(cstompChatMessage);
+                StompChatMessage stompChatMessage = (StompChatMessage) intent.getSerializableExtra("message");
+                Message message = ChatHelper.createMessageFromStompChatMessage(stompChatMessage);
                 adapter.addToStart(message, true);
             }
         };
     }
-
 
     @Override
     public void onPause() {
@@ -136,7 +146,7 @@ public class ChatMessagesListFragment extends Fragment
     public void onDestroy() {
         super.onDestroy();
         adapter = null;
-        username = null;
+        recipientUsername = null;
         senderId = null;
         broadcastReceiver = null;
         intentFilter = null;
