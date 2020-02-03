@@ -7,6 +7,7 @@ import com.marcinadd.projecty.chat.ChatMessageProjection;
 import com.marcinadd.projecty.chat.ui.model.ChatUser;
 import com.marcinadd.projecty.chat.ui.model.Dialog;
 import com.marcinadd.projecty.chat.ui.model.Message;
+import com.marcinadd.projecty.chat.websocket.StompChatMessage;
 
 import java.util.ArrayList;
 
@@ -37,5 +38,10 @@ public class ChatHelper {
     public static Message createMessageFromChatMessage(ChatMessage chatMessage) {
         ChatUser chatUser = new ChatUser(chatMessage.getSender());
         return new Message(chatMessage.getId().toString(), chatMessage.getText(), chatUser, chatMessage.getSendDate());
+    }
+
+    public static Message createMessageFromStompChatMessage(StompChatMessage stompChatMessage) {
+        ChatUser chatUser = new ChatUser("OTHER", stompChatMessage.getSender());
+        return new Message(null, stompChatMessage.getText(), chatUser, stompChatMessage.getSendDate());
     }
 }

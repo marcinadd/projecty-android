@@ -1,4 +1,4 @@
-package com.marcinadd.projecty.service;
+package com.marcinadd.projecty.chat.websocket;
 
 import android.app.Service;
 import android.content.Context;
@@ -10,10 +10,10 @@ import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.marcinadd.projecty.R;
-import com.marcinadd.projecty.chat.ChatMessage;
 import com.marcinadd.projecty.client.TokenHelper;
 import com.marcinadd.projecty.exception.BlankTokenException;
 import com.marcinadd.projecty.helper.ServerHelper;
+import com.marcinadd.projecty.service.NotificationService;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -75,7 +75,7 @@ public class ChatService extends Service {
         compositeDisposable.add(lifecycler);
 
         Disposable topic = mStompClient.topic(SUBSCRIBE_URL).subscribe(stompMessage -> {
-            ChatMessage message = parseStompMessage(stompMessage);
+            StompChatMessage message = parseStompMessage(stompMessage);
             sendNotification(message);
             sendBroadcast(message);
 
@@ -84,25 +84,25 @@ public class ChatService extends Service {
         compositeDisposable.add(topic);
     }
 
-    public void sendNotification(ChatMessage chatMessage) {
+    public void sendNotification(StompChatMessage stompChatMessage) {
         NotificationService.sendNotification(
-                chatMessage.getSender().getUsername(),
-                chatMessage.getText(),
+                stompChatMessage.getSender(),
+                stompChatMessage.getText(),
                 R.drawable.ic_mail,
                 getApplicationContext()
         );
     }
 
-    public void sendBroadcast(ChatMessage chatMessage) {
+    public void sendBroadcast(StompChatMessage stompChatMessage) {
         Intent intent = new Intent();
         intent.setAction(INTENT_FILTER_TAG);
-        intent.putExtra("message", chatMessage);
+        intent.putExtra("message", stompChatMessage);
         sendBroadcast(intent);
     }
 
-    public ChatMessage parseStompMessage(StompMessage stompMessage) {
+    public StompChatMessage parseStompMessage(StompMessage stompMessage) {
         Gson gson = new Gson();
-        return gson.fromJson(stompMessage.getPayload(), ChatMessage.class);
+        return gson.fromJson(stompMessage.getPayload(), StompChatMessage.class);
     }
 
 

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +18,12 @@ import com.marcinadd.projecty.chat.ChatApiService;
 import com.marcinadd.projecty.chat.ChatMessage;
 import com.marcinadd.projecty.chat.ui.model.ChatUser;
 import com.marcinadd.projecty.chat.ui.model.Message;
+import com.marcinadd.projecty.chat.websocket.ChatService;
+import com.marcinadd.projecty.chat.websocket.StompChatMessage;
 import com.marcinadd.projecty.helper.ChatHelper;
 import com.marcinadd.projecty.helper.UserHelper;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.model.Page;
-import com.marcinadd.projecty.service.ChatService;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
@@ -118,7 +118,9 @@ public class ChatMessagesListFragment extends Fragment
         return new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Log.e("BROADCAST_RECEIVER", "Notification received!@");
+                StompChatMessage cstompChatMessage = (StompChatMessage) intent.getSerializableExtra("message");
+                Message message = ChatHelper.createMessageFromStompChatMessage(cstompChatMessage);
+                adapter.addToStart(message, true);
             }
         };
     }

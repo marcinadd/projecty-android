@@ -10,7 +10,6 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import com.marcinadd.projecty.chat.ChatMessage;
 import com.marcinadd.projecty.chat.ChatMessageProjection;
 import com.marcinadd.projecty.chat.ui.model.Dialog;
-import com.marcinadd.projecty.chat.ui.model.Message;
 import com.marcinadd.projecty.helper.ChatHelper;
 import com.marcinadd.projecty.project.model.User;
 
@@ -50,19 +49,10 @@ public class ChatInstrumentedTests {
     }
 
     @Test
-    public void whenCreateMessageFromChatMessage_shouldReturnChatMessage() {
-        Message message = ChatHelper.createMessageFromChatMessage(chatMessageProjection.getLastMessage());
-        assertThat(message.getId(), equalTo(String.valueOf(MESSAGE_ID)));
-        assertThat(message.getUser().getName(), equalTo("user"));
-        assertThat(message.getText(), equalTo(MESSAGE_TEXT));
-    }
-
-    @Test
     public void whenCreateDialogFromChatMessage_shouldReturnDialog() {
         Dialog dialog = ChatHelper.createDialogFromChatMessageProjection(chatMessageProjection, context);
         assertThat(dialog.getDialogName(), equalTo("admin"));
         assertThat(dialog.getLastMessage().getText(), equalTo(chatMessage.getText()));
         assertThat(dialog.getUnreadCount(), equalTo(78));
     }
-
 }

@@ -14,13 +14,13 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.marcinadd.projecty.chat.websocket.ChatService;
 import com.marcinadd.projecty.helper.UserHelper;
 import com.marcinadd.projecty.listener.UserNotLoggedListener;
 import com.marcinadd.projecty.login.LoginService;
 import com.marcinadd.projecty.message.model.Message;
 import com.marcinadd.projecty.model.Role;
 import com.marcinadd.projecty.project.model.ProjectRole;
-import com.marcinadd.projecty.service.ChatService;
 import com.marcinadd.projecty.task.model.Task;
 import com.marcinadd.projecty.team.model.TeamRole;
 import com.marcinadd.projecty.ui.login.LoginActivity;

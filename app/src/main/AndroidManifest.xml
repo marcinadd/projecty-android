@@ -27,7 +27,7 @@
             android:label="@string/title_activity_login" />
 
         <service
-            android:name=".service.ChatService"
+            android:name=".chat.websocket.ChatService"
             android:exported="false" />
     </application>
 </manifest>
