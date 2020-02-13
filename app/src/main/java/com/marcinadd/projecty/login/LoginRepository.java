@@ -55,7 +55,7 @@ public class LoginRepository {
         TokenHelper.saveToken(user.getToken(), mContext);
         try {
             ResponseBody body = UserService.getAvatar(user.getDisplayName(), mContext);
-            UserService.saveAvatarInCache(body, mContext);
+            UserService.saveAvatarInCache(body, mContext, "avatar");
         } catch (IOException e) {
             e.printStackTrace();
         }

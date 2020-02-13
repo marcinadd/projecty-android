@@ -32,7 +32,7 @@ public class UserService {
         ImageView imageView = headerView.findViewById(R.id.nav_header_avatar);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         title.setText(sharedPreferences.getString("username", ""));
-        Bitmap avatar = Bitmap.createScaledBitmap(getAvatarFromCache(context), 200, 200, true);
+        Bitmap avatar = Bitmap.createScaledBitmap(getAvatarFromCache(context, "avatar"), 200, 200, true);
         if (avatar != null) {
             RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), avatar);
             roundedBitmapDrawable.setCircular(true);
@@ -50,9 +50,9 @@ public class UserService {
         return null;
     }
 
-    public static boolean saveAvatarInCache(ResponseBody body, Context mContext) {
+    public static boolean saveAvatarInCache(ResponseBody body, Context mContext, String fileName) {
         try {
-            File file = new File(mContext.getCacheDir(), "avatar.png");
+            File file = new File(mContext.getCacheDir(), fileName + ".jpg");
             InputStream inputStream = null;
             OutputStream outputStream = null;
             try {
@@ -78,8 +78,8 @@ public class UserService {
         }
     }
 
-    public static Bitmap getAvatarFromCache(Context mContext) {
-        File file = new File(mContext.getCacheDir(), "avatar.png");
+    public static Bitmap getAvatarFromCache(Context mContext, String fileName) {
+        File file = new File(mContext.getCacheDir(), fileName + ".jpg");
         if (file.exists()) {
             return BitmapFactory.decodeFile(file.getAbsolutePath());
         }

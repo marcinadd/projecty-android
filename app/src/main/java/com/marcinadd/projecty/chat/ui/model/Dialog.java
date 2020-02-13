@@ -29,7 +29,7 @@ public class Dialog implements IDialog<Message> {
 
     @Override
     public String getDialogPhoto() {
-        return null;
+        return dialogName;
     }
 
     @Override

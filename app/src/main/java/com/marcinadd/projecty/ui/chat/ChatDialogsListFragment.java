@@ -15,6 +15,8 @@ import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.chat.ChatApiService;
 import com.marcinadd.projecty.chat.ChatMessageProjection;
 import com.marcinadd.projecty.chat.ui.model.Dialog;
+import com.marcinadd.projecty.chat.utils.MyImageLoader;
+import com.marcinadd.projecty.client.MyOkHttpClient;
 import com.marcinadd.projecty.helper.ChatHelper;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.stfalcon.chatkit.dialogs.DialogsList;
@@ -25,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import okhttp3.OkHttpClient;
 
 public class ChatDialogsListFragment extends Fragment
         implements RetrofitListener<List<ChatMessageProjection>>, DateFormatter.Formatter,
@@ -46,10 +50,8 @@ public class ChatDialogsListFragment extends Fragment
         dialogsListView = mView.findViewById(R.id.dialogsList);
 
         ChatApiService.getInstance(getContext()).getChatMessageHistory(this);
-
-        dialogsListAdapter = new DialogsListAdapter((imageView, url, payload) -> {
-            //TODO Add image loader here
-        });
+        OkHttpClient client = MyOkHttpClient.getInstance(getContext()).getClient();
+        dialogsListAdapter = new DialogsListAdapter<Dialog>(new MyImageLoader(getContext(), client));
         dialogsListAdapter.setDatesFormatter(this);
         dialogsListAdapter.setOnDialogClickListener(this);
         dialogsListView.setAdapter(dialogsListAdapter);
@@ -65,8 +67,6 @@ public class ChatDialogsListFragment extends Fragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(ChatDialogsListModel.class);
-        // TODO: Use the ViewModel
-
     }
 
     @Override

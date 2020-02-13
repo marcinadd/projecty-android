@@ -4,15 +4,9 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.marcinadd.projecty.exception.BlankTokenException;
 import com.marcinadd.projecty.helper.ServerHelper;
 
-import java.io.IOException;
-
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -24,21 +18,7 @@ public class AuthorizedNetworkClient {
         if (INSTANCE == null) {
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            OkHttpClient httpClient = new OkHttpClient.Builder()
-                    .addInterceptor(new Interceptor() {
-                        @Override
-                        public Response intercept(Chain chain) throws IOException {
-                            Request.Builder ongoing = chain.request().newBuilder();
-                            try {
-                                ongoing.addHeader("Authorization", "Bearer " + TokenHelper.getAccessToken(context));
-                            } catch (BlankTokenException e) {
-                                e.printStackTrace();
-                            }
-                            return chain.proceed(ongoing.build());
-                        }
-                    })
-                    .authenticator(new TokenAuthenticator(context))
-                    .build();
+            OkHttpClient httpClient = MyOkHttpClient.getInstance(context).getClient();
             Gson gson = new GsonBuilder()
                     .create();
             INSTANCE = new Retrofit.Builder()

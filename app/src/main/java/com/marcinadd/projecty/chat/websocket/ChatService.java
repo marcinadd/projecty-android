@@ -45,7 +45,8 @@ public class ChatService extends Service {
             initChat();
             initBroadcastReceiver();
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            Log.e("Connection Error", "error");
         }
     }
 
@@ -93,9 +94,7 @@ public class ChatService extends Service {
         if (!mStompClient.isConnected()) {
             mStompClient.connect();
         }
-
         compositeDisposable.add(lifecycler);
-
         Disposable topic = mStompClient.topic(SUBSCRIBE_URL).subscribe(stompMessage -> {
             StompChatMessage message = parseStompMessage(stompMessage);
             sendNotification(message);
@@ -143,8 +142,8 @@ public class ChatService extends Service {
     public void onDestroy() {
         if (mStompClient != null && mStompClient.isConnected())
             mStompClient.disconnect();
-        if (broadcastReceiver != null)
-            getApplicationContext().unregisterReceiver(broadcastReceiver);
+//        if (broadcastReceiver != null && )
+//            getApplicationContext().unregisterReceiver(broadcastReceiver);
         broadcastReceiver = null;
         intentFilter = null;
     }
