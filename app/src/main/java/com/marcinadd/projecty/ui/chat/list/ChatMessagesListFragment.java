@@ -15,15 +15,17 @@ import androidx.fragment.app.Fragment;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.chat.ChatApiService;
+import com.marcinadd.projecty.chat.ChatHelper;
 import com.marcinadd.projecty.chat.ChatMessage;
 import com.marcinadd.projecty.chat.ui.model.ChatUser;
 import com.marcinadd.projecty.chat.ui.model.Message;
+import com.marcinadd.projecty.chat.utils.MyAvatarLoader;
 import com.marcinadd.projecty.chat.websocket.ChatService;
 import com.marcinadd.projecty.chat.websocket.StompChatMessage;
-import com.marcinadd.projecty.helper.ChatHelper;
-import com.marcinadd.projecty.helper.UserHelper;
+import com.marcinadd.projecty.client.MyOkHttpClient;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.marcinadd.projecty.model.Page;
+import com.marcinadd.projecty.user.UserHelper;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
@@ -64,7 +66,7 @@ public class ChatMessagesListFragment extends Fragment
         senderId = String.valueOf(UserHelper.getCurrentUserId(getContext()));
         senderUsername = UserHelper.getCurrentUserUsername(getContext());
 
-        adapter = new MessagesListAdapter<>(senderId, null);
+        adapter = new MessagesListAdapter<>(senderId, new MyAvatarLoader(getContext(), MyOkHttpClient.getInstance(getContext()).getClient()));
         adapter.setLoadMoreListener(this);
 
         messagesList.setAdapter(adapter);

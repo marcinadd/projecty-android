@@ -7,10 +7,10 @@ import android.preference.PreferenceManager;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.marcinadd.projecty.chat.ChatHelper;
 import com.marcinadd.projecty.chat.ChatMessage;
 import com.marcinadd.projecty.chat.ChatMessageProjection;
 import com.marcinadd.projecty.chat.ui.model.Dialog;
-import com.marcinadd.projecty.helper.ChatHelper;
 import com.marcinadd.projecty.project.model.User;
 
 import org.junit.Before;

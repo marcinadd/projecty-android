@@ -1,4 +1,4 @@
-package com.marcinadd.projecty.exception;
+package com.marcinadd.projecty.client;
 
 public class BlankTokenException extends Exception {
 

@@ -1,13 +1,12 @@
-package com.marcinadd.projecty.helper;
+package com.marcinadd.projecty.chat;
 
 import android.content.Context;
 
-import com.marcinadd.projecty.chat.ChatMessage;
-import com.marcinadd.projecty.chat.ChatMessageProjection;
 import com.marcinadd.projecty.chat.ui.model.ChatUser;
 import com.marcinadd.projecty.chat.ui.model.Dialog;
 import com.marcinadd.projecty.chat.ui.model.Message;
 import com.marcinadd.projecty.chat.websocket.StompChatMessage;
+import com.marcinadd.projecty.user.UserHelper;
 
 import java.util.ArrayList;
 

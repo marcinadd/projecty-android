@@ -13,11 +13,11 @@ import androidx.navigation.Navigation;
 
 import com.marcinadd.projecty.R;
 import com.marcinadd.projecty.chat.ChatApiService;
+import com.marcinadd.projecty.chat.ChatHelper;
 import com.marcinadd.projecty.chat.ChatMessageProjection;
 import com.marcinadd.projecty.chat.ui.model.Dialog;
-import com.marcinadd.projecty.chat.utils.MyImageLoader;
+import com.marcinadd.projecty.chat.utils.MyAvatarLoader;
 import com.marcinadd.projecty.client.MyOkHttpClient;
-import com.marcinadd.projecty.helper.ChatHelper;
 import com.marcinadd.projecty.listener.RetrofitListener;
 import com.stfalcon.chatkit.dialogs.DialogsList;
 import com.stfalcon.chatkit.dialogs.DialogsListAdapter;
@@ -51,7 +51,7 @@ public class ChatDialogsListFragment extends Fragment
 
         ChatApiService.getInstance(getContext()).getChatMessageHistory(this);
         OkHttpClient client = MyOkHttpClient.getInstance(getContext()).getClient();
-        dialogsListAdapter = new DialogsListAdapter<Dialog>(new MyImageLoader(getContext(), client));
+        dialogsListAdapter = new DialogsListAdapter<Dialog>(new MyAvatarLoader(getContext(), client));
         dialogsListAdapter.setDatesFormatter(this);
         dialogsListAdapter.setOnDialogClickListener(this);
         dialogsListView.setAdapter(dialogsListAdapter);

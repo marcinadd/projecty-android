@@ -15,7 +15,6 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 import com.marcinadd.projecty.chat.websocket.ChatService;
-import com.marcinadd.projecty.helper.UserHelper;
 import com.marcinadd.projecty.listener.UserNotLoggedListener;
 import com.marcinadd.projecty.login.LoginService;
 import com.marcinadd.projecty.message.model.Message;
@@ -29,6 +28,7 @@ import com.marcinadd.projecty.ui.project.ProjectListFragment;
 import com.marcinadd.projecty.ui.project.manage.ProjectRoleFragment;
 import com.marcinadd.projecty.ui.task.TaskFragment;
 import com.marcinadd.projecty.ui.team.TeamListFragment;
+import com.marcinadd.projecty.user.UserHelper;
 import com.marcinadd.projecty.user.UserService;
 
 public class Main2Activity extends AppCompatActivity implements ProjectListFragment.OnListFragmentInteractionListener,

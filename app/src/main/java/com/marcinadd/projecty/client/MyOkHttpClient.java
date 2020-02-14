@@ -2,8 +2,6 @@ package com.marcinadd.projecty.client;
 
 import android.content.Context;
 
-import com.marcinadd.projecty.exception.BlankTokenException;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 

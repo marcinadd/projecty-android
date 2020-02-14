@@ -1,10 +1,10 @@
 package com.marcinadd.projecty;
 
+import com.marcinadd.projecty.chat.ChatHelper;
 import com.marcinadd.projecty.chat.ChatMessage;
 import com.marcinadd.projecty.chat.ChatMessageProjection;
 import com.marcinadd.projecty.chat.ui.model.Message;
 import com.marcinadd.projecty.chat.websocket.StompChatMessage;
-import com.marcinadd.projecty.helper.ChatHelper;
 import com.marcinadd.projecty.project.model.User;
 
 import org.junit.Before;

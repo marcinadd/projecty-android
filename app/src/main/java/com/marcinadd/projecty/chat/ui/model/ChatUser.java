@@ -30,6 +30,6 @@ public class ChatUser implements IUser {
 
     @Override
     public String getAvatar() {
-        return null;
+        return name;
     }
 }

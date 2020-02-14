@@ -23,7 +23,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.marcinadd.projecty.Main2Activity;
 import com.marcinadd.projecty.R;
-import com.marcinadd.projecty.helper.UserHelper;
+import com.marcinadd.projecty.user.UserHelper;
 
 public class LoginActivity extends AppCompatActivity {
 

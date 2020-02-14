@@ -12,8 +12,8 @@ import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.marcinadd.projecty.R;
+import com.marcinadd.projecty.client.BlankTokenException;
 import com.marcinadd.projecty.client.TokenHelper;
-import com.marcinadd.projecty.exception.BlankTokenException;
 import com.marcinadd.projecty.helper.ServerHelper;
 import com.marcinadd.projecty.service.NotificationService;
 

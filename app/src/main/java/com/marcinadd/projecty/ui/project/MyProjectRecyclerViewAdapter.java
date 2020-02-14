@@ -48,6 +48,8 @@ public class MyProjectRecyclerViewAdapter extends RecyclerView.Adapter<MyProject
         holder.mDoneView.setText(context.getString(R.string.done_number, summary.get(TaskStatus.DONE)));
         if (holder.mItem.getName() != Roles.ADMIN) {
             holder.manageProject.setEnabled(false);
+        } else {
+            holder.manageProject.setEnabled(true);
         }
 
         holder.mView.setOnClickListener(new View.OnClickListener() {

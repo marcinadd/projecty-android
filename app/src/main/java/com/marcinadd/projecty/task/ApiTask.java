@@ -1,6 +1,6 @@
 package com.marcinadd.projecty.task;
 
-import com.marcinadd.projecty.request.ChangeTaskStatusRequest;
+import com.marcinadd.projecty.task.model.ChangeTaskStatusRequest;
 import com.marcinadd.projecty.task.model.ManageTaskResponseModel;
 import com.marcinadd.projecty.task.model.Task;
 import com.marcinadd.projecty.task.model.TaskListResponseModel;

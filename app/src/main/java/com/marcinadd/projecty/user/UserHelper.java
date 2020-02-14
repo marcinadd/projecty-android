@@ -1,4 +1,4 @@
-package com.marcinadd.projecty.helper;
+package com.marcinadd.projecty.user;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 
 import com.marcinadd.projecty.client.AuthorizedNetworkClient;
 import com.marcinadd.projecty.project.model.User;
-import com.marcinadd.projecty.user.ApiUser;
 
 import java.util.Objects;
 

@@ -1,4 +1,4 @@
-package com.marcinadd.projecty.request;
+package com.marcinadd.projecty.task.model;
 
 import com.marcinadd.projecty.task.TaskStatus;
 
